@@ -2,7 +2,7 @@ package carems;
 
 import carems.gui.MainMenu;
 
-public class App {
+public class Main {
     public static void main(String[] args) {
         MainMenu mainMenu = new MainMenu();
     }
