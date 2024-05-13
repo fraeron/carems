@@ -13,15 +13,12 @@ import javax.swing.JPanel;
 
 
 public class CarMenu extends JFrame{
-    private JButton btnAddCar;    
-    private JButton btnEditCar;    
-    private JButton btnRemoveCar;
-    private JLabel lblFlow;
-    private JLabel lblHeader;
-    private JTextField txfSearch = new JTextField(16);
-    private JLabel lblSearch;
-    private JPanel pnlSearchBar = new JPanel();    
-    private JPanel pnlControlBar = new JPanel();
+    private final JButton btnAddCar, btnEditCar, btnRemoveCar;
+    private final JLabel lblFlow, lblHeader;
+    private final JTextField txfSearch = new JTextField(16);
+    private final JLabel lblSearch;
+    private final JPanel pnlSearchBar = new JPanel();    
+    private final JPanel pnlControlBar = new JPanel();
     private final JTable tblCars;
     
     // Sample data for demo. Replace by using database's.
