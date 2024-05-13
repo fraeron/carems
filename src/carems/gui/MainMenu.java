@@ -1,21 +1,10 @@
 package carems.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.JFrame;
 
-public class MainMenu extends JFrame implements ActionListener {
-    
-    private MainMenuJPanel panel;
-    private JLabel lblCarems;
-    private JButton btnBookingDetail, btnCar, btnOwner, btnCustomer, btnLogout;
-    
-    //color
-    private final Color clrAshGrey = new Color(42, 42, 42);    
-    private final Color clrMagmaOrange = new Color(255, 127, 39);
-    
+public class MainMenu extends JFrame {
     public MainMenu(){  
-
+      
         panel = new MainMenuJPanel();
         
         lblCarems = new JLabel();
@@ -95,5 +84,13 @@ public class MainMenu extends JFrame implements ActionListener {
         else if(e.getSource() == btnLogout){
         
         }
+
+        setTitle("Carems");
+        setSize(800,600);  
+        setLayout(null);  
+        setLocationRelativeTo(null);
+        setVisible(true);  
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
     }
 }
