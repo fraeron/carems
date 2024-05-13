@@ -1,6 +1,6 @@
 package carems;
 
-import carems.gui.*;
+import carems.gui.MainMenu;
 
 public class Main {
     public static void main(String[] args) {
