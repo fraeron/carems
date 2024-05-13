@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ImageIcon;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -42,7 +43,8 @@ class MainMenuPanel extends JPanel {
 public class MainMenu extends JFrame implements ActionListener {
     
     private final MainMenuPanel panel;
-    private final JLabel lblCarems;
+    private final ImageIcon logoPic = new ImageIcon("CaremsLogoPic.png");
+    private final JLabel lblCarems, caremsLogo;
     private final JButton btnBookingDetail, btnCar, btnOwner, btnCustomer, 
             btnLogout;
     
@@ -59,6 +61,10 @@ public class MainMenu extends JFrame implements ActionListener {
         lblCarems.setBounds(30, 125, 500, 100);
         lblCarems.setForeground(clrMagmaOrange);
         lblCarems.setFont(new Font("League Spartan", Font.BOLD, 30));
+        
+        caremsLogo = new JLabel();
+        caremsLogo.setBounds(-5, -5, 200, 200);
+        caremsLogo.setIcon(logoPic);
         
         btnBookingDetail = new JButton("BOOKING DETAILS");
         btnBookingDetail.setBounds(26, 300, 150, 30);
@@ -98,6 +104,7 @@ public class MainMenu extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
         
         this.add(lblCarems);
+        this.add(caremsLogo);
         this.add(btnBookingDetail);
         this.add(btnCustomer);
         this.add(btnCar);
