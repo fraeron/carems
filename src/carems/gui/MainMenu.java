@@ -18,7 +18,6 @@ import javax.swing.JButton;
 
 class MainMenuPanel extends JPanel {
     private final Dimension panelSize = new Dimension(800,600);
-    
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
@@ -33,10 +32,8 @@ class MainMenuPanel extends JPanel {
         
         Graphics2D line1 = (Graphics2D) g;
         Graphics2D line2 = (Graphics2D) g;
-
         line1.setColor(clrMagmaOrange);
         line2.setColor(clrMagmaOrange);
-        
         line1.drawLine(200, 200, 0, 200);
         line2.drawLine(200, 0, 200, 800);
     }
@@ -46,7 +43,8 @@ public class MainMenu extends JFrame implements ActionListener {
     
     private final MainMenuPanel panel;
     private final JLabel lblCarems;
-    private final JButton btnBookingDetail, btnCar, btnOwner, btnCustomer, btnLogout;
+    private final JButton btnBookingDetail, btnCar, btnOwner, btnCustomer, 
+            btnLogout;
     
     // Add color.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -66,33 +64,33 @@ public class MainMenu extends JFrame implements ActionListener {
         btnBookingDetail.setBounds(26, 300, 150, 30);
         btnBookingDetail.setBackground(clrMagmaOrange);
         btnBookingDetail.setFont(new Font("League Spartan", Font.BOLD, 12));
-        btnBookingDetail.addActionListener(this);
+        btnBookingDetail.addActionListener(MainMenu.this);
         
         btnCustomer = new JButton("CUSTOMER");
         btnCustomer.setBounds(26, 340, 150, 30);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCustomer.setFont(new Font("League Spartan", Font.BOLD, 12));
-        btnCustomer.addActionListener(this);
+        btnCustomer.addActionListener(MainMenu.this);
         
         btnCar = new JButton("CARS");
         btnCar.setBounds(26, 380, 150, 30);
         btnCar.setBackground(clrMagmaOrange);
         btnCar.setFont(new Font("League Spartan", Font.BOLD, 12));
-        btnCar.addActionListener(this);
+        btnCar.addActionListener(MainMenu.this);
         
         btnOwner = new JButton("OWNER");
         btnOwner.setBounds(26, 420, 150, 30);
         btnOwner.setBackground(clrMagmaOrange);
         btnOwner.setFont(new Font("League Spartan", Font.BOLD, 12));
-        btnOwner.addActionListener(this);
+        btnOwner.addActionListener(MainMenu.this);
         
         btnLogout = new JButton("LOGOUT");
         btnLogout.setBounds(26, 550, 150, 30);
         btnLogout.setBackground(clrMagmaOrange);
         btnLogout.setFont(new Font("League Spartan", Font.BOLD, 12));
-        btnLogout.addActionListener(this);
+        btnLogout.addActionListener(MainMenu.this);
         
-        // Add MainMenu properties.
+        // Set MainMenu properties.
         this.setTitle("Carems - Car Rental Management System");
         this.setSize(800,600);
         this.setResizable(false);
@@ -123,7 +121,6 @@ public class MainMenu extends JFrame implements ActionListener {
         }
         else if(e.getSource() == btnCar){
             CarMenu carMenu = new CarMenu();
-            this.dispose();
         }
         else if(e.getSource() == btnOwner){
         }
