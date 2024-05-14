@@ -2,8 +2,9 @@ package carems.gui;
 
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.Dimension;
 
-import javax.swing.JFrame;
+
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JLabel;
@@ -12,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.JPanel;
 
 
-public class CarMenu extends JFrame{
+public class CarPanel extends JPanel{
     private final JButton btnAddCar, btnEditCar, btnRemoveCar;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
@@ -44,10 +45,17 @@ public class CarMenu extends JFrame{
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
+    
+    // Init. size.
+    private final int intMaxWidth = 600;    
+    private final int intMaxHeight = 600;
+    private final Dimension pnlSize = new Dimension(
+            intMaxWidth, 
+            intMaxHeight
+    );
 
-    public CarMenu() { 
-        setTitle("Carems - Car Menu");
-        setSize(800,600); 
+    public CarPanel() { 
+        setPreferredSize(pnlSize); 
         setLayout(null);
         
         lblFlow = new JLabel("Home > Cars");
@@ -71,7 +79,7 @@ public class CarMenu extends JFrame{
         pnlControlBar.add(btnRemoveCar);
         
         // Color elements (background).
-        getContentPane().setBackground(clrAshGrey);
+        this.setBackground(clrAshGrey);
         btnAddCar.setBackground(clrAshGrey);        
         btnEditCar.setBackground(clrAshGrey);        
         btnRemoveCar.setBackground(clrAshGrey);
@@ -95,11 +103,11 @@ public class CarMenu extends JFrame{
         spTable.setFont(fntDefault);
         
         // Bound elements.
-        lblFlow.setBounds(0, 0, 800, 25);
-        lblHeader.setBounds(0, 25, 800, 50);
-        pnlSearchBar.setBounds(0, 75, 800, 25);
-        pnlControlBar.setBounds(0, 100, 800, 50);
-        spTable.setBounds(0, 150, 800, 450);
+        lblFlow.setBounds(0, 0, intMaxWidth, 25);
+        lblHeader.setBounds(0, 25, intMaxWidth, 50);
+        pnlSearchBar.setBounds(0, 75, intMaxWidth, 25);
+        pnlControlBar.setBounds(0, 100, intMaxWidth, 50);
+        spTable.setBounds(0, 150, intMaxWidth, 450);
 
         // Add elements.
         add(lblFlow);
@@ -107,9 +115,7 @@ public class CarMenu extends JFrame{
         add(pnlControlBar);
         add(pnlSearchBar);
         add(spTable);
-         
-        setLocationRelativeTo(null);
+
         setVisible(true);  
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 }
