@@ -52,7 +52,7 @@ public class MainMenu extends JFrame implements ActionListener {
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
-    // Init. fonts .
+    // Init. fonts.
     private final Font fntHeader = new Font("League Spartan", Font.BOLD, 30); 
     private final Font fntDefault = new Font("League Spartan", Font.BOLD, 12);
     
@@ -71,31 +71,31 @@ public class MainMenu extends JFrame implements ActionListener {
         caremsLogo.setIcon(logoPic);
         
         btnBookingDetail = new JButton("BOOKING DETAILS");
-        btnBookingDetail.setBounds(26, 300, 150, 30);
+        btnBookingDetail.setBounds(0, 300, 200, 30);
         btnBookingDetail.setBackground(clrMagmaOrange);
         btnBookingDetail.setFont(fntDefault);
         btnBookingDetail.addActionListener(MainMenu.this);
         
         btnCustomer = new JButton("CUSTOMER");
-        btnCustomer.setBounds(26, 340, 150, 30);
+        btnCustomer.setBounds(0, 340, 200, 30);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCustomer.setFont(fntDefault);
         btnCustomer.addActionListener(MainMenu.this);
         
         btnCar = new JButton("CARS");
-        btnCar.setBounds(26, 380, 150, 30);
+        btnCar.setBounds(0, 380, 200, 30);
         btnCar.setBackground(clrMagmaOrange);
         btnCar.setFont(fntDefault);
         btnCar.addActionListener(MainMenu.this);
         
         btnOwner = new JButton("OWNER");
-        btnOwner.setBounds(26, 420, 150, 30);
+        btnOwner.setBounds(0, 420, 200, 30);
         btnOwner.setBackground(clrMagmaOrange);
         btnOwner.setFont(fntDefault);
         btnOwner.addActionListener(MainMenu.this);
         
         btnLogout = new JButton("LOGOUT");
-        btnLogout.setBounds(26, 550, 150, 30);
+        btnLogout.setBounds(0, 550, 200, 30);
         btnLogout.setBackground(clrMagmaOrange);
         btnLogout.setFont(fntDefault);
         btnLogout.addActionListener(MainMenu.this);
