@@ -52,6 +52,10 @@ public class MainMenu extends JFrame implements ActionListener {
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
+    // Init. fonts .
+    private final Font fntHeader = new Font("League Spartan", Font.BOLD, 30); 
+    private final Font fntDefault = new Font("League Spartan", Font.BOLD, 12);
+    
     public MainMenu(){  
 
         panel = new MainMenuPanel();
@@ -60,7 +64,7 @@ public class MainMenu extends JFrame implements ActionListener {
         lblCarems.setText("CAREMS");
         lblCarems.setBounds(30, 125, 500, 100);
         lblCarems.setForeground(clrMagmaOrange);
-        lblCarems.setFont(new Font("League Spartan", Font.BOLD, 30));
+        lblCarems.setFont(fntHeader);
         
         caremsLogo = new JLabel();
         caremsLogo.setBounds(-5, -5, 200, 200);
@@ -69,31 +73,31 @@ public class MainMenu extends JFrame implements ActionListener {
         btnBookingDetail = new JButton("BOOKING DETAILS");
         btnBookingDetail.setBounds(26, 300, 150, 30);
         btnBookingDetail.setBackground(clrMagmaOrange);
-        btnBookingDetail.setFont(new Font("League Spartan", Font.BOLD, 12));
+        btnBookingDetail.setFont(fntDefault);
         btnBookingDetail.addActionListener(MainMenu.this);
         
         btnCustomer = new JButton("CUSTOMER");
         btnCustomer.setBounds(26, 340, 150, 30);
         btnCustomer.setBackground(clrMagmaOrange);
-        btnCustomer.setFont(new Font("League Spartan", Font.BOLD, 12));
+        btnCustomer.setFont(fntDefault);
         btnCustomer.addActionListener(MainMenu.this);
         
         btnCar = new JButton("CARS");
         btnCar.setBounds(26, 380, 150, 30);
         btnCar.setBackground(clrMagmaOrange);
-        btnCar.setFont(new Font("League Spartan", Font.BOLD, 12));
+        btnCar.setFont(fntDefault);
         btnCar.addActionListener(MainMenu.this);
         
         btnOwner = new JButton("OWNER");
         btnOwner.setBounds(26, 420, 150, 30);
         btnOwner.setBackground(clrMagmaOrange);
-        btnOwner.setFont(new Font("League Spartan", Font.BOLD, 12));
+        btnOwner.setFont(fntDefault);
         btnOwner.addActionListener(MainMenu.this);
         
         btnLogout = new JButton("LOGOUT");
         btnLogout.setBounds(26, 550, 150, 30);
         btnLogout.setBackground(clrMagmaOrange);
-        btnLogout.setFont(new Font("League Spartan", Font.BOLD, 12));
+        btnLogout.setFont(fntDefault);
         btnLogout.addActionListener(MainMenu.this);
         
         // Set MainMenu properties.
