@@ -14,13 +14,13 @@ import javax.swing.JPanel;
 
 
 public class CarPanel extends JPanel{
-    private final JButton btnAddCar, btnEditCar, btnRemoveCar;
+    private final JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
     private final JPanel pnlSearchBar = new JPanel();    
     private final JPanel pnlControlBar = new JPanel();
-    private final JTable tblCars;
+    private final JTable tblContent;
     
     // Sample data for demo. Replace by using database's.
     private final String[] sampleHeader = {
@@ -47,7 +47,7 @@ public class CarPanel extends JPanel{
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
     // Init. size.
-    private final int intMaxWidth = 600;    
+    private final int intMaxWidth = 800;    
     private final int intMaxHeight = 600;
     private final Dimension pnlSize = new Dimension(
             intMaxWidth, 
@@ -60,13 +60,13 @@ public class CarPanel extends JPanel{
         
         lblFlow = new JLabel("Home > Cars");
         lblHeader = new JLabel("Cars");       
-        btnAddCar = new JButton("Add Car");        
-        btnEditCar = new JButton("Edit Car");        
-        btnRemoveCar = new JButton("Delete Car");
+        btnAdd = new JButton("Add Car");        
+        btnEdit = new JButton("Edit Car");        
+        btnRemove = new JButton("Delete Car");
         
         // Group table elements.
-        tblCars = new JTable(sampleData, sampleHeader);
-        JScrollPane spTable = new JScrollPane(tblCars);
+        tblContent = new JTable(sampleData, sampleHeader);
+        JScrollPane spTable = new JScrollPane(tblContent);
         
         // Group search bar elements.
         lblSearch = new JLabel("Search by Car Name:");
@@ -74,32 +74,32 @@ public class CarPanel extends JPanel{
         pnlSearchBar.add(txfSearch);    
         
         // Group control/action elements.
-        pnlControlBar.add(btnAddCar);
-        pnlControlBar.add(btnEditCar);
-        pnlControlBar.add(btnRemoveCar);
+        pnlControlBar.add(btnAdd);
+        pnlControlBar.add(btnEdit);
+        pnlControlBar.add(btnRemove);
         
         // Color elements (background).
         this.setBackground(clrAshGrey);
-        btnAddCar.setBackground(clrAshGrey);        
-        btnEditCar.setBackground(clrAshGrey);        
-        btnRemoveCar.setBackground(clrAshGrey);
+        btnAdd.setBackground(clrAshGrey);        
+        btnEdit.setBackground(clrAshGrey);        
+        btnRemove.setBackground(clrAshGrey);
         
         // Color elements (foreground).
         lblHeader.setForeground(clrMagmaOrange);
         lblFlow.setForeground(clrMagmaOrange);
-        btnAddCar.setForeground(clrMagmaOrange);        
-        btnEditCar.setForeground(clrMagmaOrange);        
-        btnRemoveCar.setForeground(clrMagmaOrange);
+        btnAdd.setForeground(clrMagmaOrange);        
+        btnEdit.setForeground(clrMagmaOrange);        
+        btnRemove.setForeground(clrMagmaOrange);
        
         // Set fonts per element.
         lblSearch.setFont(fntDefault);
         txfSearch.setFont(fntDefault);
         lblFlow.setFont(fntSubHeader);        
         lblHeader.setFont(fntSupHeader);
-        btnAddCar.setFont(fntDefault);
-        btnEditCar.setFont(fntDefault);
-        btnRemoveCar.setFont(fntDefault);
-        tblCars.setFont(fntDefault);
+        btnAdd.setFont(fntDefault);
+        btnEdit.setFont(fntDefault);
+        btnRemove.setFont(fntDefault);
+        tblContent.setFont(fntDefault);
         spTable.setFont(fntDefault);
         
         // Bound elements.
