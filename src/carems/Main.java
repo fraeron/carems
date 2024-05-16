@@ -1,9 +1,9 @@
 package carems;
 
-import carems.gui.MainMenu;
+import carems.gui.Login;
 
 public class Main {
     public static void main(String[] args) {
-        MainMenu mainMenu = new MainMenu();
+        Login login = new Login();
     }
 }
