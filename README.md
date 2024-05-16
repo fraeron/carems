@@ -5,3 +5,5 @@ The system is published by a fictional company named Golden Archer Development C
 
 CHANGES:
 - As of 5/16/2024, Login.java has been added
+- Added a picture of Username Icon from https://www.shutterstock.com/image-vector
+- Added a picture of Lock Icon from https://pngtree.com/free-png-vectors/padlock
