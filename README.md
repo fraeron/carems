@@ -5,3 +5,4 @@ The system is published by a fictional company named Golden Archer Development C
 
 CHANGES:
 - As of 5/16/2024, Login.java has been added
+- As of 5/16/2024, Login.java has been updated
