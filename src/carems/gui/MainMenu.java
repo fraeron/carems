@@ -26,6 +26,7 @@ public class MainMenu extends JFrame {
         MainMenuPanel.add(new CustomerPanel(), "CUSTOMER");
         MainMenuPanel.add(new OwnerPanel(), "OWNER");
         MainMenuPanel.add(new BookingPanel(), "BOOKING");
+        MainMenuPanel.add(new Login(), "LOGOUT");
 
         // Add sidebar.
         pnlSidebar.setBounds(0, 0, 200, 600);
@@ -62,6 +63,7 @@ public class MainMenu extends JFrame {
         lstPanes.add("BOOKING"); 
         lstPanes.add("CAR"); 
         lstPanes.add("OWNER"); 
+        lstPanes.add("LOGOUT");
 
         if (lstPanes.contains(panelName)) {
             pnlSidebar.switchBtnColor(panelName);

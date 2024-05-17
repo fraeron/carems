@@ -187,5 +187,8 @@ class SidebarPanel extends JPanel implements ActionListener{
         else if(e.getSource() == btnOwner){
             MainMenu.switchPanes("OWNER");
         }
+        else if(e.getSource() == btnLogout){
+            MainMenu.switchPanes("LOGOUT");
+        }
     }
 }

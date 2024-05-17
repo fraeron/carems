@@ -1,124 +1,184 @@
 package carems.gui;
 
+import carems.SampleData.UserData;
+
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
+
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JLabel; 
 import javax.swing.JPanel;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton; 
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 public class Login extends JFrame {
-    JTextField T2, T3;
+
+    private MainMenu mainMenu;
+    
+    private UserData userData = new UserData();
+    
+    private JTextField entryUsername;
+    private JPasswordField entryPassword;
+    private JLabel lblUsername, lblPassword, lblHeader, lblSubHeader;
+    private JPanel pnlEntries;
+    private JButton btnSubmit;
+    
+    //Result JFrame
+    private JFrame resultFrame;
+    private JLabel lblResult;
+    private JButton btnProceed;
+    private JPanel resultPanel;
+
+    // Add color.
+    private final Color clrAshGrey = new Color(42, 42, 42);    
+    private final Color clrMagmaOrange = new Color(255, 127, 39);
+    
+    // Init. fonts.
+    private final Font fntHeader = new Font("Arial", Font.BOLD, 50); 
+    private final Font fntDefault = new Font("Arial", Font.BOLD, 12);
 
     public Login() {
-       
-        JPanel panel = new JPanel();
-        panel.setBounds(5, 5, 875, 490);
-        panel.setBackground(new Color(42, 42, 42));
-        panel.setLayout(null);
-        add(panel);
+        lblHeader = new JLabel("CAREMS");
+        lblSubHeader = new JLabel("Please login your credentials to continue.");
+        entryUsername = new JTextField();
+        entryPassword = new JPasswordField();
+        lblUsername = new JLabel("Username:");
+        lblPassword = new JLabel("Password:");
+        btnSubmit = new JButton("Login");
         
-        JLabel L1 = new JLabel("ADMIN LOGIN");
-        L1.setBounds(350, 200, 160, 22);
-        L1.setFont(new Font("Calibri", Font.BOLD, 20));
-        L1.setForeground(new Color(255,127,39));
-        panel.add(L1);
+        lblHeader.setSize(100, 100);
+        lblHeader.setFont(fntHeader);
+        lblHeader.setForeground(clrMagmaOrange);
+        lblHeader.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        JLabel L2 = new JLabel("Username:  ");
-        L2.setBounds(225, 250, 155, 22);
-        L2.setFont(new Font("Arial", Font.BOLD, 16));
-        L2.setForeground(new Color(255,127,39));
-        panel.add(L2);
+        lblSubHeader.setSize(100, 50);
+        lblSubHeader.setFont(fntDefault);
+        lblSubHeader.setForeground(clrMagmaOrange);
+        lblSubHeader.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        T2 = new JTextField();
-        T2.setBounds(325, 250, 183, 20);
-        T2.setFont(new Font("Arial", Font.PLAIN, 18));
-        Color Orange = new Color(225, 127, 39);
-        T2.setBackground(new Color(42, 42, 42));
-        T2.setForeground(Orange);
-        panel.add(T2);
+        // Add these label and entries to a panel.
+        pnlEntries = new JPanel();
+        pnlEntries.setLayout(new BoxLayout(pnlEntries, BoxLayout.Y_AXIS));
+        pnlEntries.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        pnlEntries.setSize(100, 100);
+        pnlEntries.setBackground(clrAshGrey);
 
-        JLabel L3 = new JLabel("Password: ");
-        L3.setBounds(225, 300, 200, 30);
-        L3.setFont(new Font("Arial", Font.BOLD, 16));
-        L3.setForeground(new Color(255,127,39));
-        panel.add(L3);
+        lblUsername.setSize(50, 50);
+        lblUsername.setFont(fntDefault);
+        lblUsername.setForeground(clrMagmaOrange);
+        lblUsername.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 
-        T3 = new JTextField();
-        T3.setBounds(325, 300, 183, 20);
-        T3.setFont(new Font("Arial", Font.PLAIN, 18));
-        T3.setForeground(new Color(255,127,39));
-        T3.setBackground(new Color(42, 42, 42));
-        panel.add(T3);
-        
-        JLabel L4 = new JLabel("CAREMS ");
-        L4.setBounds(350, 50, 200, 30);
-        L4.setFont(new Font("Arial", Font.BOLD, 25));
-        L4.setForeground(new Color(255,127,39));
-        panel.add(L4);     
-        
-        JButton LoginButton = new JButton("LOGIN");
-        LoginButton.setBounds(325, 375, 200, 30);
-        LoginButton.setForeground(new Color(42,42,42));
-        LoginButton.setBackground(new Color(255, 127, 39));
-        panel.add(LoginButton);
-       
+        entryUsername.setSize(300, 25);
+        entryUsername.setFont(fntDefault);
+        entryUsername.setMaximumSize(entryUsername.getSize());
+        entryUsername.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 
-        ImageIcon lockIcon = new ImageIcon("lock.png");
-        Image lockImage = lockIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT);
-        ImageIcon scaledLockIcon = new ImageIcon(lockImage);
-        JLabel lockLabel = new JLabel(scaledLockIcon);
-        lockLabel.setBounds(200, 305, 20, 20); 
-        panel.add(lockLabel);
+        lblPassword.setSize(50, 50);
+        lblPassword.setFont(fntDefault);
+        lblPassword.setForeground(clrMagmaOrange);
+        lblPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
 
+        entryPassword.setSize(300, 25);
+        entryPassword.setFont(fntDefault);
+        entryPassword.setMaximumSize(entryPassword.getSize());
+        entryPassword.setAlignmentX(JLabel.LEFT_ALIGNMENT);
+
+        btnSubmit.setSize(400, 25); // !
+        btnSubmit.setPreferredSize(btnSubmit.getSize());
+        btnSubmit.setFont(fntDefault);
+        btnSubmit.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+
+        // Set color and fonts.
+        btnSubmit.setForeground(clrAshGrey);
+        btnSubmit.setBackground(clrMagmaOrange);
+
+        // Add labels and entries to a panel.
+        pnlEntries.add(lblUsername);
+        pnlEntries.add(entryUsername);
+        pnlEntries.add(Box.createVerticalGlue());
+        pnlEntries.add(lblPassword);
+        pnlEntries.add(entryPassword);
         
-        ImageIcon PFPIcon = new ImageIcon("icon.png");
-        Image IconImage = PFPIcon.getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT);
-        ImageIcon scaledPFPIcon = new ImageIcon(IconImage);
-        JLabel IconLabel = new JLabel(scaledPFPIcon);
-        IconLabel.setBounds( 200, 250, 20,20);
-        panel.add(IconLabel);
-        
-        ImageIcon LogoIcon = new ImageIcon("CaremsLogoPic.png");
-        JLabel Logoicon = new JLabel(LogoIcon);
-        Logoicon.setBounds(300,10,250,250);
-        panel.add(Logoicon);
-        
-        setTitle("Login Window");                  
-        setSize(885, 500);
-        setLayout(null);
-        setVisible(true);
-        setResizable(false);
-        setLocationRelativeTo(null);
-        
-           
-         LoginButton.addActionListener(new ActionListener() {
+        // Add it all together in main JFrame.
+        this.add(Box.createVerticalGlue());
+        this.add(lblHeader);
+        this.add(lblSubHeader);
+        this.add(Box.createVerticalGlue());
+        this.add(pnlEntries);
+        this.add(Box.createVerticalGlue());
+        this.add(btnSubmit);
+        this.add(Box.createVerticalGlue());
+
+        this.setTitle("LOGIN");
+        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        this.getContentPane().setBackground(clrAshGrey);
+        this.setSize(600, 400);
+        this.setVisible(true);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+
+        btnSubmit.addActionListener(new ActionListener() {
             
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 
-                String Username = T2.getText();
-                String Password = T3.getText();
+                String Username = entryUsername.getText();
+                String Password = entryPassword.getText();
                 
-            if(Username.equals("Carems") && Password.equals("OOP")){
-      
-          JOptionPane.showMessageDialog(null, "Successfully Logged In!", "Admin Login",JOptionPane.INFORMATION_MESSAGE);
-
-   }
-            else{
-      
-          JOptionPane.showMessageDialog(null, "Login Failed. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
-
-  }
+                if (userData.getResult(Username, Password)) {
+                    displayResultFrame("Successfully Logged In!", "Login", Login.this, true);
+                } else {
+                    displayResultFrame("Login Failed. Please try again.", "Login Error", Login.this, false);
+                }
             }
+        });
+    }
+    
+    private void displayResultFrame(String message, String title, JFrame Login, Boolean result) {
+        resultFrame = new JFrame(title);
+        resultFrame.setSize(300, 150);
+        resultFrame.setResizable(false);
+        resultFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        resultFrame.setLayout(new BorderLayout());
+        resultFrame.setLocationRelativeTo(null);
+        resultFrame.setBackground(clrAshGrey);
         
-                });
+        resultFrame.getContentPane().setBackground(clrAshGrey);
+        
+        lblResult = new JLabel(message, SwingConstants.CENTER);
+        lblResult.setForeground(clrMagmaOrange);
+        lblResult.setFont(fntDefault);
+        
+        btnProceed = new JButton("PROCEED");
+        btnProceed.setForeground(clrAshGrey);
+        btnProceed.setBackground(clrMagmaOrange);
+        btnProceed.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if(result){
+                    mainMenu = new MainMenu();
+                    Login.dispose();
+                    resultFrame.dispose();
+                }
+                else{
+                    resultFrame.dispose();
+                }
+            }
+        });
+        resultPanel = new JPanel();
+        resultPanel.setBackground(clrAshGrey);
+        resultPanel.add(btnProceed);
+        
+        resultFrame.add(lblResult, BorderLayout.CENTER);
+        resultFrame.add(resultPanel, BorderLayout.SOUTH);
+        
+        resultFrame.setVisible(true);
     }
     
 }
