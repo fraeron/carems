@@ -27,8 +27,8 @@ public class OwnerPanel extends JPanel{
         "ID", "Name", "Car"};
     private final String[][] sampleData = {
         {"1", "Miguel O. Harem", "Honda Civic"},
-        {"2", "Michael Gyatt Ford", "Ford F-250"},
-        {"3", "Alice Marie J. Trustman", "Volvo 240"},
+        {"2", "Michael Gyatt Sigma", "Ford F-250"},
+        {"3", "Gaylord Batumbakal", "Volvo 240"},
         {"4", "Felisha M. Macawala", "DMC DeLorean"}
     };
 
