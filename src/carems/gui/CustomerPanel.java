@@ -27,8 +27,8 @@ public class CustomerPanel extends JPanel{
         "ID", "Name", "Rented Car ID"};
     private final String[][] sampleData = {
         {"1", "Raven D. Mcmurray", "1"},
-        {"2", "Dalila R. Tan", "2"},
-        {"3", "Christa Dela Santos", "3"},
+        {"2", "Kendrick L. Duckworth", "2"},
+        {"3", "Aubrey Graham", "3"},
         {"4", "Fukuma S. Mizushi", "4"}
     };
 
