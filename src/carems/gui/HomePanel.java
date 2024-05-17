@@ -71,7 +71,8 @@ public class HomePanel extends JPanel implements ActionListener{
         btnOwner = new JButton("Owner", new ImageIcon("img/owner_logo.png"));
         btnBooking = new JButton("Booking", new ImageIcon("img/booking_logo.png"));
 
-        btnCustomer.setPreferredSize(new Dimension(200, 200));
+        // Control all sizes of all buttons.
+        btnCustomer.setPreferredSize(new Dimension(150, 150));
 
         // Set font and color of buttons.
         btnCustomer.setFont(fntDefault);
