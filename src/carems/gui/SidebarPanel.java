@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -39,14 +40,20 @@ class SidebarPanel extends JPanel implements ActionListener{
     
     // Init. fonts.
     private final Font fntDefault = new Font("Arial", Font.PLAIN, 14);
+
+    // Init. parent menu.
+    private final JFrame Parent;
     
-    public SidebarPanel(){
+    public SidebarPanel(JFrame ParentMenu){
         this.setPreferredSize(panelSize);
         this.setBackground(clrDarkGrey);  
         this.setLayout(null);
 
         // Set border.
         this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+
+        // Hook parent menu.
+        Parent = ParentMenu;
 
         // Resize and add logo.
         lblLogo = new JLabel();
@@ -186,6 +193,10 @@ class SidebarPanel extends JPanel implements ActionListener{
         }
         else if(e.getSource() == btnOwner){
             MainMenu.switchPanes("OWNER");
+        }
+        else if(e.getSource() == btnLogout){
+            new LoginMenu();
+            Parent.dispose();
         }
     }
 }
