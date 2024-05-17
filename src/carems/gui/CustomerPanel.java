@@ -36,7 +36,7 @@ public class CustomerPanel extends JPanel{
     private final String defaultFont = "Arial";
     private final Font fntSubHeader = new Font(
             defaultFont, Font.PLAIN, 16);
-    private final Font fntSubHeader = new Font(
+    private final Font fntSupHeader = new Font(
             defaultFont, Font.PLAIN, 48);
     private final Font fntDefault = new Font(
             defaultFont, Font.PLAIN, 12
