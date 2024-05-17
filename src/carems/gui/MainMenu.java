@@ -53,9 +53,9 @@ public class MainMenu extends JFrame implements ActionListener {
         // Add history.
         MainMenuPanel.add(new CarPanel(), "CAR");
         MainMenuPanel.add(new HomePanel(), "HOME");
-//        MainMenuPanel.add(new CustomerPanel(), "CUSTOMER");
-//        MainMenuPanel.add(new OwnerPanel(), "OWNER");
-//        MainMenuPanel.add(new BookingPanel(), "BOOKING");
+        // MainMenuPanel.add(new CustomerPanel(), "CUSTOMER");
+        // MainMenuPanel.add(new OwnerPanel(), "OWNER");
+        // MainMenuPanel.add(new BookingPanel(), "BOOKING");
         
         // Resize and add logo.
         lblLogo = new JLabel();
@@ -153,7 +153,7 @@ public class MainMenu extends JFrame implements ActionListener {
             lytCard.show(MainMenuPanel, "OWNER");
         }
         else if(e.getSource() == btnLogout){
-//            new LoginMenu();
+            // new LoginMenu();
             this.dispose();
         }
     }
