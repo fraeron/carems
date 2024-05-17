@@ -14,6 +14,7 @@ public class MainMenu extends JFrame {
     // Init. history.
     private static CardLayout lytCard = new CardLayout();
     private static final JPanel MainMenuPanel = new JPanel(lytCard);
+    private static final SidebarPanel pnlSidebar = new SidebarPanel();;
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");
@@ -27,7 +28,6 @@ public class MainMenu extends JFrame {
         MainMenuPanel.add(new BookingPanel(), "BOOKING");
 
         // Add sidebar.
-        SidebarPanel pnlSidebar = new SidebarPanel();
         pnlSidebar.setBounds(0, 0, 200, 600);
         this.add(pnlSidebar);
         
@@ -49,6 +49,9 @@ public class MainMenu extends JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        // Start with this panel.
+        switchPanes("HOME");
     }
     
 
@@ -61,6 +64,7 @@ public class MainMenu extends JFrame {
         lstPanes.add("OWNER"); 
 
         if (lstPanes.contains(panelName)) {
+            pnlSidebar.switchBtnColor(panelName);
             lytCard.show(MainMenuPanel, panelName);
         }
     }
