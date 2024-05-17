@@ -9,6 +9,7 @@ import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -65,10 +66,10 @@ public class HomePanel extends JPanel implements ActionListener{
         pnlSelections.setLayout(grid);
 
         // Init. buttons.
-        btnCustomer = new JButton("Customer");
-        btnCar = new JButton("Car");
-        btnOwner = new JButton("Owner");
-        btnBooking = new JButton("Booking");
+        btnCustomer = new JButton("Customer", new ImageIcon("customer_logo.png"));
+        btnCar = new JButton("Car", new ImageIcon("car_logo.png"));
+        btnOwner = new JButton("Owner", new ImageIcon("owner_logo.png"));
+        btnBooking = new JButton("Booking", new ImageIcon("booking_logo.png"));
 
         btnCustomer.setPreferredSize(new Dimension(200, 200));
 
