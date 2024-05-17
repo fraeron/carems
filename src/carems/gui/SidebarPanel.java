@@ -103,6 +103,14 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnOwner.setFocusable(false);
         btnCar.setFocusable(false);
         btnLogout.setFocusable(false);
+
+        // Set flat-look.
+        btnHome.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnBookingDetail.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnCustomer.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnOwner.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnCar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnLogout.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
         
         // Add widgets.
         this.add(lblLogo);
@@ -114,21 +122,56 @@ class SidebarPanel extends JPanel implements ActionListener{
         this.add(btnLogout);
     }
 
+    public void switchColors(JButton button, int face) {
+        if (face == 1) {
+            button.setBackground(clrMagmaOrange);
+            button.setForeground(clrDarkGrey);
+        } else {
+            button.setBackground(clrDarkGrey);
+            button.setForeground(Color.GRAY);
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnCar){
+            switchColors(btnHome, 0);
+            switchColors(btnCustomer, 0);
+            switchColors(btnBookingDetail, 0);
+            switchColors(btnOwner, 0);
+            switchColors(btnCar, 1);
             MainMenu.switchPanes("CAR");
         }
         else if(e.getSource() == btnHome){
+            switchColors(btnHome, 1);
+            switchColors(btnCustomer, 0);
+            switchColors(btnBookingDetail, 0);
+            switchColors(btnOwner, 0);
+            switchColors(btnCar, 0);;
             MainMenu.switchPanes("HOME");
         }
         else if(e.getSource() == btnCustomer){
+            switchColors(btnHome, 0);
+            switchColors(btnCustomer, 1);
+            switchColors(btnBookingDetail, 0);
+            switchColors(btnOwner, 0);
+            switchColors(btnCar, 0);
             MainMenu.switchPanes("CUSTOMER");
         }
         else if(e.getSource() == btnBookingDetail){
+            switchColors(btnHome, 0);
+            switchColors(btnCustomer, 0);
+            switchColors(btnBookingDetail, 1);
+            switchColors(btnOwner, 0);
+            switchColors(btnCar, 0);
             MainMenu.switchPanes("BOOKING");
         }
         else if(e.getSource() == btnOwner){
+            switchColors(btnHome, 0);
+            switchColors(btnCustomer, 0);
+            switchColors(btnBookingDetail, 0);
+            switchColors(btnOwner, 1);
+            switchColors(btnCar, 0);
             MainMenu.switchPanes("OWNER");
         }
     }
