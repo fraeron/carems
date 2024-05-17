@@ -1,6 +1,8 @@
 package carems.gui;
 
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -10,11 +12,12 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
 import javax.swing.JPanel;
 
 
-public class CarPanel extends JPanel{
-    private final JButton btnAdd, btnEdit, btnRemove;
+public class CarPanel extends JPanel implements ActionListener {
+    private final JButton btnAdd, btnEdit, btnRemove, btnInvoice;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
@@ -24,12 +27,12 @@ public class CarPanel extends JPanel{
     
     // Sample data for demo. Replace by using database's.
     private final String[] sampleHeader = {
-        "Model", "Color", "License Plate", "Category", "Fuel Type"};
+        "Model", "Color", "License Plate", "Category", "Fuel Type", "Is Available"};
     private final String[][] sampleData = {
-        {"Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded"},
-        {"Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel"},
-        {"Volvo 240", "White", "TOM 369", "Wagon", "Unleaded"},
-        {"DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded"}
+        {"Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes"},
+        {"Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes"},
+        {"Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes"},
+        {"DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No"}
     };
 
     // Init. fonts.
@@ -63,6 +66,7 @@ public class CarPanel extends JPanel{
         btnAdd = new JButton("Add Car");        
         btnEdit = new JButton("Edit Car");        
         btnRemove = new JButton("Delete Car");
+        btnInvoice = new JButton("Generate Invoice");
         
         // Group table elements.
         tblContent = new JTable(sampleData, sampleHeader);
@@ -77,12 +81,14 @@ public class CarPanel extends JPanel{
         pnlControlBar.add(btnAdd);
         pnlControlBar.add(btnEdit);
         pnlControlBar.add(btnRemove);
+        pnlControlBar.add(btnInvoice);
         
         // Color elements (background).
         this.setBackground(clrAshGrey);
         btnAdd.setBackground(clrAshGrey);        
         btnEdit.setBackground(clrAshGrey);        
         btnRemove.setBackground(clrAshGrey);
+        btnInvoice.setBackground(clrAshGrey);
         
         // Color elements (foreground).
         lblHeader.setForeground(clrMagmaOrange);
@@ -90,6 +96,7 @@ public class CarPanel extends JPanel{
         btnAdd.setForeground(clrMagmaOrange);        
         btnEdit.setForeground(clrMagmaOrange);        
         btnRemove.setForeground(clrMagmaOrange);
+        btnInvoice.setForeground(clrMagmaOrange);
        
         // Set fonts per element.
         lblSearch.setFont(fntDefault);
@@ -109,13 +116,23 @@ public class CarPanel extends JPanel{
         pnlControlBar.setBounds(0, 100, intMaxWidth, 50);
         spTable.setBounds(0, 150, intMaxWidth, 450);
 
+        // Link buttons.
+        btnInvoice.addActionListener(CarPanel.this);
+
         // Add elements.
-        add(lblFlow);
-        add(lblHeader);
+        this.add(lblFlow);
+        this.add(lblHeader);
         add(pnlControlBar);
         add(pnlSearchBar);
         add(spTable);
 
         setVisible(true);  
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnInvoice) {
+            new InvoiceFrame();
+        }
     }
 }
