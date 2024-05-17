@@ -28,8 +28,11 @@ public class MainMenu extends JFrame implements ActionListener {
     
     // Init. logo.
     private BufferedImage tmpLogo;
-    private final String logoPath = "CaremsLogoPic.png";
+    private final String logoPath = "carems_logo.png";
     private final JLabel lblLogo;
+
+    // Add logo path.
+    ImageIcon logo = new ImageIcon("carems_icon.png");
 
     // Init. history.
     private static CardLayout lytCard = new CardLayout();
@@ -130,6 +133,7 @@ public class MainMenu extends JFrame implements ActionListener {
         lytCard.show(MainMenuPanel, "HOME");
         
         // Set Main Menu properties.
+        this.setIconImage(logo.getImage());
         this.setTitle("Carems - Car Rental Management System");
         Dimension size = new Dimension(1000, 600);
         this.setPreferredSize(size);
