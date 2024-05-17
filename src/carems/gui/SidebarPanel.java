@@ -30,7 +30,7 @@ class SidebarPanel extends JPanel implements ActionListener{
     private final Dimension panelSize = new Dimension(600,600);
     
      // Init. button constants.
-    private final byte btnHeight = 30;
+    private final byte btnHeight = 40;
     private final int btnWidth = 200;
     
     // Add color.
@@ -38,7 +38,7 @@ class SidebarPanel extends JPanel implements ActionListener{
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
     // Init. fonts.
-    private final Font fntDefault = new Font("Arial", Font.BOLD, 12);
+    private final Font fntDefault = new Font("Arial", Font.PLAIN, 14);
     
     public SidebarPanel(){
         this.setPreferredSize(panelSize);
@@ -61,37 +61,37 @@ class SidebarPanel extends JPanel implements ActionListener{
         lblLogo.setIcon(new ImageIcon(dimg));
         
         // Add buttons.
-        btnHome = new JButton("HOME");
+        btnHome = new JButton("Home");
         btnHome.setBounds(0, 200, btnWidth, btnHeight);
         btnHome.setBackground(clrMagmaOrange);
         btnHome.setFont(fntDefault);
         btnHome.addActionListener(SidebarPanel.this);
 
-        btnBookingDetail = new JButton("BOOKING DETAILS");
+        btnBookingDetail = new JButton("Booking Details");
         btnBookingDetail.setBounds(0, 240, btnWidth, btnHeight);
         btnBookingDetail.setBackground(clrMagmaOrange);
         btnBookingDetail.setFont(fntDefault);
         btnBookingDetail.addActionListener(SidebarPanel.this);
 
-        btnCustomer = new JButton("CUSTOMER");
+        btnCustomer = new JButton("Customer");
         btnCustomer.setBounds(0, 280, btnWidth, btnHeight);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCustomer.setFont(fntDefault);
         btnCustomer.addActionListener(SidebarPanel.this);
         
-        btnCar = new JButton("CARS");
+        btnCar = new JButton("Cars");
         btnCar.setBounds(0, 320, btnWidth, btnHeight);
         btnCar.setBackground(clrMagmaOrange);
         btnCar.setFont(fntDefault);
         btnCar.addActionListener(SidebarPanel.this);
         
-        btnOwner = new JButton("OWNER");
+        btnOwner = new JButton("Owner");
         btnOwner.setBounds(0, 360, btnWidth, btnHeight);
         btnOwner.setBackground(clrMagmaOrange);
         btnOwner.setFont(fntDefault);
         btnOwner.addActionListener(SidebarPanel.this);
         
-        btnLogout = new JButton("LOGOUT");
+        btnLogout = new JButton("Logout");
         btnLogout.setBounds(0, 500, btnWidth, btnHeight);
         btnLogout.setBackground(clrMagmaOrange);
         btnLogout.setFont(fntDefault);
