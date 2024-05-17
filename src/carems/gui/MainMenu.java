@@ -105,6 +105,13 @@ public class MainMenu extends JFrame implements ActionListener {
         btnLogout.setBackground(clrMagmaOrange);
         btnLogout.setFont(fntDefault);
         btnLogout.addActionListener(MainMenu.this);
+
+        btnHome.setFocusable(false);
+        btnBookingDetail.setFocusable(false);
+        btnCustomer.setFocusable(false);
+        btnOwner.setFocusable(false);
+        btnCar.setFocusable(false);
+        btnLogout.setFocusable(false);
         
         // Add widgets.
         this.add(lblLogo);
