@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,9 +27,7 @@ class SidebarPanel extends JPanel implements ActionListener{
     private final String logoPath = "img/carems_logo.png";
     private final JLabel lblLogo;
 
-    
-
-    private final Dimension panelSize = new Dimension(800,600);
+    private final Dimension panelSize = new Dimension(600,600);
     
      // Init. button constants.
     private final byte btnHeight = 30;
@@ -45,6 +44,9 @@ class SidebarPanel extends JPanel implements ActionListener{
         this.setPreferredSize(panelSize);
         this.setBackground(clrDarkGrey);  
         this.setLayout(null);
+
+        // Set border.
+        this.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
 
         // Resize and add logo.
         lblLogo = new JLabel();
