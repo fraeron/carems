@@ -106,6 +106,7 @@ public class CarPanel extends JPanel implements ActionListener {
         btnAdd.setFont(fntDefault);
         btnEdit.setFont(fntDefault);
         btnRemove.setFont(fntDefault);
+        btnInvoice.setFont(fntDefault);
         tblContent.setFont(fntDefault);
         spTable.setFont(fntDefault);
         
