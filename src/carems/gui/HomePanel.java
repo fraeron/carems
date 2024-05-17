@@ -95,7 +95,10 @@ public class HomePanel extends JPanel implements ActionListener{
         pnlSelections.add(btnOwner);
         pnlSelections.add(btnBooking);
 
-        
+        btnCustomer.setFocusable(false);
+        btnOwner.setFocusable(false);
+        btnCar.setFocusable(false);
+        btnBooking.setFocusable(false);
 
         // Add widgets overall.
         this.add(Box.createVerticalGlue());
