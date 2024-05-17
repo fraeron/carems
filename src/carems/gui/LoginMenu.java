@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import carems.SampleData.UserData;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -16,10 +19,14 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
 
 
 public class LoginMenu extends JFrame implements ActionListener {
-    private JTextField T2, T3;
+    private JTextField T2;
+    private JPasswordField T3;
+    
+    private UserData userData = new UserData();
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");
@@ -62,7 +69,7 @@ public class LoginMenu extends JFrame implements ActionListener {
         L3.setForeground(new Color(255,127,39));
         panel.add(L3);
 
-        T3 = new JTextField();
+        T3 = new JPasswordField();
         T3.setText("OOP");
         T3.setBounds(200, 310, 400, 25);
         T3.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -129,7 +136,7 @@ public class LoginMenu extends JFrame implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String Username = T2.getText();
             String Password = T3.getText();
-            if (Username.equals("Carems") && Password.equals("OOP")){
+            if (userData.getResult(Username, Password)){
                 JOptionPane.showMessageDialog(null, "Successfully logged In!", "Logged In",JOptionPane.INFORMATION_MESSAGE);
                 new MainMenu();
                 this.dispose();
