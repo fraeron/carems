@@ -28,11 +28,11 @@ public class MainMenu extends JFrame implements ActionListener {
     
     // Init. logo.
     private BufferedImage tmpLogo;
-    private final String logoPath = "carems_logo.png";
+    private final String logoPath = "img/carems_logo.png";
     private final JLabel lblLogo;
 
     // Add logo path.
-    ImageIcon logo = new ImageIcon("carems_icon.png");
+    ImageIcon logo = new ImageIcon("img/carems_icon.png");
 
     // Init. history.
     private static CardLayout lytCard = new CardLayout();
