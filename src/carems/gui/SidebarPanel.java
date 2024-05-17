@@ -117,6 +117,9 @@ class SidebarPanel extends JPanel implements ActionListener{
         if(e.getSource() == btnCar){
             MainMenu.switchPanes("CAR");
         }
+        else if(e.getSource() == btnHome){
+            MainMenu.switchPanes("HOME");
+        }
         else if(e.getSource() == btnCustomer){
             MainMenu.switchPanes("CUSTOMER");
         }
