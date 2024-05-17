@@ -27,12 +27,12 @@ public class CarPanel extends JPanel implements ActionListener {
     
     // Sample data for demo. Replace by using database's.
     private final String[] sampleHeader = {
-        "Model", "Color", "License Plate", "Category", "Fuel Type", "Is Available"};
+        "Model", "Color", "License Plate", "Category", "Fuel Type", "Is Available", "Condition"};
     private final String[][] sampleData = {
-        {"Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes"},
-        {"Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes"},
-        {"Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes"},
-        {"DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No"}
+        {"Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good"},
+        {"Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good"},
+        {"Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK"},
+        {"DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad"}
     };
 
     // Init. fonts.
@@ -118,6 +118,12 @@ public class CarPanel extends JPanel implements ActionListener {
 
         // Link buttons.
         btnInvoice.addActionListener(CarPanel.this);
+
+        // Remove focus.
+        btnAdd.setFocusable(false);
+        btnEdit.setFocusable(false);
+        btnInvoice.setFocusable(false);
+        btnRemove.setFocusable(false);
 
         // Add elements.
         this.add(lblFlow);
