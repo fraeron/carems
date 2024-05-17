@@ -35,7 +35,7 @@ class SidebarPanel extends JPanel implements ActionListener{
     private final int btnWidth = 200;
     
     // Add color.
-    private final Color clrAshGrey = new Color(42, 42, 42);    
+    private final Color clrDarkGrey = new Color(28, 28, 28);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
     // Init. fonts.
@@ -43,7 +43,7 @@ class SidebarPanel extends JPanel implements ActionListener{
     
     public SidebarPanel(){
         this.setPreferredSize(panelSize);
-        this.setBackground(clrAshGrey);  
+        this.setBackground(clrDarkGrey);  
         this.setLayout(null);
 
         // Resize and add logo.
