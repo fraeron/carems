@@ -50,7 +50,7 @@ class SidebarPanel extends JPanel implements ActionListener{
 
         // Resize and add logo.
         lblLogo = new JLabel();
-        lblLogo.setBounds(-5, -5, 200, 200);
+        lblLogo.setBounds(10,50, 180, 75);
         try {
             tmpLogo = ImageIO.read(new File(logoPath));
         } catch (IOException e) {
