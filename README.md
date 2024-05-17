@@ -12,3 +12,4 @@ The system is published by a fictional company named Golden Archer Development C
 ## Icon/Image Credits:
 - Username Icon (Login) from https://www.shutterstock.com/image-vector
 - Lock Icon (Login) from https://pngtree.com/free-png-vectors/padlock
+- Car Footer Image (Login) from https://www.pngitem.com/middle/ihmRRwb_car-footer-png-transparent-png/
