@@ -5,9 +5,6 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import carems.SampleData.UserData;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -15,6 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import carems.backend.UserData;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -135,7 +135,7 @@ public class LoginMenu extends JFrame implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             String Username = T2.getText();
-            String Password = T3.getText();
+            String Password = String.valueOf(T3.getPassword());
             if (userData.getResult(Username, Password)){
                 JOptionPane.showMessageDialog(null, "Successfully logged In!", "Logged In",JOptionPane.INFORMATION_MESSAGE);
                 new MainMenu();
