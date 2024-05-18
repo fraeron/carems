@@ -115,7 +115,7 @@ public class OwnerPanel extends JPanel{
         lblHeader.setBounds(10, 25, intMaxWidth, 60);
         pnlSearchBar.setBounds(0, 90, intMaxWidth, 25);
         pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
-        spTable.setBounds(0, 165, intMaxWidth - 15, 400);
+        spTable.setBounds(0, 165, intMaxWidth - 10, 400);
 
         // Add elements.
         add(lblFlow);
