@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import carems.backend.UserData;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -61,6 +62,9 @@ public class LoginMenu extends JFrame implements ActionListener {
         T2.setCaretColor(Color.WHITE);
         T2.setBackground(new Color(42, 42, 42));
         T2.setForeground(Color.WHITE);
+        T2.setBorder(BorderFactory.createCompoundBorder(
+            T2.getBorder(), 
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         panel.add(T2);
 
         JLabel L3 = new JLabel("Password:");
@@ -76,6 +80,9 @@ public class LoginMenu extends JFrame implements ActionListener {
         T3.setCaretColor(Color.WHITE);
         T3.setForeground(Color.WHITE);
         T3.setBackground(new Color(42, 42, 42));
+        T3.setBorder(BorderFactory.createCompoundBorder(
+            T3.getBorder(), 
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         panel.add(T3);
         
         JButton LoginButton = new JButton("LOGIN");
