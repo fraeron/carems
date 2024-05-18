@@ -101,11 +101,11 @@ public class BookingPanel extends JPanel{
         spTable.setFont(fntDefault);
         
         // Bound elements.
-        lblFlow.setBounds(0, 0, intMaxWidth, 25);
-        lblHeader.setBounds(0, 25, intMaxWidth, 50);
-        pnlSearchBar.setBounds(0, 75, intMaxWidth, 25);
-        pnlControlBar.setBounds(0, 100, intMaxWidth, 50);
-        spTable.setBounds(0, 150, intMaxWidth, 450);
+        lblFlow.setBounds(10, 0, intMaxWidth, 25);
+        lblHeader.setBounds(10, 25, intMaxWidth, 60);
+        pnlSearchBar.setBounds(0, 90, intMaxWidth, 25);
+        pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
+        spTable.setBounds(0, 165, intMaxWidth, 450);
 
         // Add elements.
         add(lblFlow);
