@@ -10,6 +10,9 @@ import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.JPanel;
 
 
@@ -101,13 +104,18 @@ public class OwnerPanel extends JPanel{
         btnRemove.setFont(fntDefault);
         tblContent.setFont(fntDefault);
         spTable.setFont(fntDefault);
+
+        // Add padding to table.
+        Border border = spTable.getBorder();
+        Border margin = new EmptyBorder(10,10,10,10);
+        spTable.setBorder(new CompoundBorder(margin, border));
         
         // Bound elements.
         lblFlow.setBounds(10, 0, intMaxWidth, 25);
         lblHeader.setBounds(10, 25, intMaxWidth, 60);
         pnlSearchBar.setBounds(0, 90, intMaxWidth, 25);
         pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
-        spTable.setBounds(0, 165, intMaxWidth, 450);
+        spTable.setBounds(0, 165, intMaxWidth - 15, 400);
 
         // Add elements.
         add(lblFlow);
