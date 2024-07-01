@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package carems.gui;
 
 import carems.backend.UserData;
@@ -24,10 +20,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-/**
- *
- * @author gelodrei
- */
 public class RegisterMenu extends JFrame implements ActionListener {
     private JTextField T2, txtName, txtEmail, txtContact;
     private JPasswordField T3;
