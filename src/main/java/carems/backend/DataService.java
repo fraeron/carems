@@ -1,8 +1,13 @@
 package carems.backend;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class UserData {
+
+public class DataService {
     
     // No set password by default. Insert your DB password here if you have any.
     // Gelo -> password123!
