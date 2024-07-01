@@ -14,11 +14,33 @@ The system is published by a fictional company named Golden Archer Development C
 create database db_carems
 
 create table tbl_user (
-	username varchar(50),
-	password varchar(50),
-	name varchar(50),
-	email varchar(50),
-	contact varchar(50)
+    username varchar(50),
+    password varchar(50),
+    name varchar(50),
+    email varchar(50),
+    contact varchar(50)
+)
+
+create table tbl_customer (
+    id varchar(50),
+    name varchar(50),
+    rented_car_id varchar(50)
+)
+
+create table tbl_car (
+    model varchar(50), 
+    color varchar(50), 
+    license_plate varchar(50), 
+    category varchar(50),
+    fuel_type varchar(50),
+    is_available varchar(50),
+    car_condition varchar(50)
+)
+
+create table tbl_owner (
+    id varchar(50),
+    name varchar(50),
+    car varchar(50)
 )
 
 insert into tbl_user (username, password) VALUES 
@@ -27,6 +49,27 @@ insert into tbl_user (username, password) VALUES
     ("RonATT", "ohRon"),
     ("OptimumPride", "autoBots"),
     ("Carems", "OOP")
+
+insert into tbl_customer VALUES 
+    ("1", "Raven D. Mcmurray", "1"),
+    ("2", "Kendrick L. Duckworth", "2"),
+    ("3", "Aubrey Graham", "3"),
+    ("4", "Fukuma S. Mizushi", "4")
+
+
+insert into tbl_car VALUES
+    ("Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good"),
+    ("Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good"),
+    ("Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK"),
+    ("DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad")
+
+
+insert into tbl_owner VALUES 
+    ("1", "Miguel O. Harem", "Honda Civic"),
+    ("2", "Michael Gyatt Sigma", "Ford F-250"),
+    ("3", "Gaylord Batumbakal", "Volvo 240"),
+    ("4", "Felisha M. Macawala", "DMC DeLorean")
+
 ```
 
 ## Icon/Image Credits:

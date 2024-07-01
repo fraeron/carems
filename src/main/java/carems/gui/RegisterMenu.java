@@ -1,6 +1,6 @@
 package carems.gui;
 
-import carems.backend.UserData;
+import carems.backend.DataService;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -24,7 +24,7 @@ public class RegisterMenu extends JFrame implements ActionListener {
     private JTextField T2, txtName, txtEmail, txtContact;
     private JPasswordField T3;
     
-    private UserData userData = new UserData();
+    private DataService userData = new DataService();
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");
