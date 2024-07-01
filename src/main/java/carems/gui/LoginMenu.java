@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import carems.backend.UserData;
+import java.awt.Cursor;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -26,6 +27,7 @@ import javax.swing.JPasswordField;
 public class LoginMenu extends JFrame implements ActionListener {
     private JTextField T2;
     private JPasswordField T3;
+    private JButton btnRegister, LoginButton;
     
     private UserData userData = new UserData();
 
@@ -85,12 +87,23 @@ public class LoginMenu extends JFrame implements ActionListener {
             BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         panel.add(T3);
         
-        JButton LoginButton = new JButton("LOGIN");
+        LoginButton = new JButton("LOGIN");
         LoginButton.setFont(new Font("Arial", Font.BOLD, 18));
         LoginButton.setBounds(300, 375, 200, 50);
         LoginButton.setForeground(new Color(42,42,42));
         LoginButton.setBackground(new Color(255, 127, 39));
         panel.add(LoginButton);
+        
+        btnRegister = new JButton("<html><u>REGISTER</u></html>");
+        btnRegister.setFont(new Font("Arial", Font.BOLD, 14));
+        btnRegister.setBounds(300, 420, 200, 50);
+        btnRegister.setForeground(new Color(255, 127, 39)); 
+        btnRegister.setBackground(new Color(255, 255, 255, 0)); 
+        btnRegister.setBorderPainted(false); 
+        btnRegister.setFocusPainted(false); 
+        btnRegister.setContentAreaFilled(false);
+        btnRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        panel.add(btnRegister);
        
         ImageIcon lockIcon = new ImageIcon("img/lock.png");
         Image lockImage = lockIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT);
@@ -138,18 +151,25 @@ public class LoginMenu extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
            
         LoginButton.addActionListener(this);
+        btnRegister.addActionListener(this);
     }
         @Override
         public void actionPerformed(ActionEvent e) {
-            String Username = T2.getText();
-            String Password = String.valueOf(T3.getPassword());
-            if (userData.getResult(Username, Password)){
-                JOptionPane.showMessageDialog(null, "Successfully logged In!", "Logged In",JOptionPane.INFORMATION_MESSAGE);
-                new MainMenu();
-                this.dispose();
+            if(e.getSource() == LoginButton){
+                String Username = T2.getText();
+                String Password = String.valueOf(T3.getPassword());
+                if (userData.getResult(Username, Password)){
+                    JOptionPane.showMessageDialog(null, "Successfully logged In!", "Logged In",JOptionPane.INFORMATION_MESSAGE);
+                    new MainMenu();
+                    this.dispose();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Login failed. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            else {
-                JOptionPane.showMessageDialog(null, "Login failed. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
+            else if(e.getSource() == btnRegister){
+                new RegisterMenu();
+                this.dispose();
             }
     }
 }

@@ -4,6 +4,7 @@ carems\gui\BookingPanel.class
 carems\gui\HomePanel.class
 carems\gui\LoginMenu.class
 carems\gui\MainMenu.class
+carems\gui\RegisterMenu.class
 carems\gui\CarPanel.class
 carems\gui\SidebarPanel.class
 carems\Main.class
