@@ -1,22 +1,22 @@
 package carems.backend;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class UserData {
 
-//    private final String[][] sampleData = {
-//        {"walterWhite", "Heisenberg"},
-//        {"unSya192", "sleezyRabbit"},
-//        {"RonATT", "ohRon"},
-//        {"OptimumPride", "autoBots"},
-//        {"Carems", "OOP"}
-//    };
+public class DataService {
+    
+    // No set password by default. Insert your DB password here if you have any.
+    // Gelo -> password123!
+    private final String yourDBPassword = "";
 
     public Boolean getResult(String userName, String password) {
         boolean result = false;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_carems", "root", "password123!");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_carems", "root", yourDBPassword); 
             String query = "SELECT username, password FROM tbl_user WHERE username=? and password=?";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, userName);
@@ -31,7 +31,7 @@ public class UserData {
             rs.close();
             pst.close();
             con.close();
-            }catch(ClassNotFoundException | SQLException ex){
+            }catch(SQLException ex){
                 ex.printStackTrace();
             }
         return result;
@@ -39,8 +39,7 @@ public class UserData {
     public Boolean addUser(String userName, String password, String name, String email, String contact) {
         boolean result = false;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_carems", "root", "password123!");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_carems", "root", yourDBPassword);
             String query = "INSERT INTO tbl_user (username, password, name, email, contact) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, userName);
@@ -57,7 +56,7 @@ public class UserData {
             }
             pst.close();
             con.close();
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return result;

@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package carems.gui;
 
-import carems.backend.UserData;
+import carems.backend.DataService;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
@@ -24,15 +20,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
-/**
- *
- * @author gelodrei
- */
 public class RegisterMenu extends JFrame implements ActionListener {
     private JTextField T2, txtName, txtEmail, txtContact;
     private JPasswordField T3;
     
-    private UserData userData = new UserData();
+    private DataService userData = new DataService();
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");

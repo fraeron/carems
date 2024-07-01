@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import carems.backend.UserData;
+import carems.backend.DataService;
 import java.awt.Cursor;
 
 import javax.imageio.ImageIO;
@@ -29,7 +29,7 @@ public class LoginMenu extends JFrame implements ActionListener {
     private JPasswordField T3;
     private JButton btnRegister, LoginButton;
     
-    private UserData userData = new UserData();
+    private DataService userData = new DataService();
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");

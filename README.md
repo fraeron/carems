@@ -9,7 +9,72 @@ This is a 2nd-year undergraduate project for the subject Object-Oriented Program
 
 The system is published by a fictional company named Golden Archer Development Corporation (GADC). This project features a system that offers a comprehensive solution for managing car rentals, ensuring vehicle availability, booking reservations, and maintaining records of car conditions. Our service is designed to provide an affordable and convenient way to access a wide variety without the commitment of purchasing. 
 
+## Code for creating database
+```
+create database db_carems
+
+create table tbl_user (
+    username varchar(50),
+    password varchar(50),
+    name varchar(50),
+    email varchar(50),
+    contact varchar(50)
+)
+
+create table tbl_customer (
+    id varchar(50),
+    name varchar(50),
+    rented_car_id varchar(50)
+)
+
+create table tbl_car (
+    model varchar(50), 
+    color varchar(50), 
+    license_plate varchar(50), 
+    category varchar(50),
+    fuel_type varchar(50),
+    is_available varchar(50),
+    car_condition varchar(50)
+)
+
+create table tbl_owner (
+    id varchar(50),
+    name varchar(50),
+    car varchar(50)
+)
+
+insert into tbl_user (username, password) VALUES 
+    ("walterWhite", "Heisenberg"),
+    ("unSya192", "sleezyRabbit"),
+    ("RonATT", "ohRon"),
+    ("OptimumPride", "autoBots"),
+    ("Carems", "OOP")
+
+insert into tbl_customer VALUES 
+    ("1", "Raven D. Mcmurray", "1"),
+    ("2", "Kendrick L. Duckworth", "2"),
+    ("3", "Aubrey Graham", "3"),
+    ("4", "Fukuma S. Mizushi", "4")
+
+
+insert into tbl_car VALUES
+    ("Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good"),
+    ("Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good"),
+    ("Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK"),
+    ("DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad")
+
+
+insert into tbl_owner VALUES 
+    ("1", "Miguel O. Harem", "Honda Civic"),
+    ("2", "Michael Gyatt Sigma", "Ford F-250"),
+    ("3", "Gaylord Batumbakal", "Volvo 240"),
+    ("4", "Felisha M. Macawala", "DMC DeLorean")
+
+```
+
 ## Icon/Image Credits:
 - Username Icon (Login) from https://www.shutterstock.com/image-vector
 - Lock Icon (Login) from https://pngtree.com/free-png-vectors/padlock
 - Car Footer Image (Login) from https://www.pngitem.com/middle/ihmRRwb_car-footer-png-transparent-png/
+
+
