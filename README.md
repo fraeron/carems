@@ -43,6 +43,15 @@ create table tbl_owner (
     car varchar(50)
 )
 
+create table tbl_book (
+    id varchar(50), 
+    booked_car_id varchar(50), 
+    customer_id varchar(50), 
+    booked_datetime varchar(50), 
+    return_datetime varchar(50), 
+    status_datetime varchar(50)
+)
+
 insert into tbl_user (username, password) VALUES 
     ("walterWhite", "Heisenberg"),
     ("unSya192", "sleezyRabbit"),
@@ -70,11 +79,13 @@ insert into tbl_owner VALUES
     ("3", "Gaylord Batumbakal", "Volvo 240"),
     ("4", "Felisha M. Macawala", "DMC DeLorean")
 
+insert into tbl_book VALUES 
+    ("1", "3", "1", "12/2/2023", "12/10/2023", "RETURNED"),
+    ("2", "3", "1", "1/5/2024", "1/6/2024", "RETURNED")
+
 ```
 
 ## Icon/Image Credits:
 - Username Icon (Login) from https://www.shutterstock.com/image-vector
 - Lock Icon (Login) from https://pngtree.com/free-png-vectors/padlock
 - Car Footer Image (Login) from https://www.pngitem.com/middle/ihmRRwb_car-footer-png-transparent-png/
-
-
