@@ -1,22 +1,36 @@
 package carems.gui;
 
+import carems.backend.DataService;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JPanel;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 
-public class BookingPanel extends JPanel{
+public class BookingPanel extends JPanel implements 
+        MouseListener, ActionListener{
     private final JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
@@ -25,13 +39,16 @@ public class BookingPanel extends JPanel{
     private final JPanel pnlControlBar = new JPanel();
     private final JTable tblContent;
     
-    // Sample data for demo. Replace by using database's.
-    private final String[] sampleHeader = {
+    // Init. tables functions.
+    private int currentlySelectedRow;
+    DataService service = new DataService();
+    DefaultTableModel model;
+
+    
+    // Init. data.
+    private final String[] headers = {
         "ID", "Booked Car ID", "Customer ID", "Booked Date/Time", "Return Date/Time", "Status"};
-    private final String[][] sampleData = {
-        {"1", "3", "1", "12/2/2023", "12/10/2023", "RETURNED"},
-        {"2", "3", "1", "1/5/2024", "1/6/2024", "RETURNED"},
-    };
+    String[][] data = service.getBookings();
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -54,7 +71,7 @@ public class BookingPanel extends JPanel{
             intMaxWidth, 
             intMaxHeight
     );
-
+    
     public BookingPanel() { 
         setPreferredSize(pnlSize); 
         setLayout(null);
@@ -66,7 +83,13 @@ public class BookingPanel extends JPanel{
         btnRemove = new JButton("Delete a Book");
         
         // Group table elements.
-        tblContent = new JTable(sampleData, sampleHeader);
+        model = new DefaultTableModel(data, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               return false;
+            }
+        };
+        tblContent = new JTable(model);
         JScrollPane spTable = new JScrollPane(tblContent);
         
         // Group search bar elements.
@@ -121,7 +144,136 @@ public class BookingPanel extends JPanel{
         add(pnlControlBar);
         add(pnlSearchBar);
         add(spTable);
+        
+        // Add action.
+        btnAdd.addActionListener(this);
+        btnEdit.addActionListener(this);
+        btnRemove.addActionListener(this);
+        tblContent.addMouseListener(this);
+        initSearchBar();
+        refreshTable();
 
         setVisible(true);  
+    }
+    
+    // Search bar functionality.
+    private void initSearchBar() {
+        String placeholderText = "Enter keywords or names to filter";
+        TableRowSorter<TableModel> rowSorter
+           = new TableRowSorter<>(tblContent.getModel());
+        tblContent.setRowSorter(rowSorter);
+        txfSearch.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = txfSearch.getText();
+                if (!text.equals(placeholderText)){
+                    if (text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = txfSearch.getText();
+                    if (!text.equals(placeholderText)){
+                    if (text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
+    
+    private String[] getUserData() {
+        ArrayList<String> temp = new ArrayList();
+        for (int i = 0; i < headers.length; i++) {
+            temp.add(tblContent.
+                    getValueAt(currentlySelectedRow, i).toString());
+        }
+        return temp.toArray(new String[temp.size()]);
+    }
+    
+    private void refreshTable(){
+        model.setRowCount(0);
+        String[][] data = service.getBookings();
+        for(String[] datum : data){
+            model.addRow(datum);
+        }
+        setBtnStatus(false);
+    }
+
+    private void setBtnStatus(boolean active) {
+        if (active) {
+            btnEdit.setEnabled(true);
+            btnRemove.setEnabled(true);
+        }
+        else {
+            btnEdit.setEnabled(false);
+            btnRemove.setEnabled(false);
+        }
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnAdd){
+            BookingMenu.setToAdd();
+            MainMenu.switchPanes("BOOKMENU");
+        }
+        else if (e.getSource() == btnEdit) {
+            String[] userData = getUserData();
+            BookingMenu.setToEdit(userData);
+            MainMenu.switchPanes("BOOKMENU");
+        }
+        else if (e.getSource() == btnRemove) {
+            int yesnoFX = JOptionPane.YES_NO_OPTION;
+            if (JOptionPane.showConfirmDialog(
+                null, 
+            "Warning, this action is irreversible! Do you really wish to delete this record?",
+            "DELETING A RECORD",
+            yesnoFX
+            ) == JOptionPane.YES_OPTION) {
+                        String selectedID = tblContent.getValueAt(
+                            currentlySelectedRow, 0).toString();
+                    service.deleteData(selectedID, "tbl_book");
+                    JOptionPane.showMessageDialog(null, 
+                                "Booking had been successfuly deleted.",
+                                "Booking Deletion Success", 
+                                JOptionPane.INFORMATION_MESSAGE);
+                    refreshTable();
+                }
+            }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == tblContent ){
+            currentlySelectedRow = tblContent.rowAtPoint(e.getPoint());
+            setBtnStatus(true);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }
