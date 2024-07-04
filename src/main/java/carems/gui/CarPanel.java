@@ -1,24 +1,37 @@
 package carems.gui;
 
+import carems.backend.DataService;
+
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+
 
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JPanel;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 
-public class CarPanel extends JPanel implements ActionListener {
-    private final JButton btnAdd, btnEdit, btnRemove, btnInvoice;
+public class CarPanel extends JPanel implements ActionListener, MouseListener {
+    private final JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
@@ -26,15 +39,16 @@ public class CarPanel extends JPanel implements ActionListener {
     private final JPanel pnlControlBar = new JPanel();
     private final JTable tblContent;
     
+    // Init. tables functions.
+    private int currentlySelectedRow;
+    DataService service = new DataService();
+    DefaultTableModel model;
+    
     // Sample data for demo. Replace by using database's.
-    private final String[] sampleHeader = {
-        "Model", "Color", "License Plate", "Category", "Fuel Type", "Is Available", "Condition"};
-    private final String[][] sampleData = {
-        {"Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good"},
-        {"Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good"},
-        {"Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK"},
-        {"DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad"}
-    };
+    private final String[] headers = {
+        "Model", "Color", "License Plate", "Category", "Fuel Type", 
+        "Is Available", "Condition"};
+    private final String[][] data = service.getCars();
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -58,7 +72,7 @@ public class CarPanel extends JPanel implements ActionListener {
             intMaxHeight
     );
 
-    public CarPanel() { 
+    CarPanel() { 
         setPreferredSize(pnlSize); 
         setLayout(null);
         
@@ -67,10 +81,15 @@ public class CarPanel extends JPanel implements ActionListener {
         btnAdd = new JButton("Add Car");        
         btnEdit = new JButton("Edit Car");        
         btnRemove = new JButton("Delete Car");
-        btnInvoice = new JButton("Generate Invoice");
         
         // Group table elements.
-        tblContent = new JTable(sampleData, sampleHeader);
+        model = new DefaultTableModel(data, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               return false;
+            }
+        };
+        tblContent = new JTable(model);
         JScrollPane spTable = new JScrollPane(tblContent);
         
         // Group search bar elements.
@@ -82,14 +101,13 @@ public class CarPanel extends JPanel implements ActionListener {
         pnlControlBar.add(btnAdd);
         pnlControlBar.add(btnEdit);
         pnlControlBar.add(btnRemove);
-        pnlControlBar.add(btnInvoice);
+        
         
         // Color elements (background).
         this.setBackground(clrAshGrey);
         btnAdd.setBackground(clrAshGrey);        
         btnEdit.setBackground(clrAshGrey);        
         btnRemove.setBackground(clrAshGrey);
-        btnInvoice.setBackground(clrAshGrey);
         
         // Color elements (foreground).
         lblHeader.setForeground(clrMagmaOrange);
@@ -97,7 +115,6 @@ public class CarPanel extends JPanel implements ActionListener {
         btnAdd.setForeground(clrMagmaOrange);        
         btnEdit.setForeground(clrMagmaOrange);        
         btnRemove.setForeground(clrMagmaOrange);
-        btnInvoice.setForeground(clrMagmaOrange);
        
         // Set fonts per element.
         lblSearch.setFont(fntDefault);
@@ -107,7 +124,6 @@ public class CarPanel extends JPanel implements ActionListener {
         btnAdd.setFont(fntDefault);
         btnEdit.setFont(fntDefault);
         btnRemove.setFont(fntDefault);
-        btnInvoice.setFont(fntDefault);
         tblContent.setFont(fntDefault);
         spTable.setFont(fntDefault);
 
@@ -123,13 +139,10 @@ public class CarPanel extends JPanel implements ActionListener {
         pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
         spTable.setBounds(0, 165, intMaxWidth - 10, 400);
 
-        // Link buttons.
-        btnInvoice.addActionListener(CarPanel.this);
 
         // Remove focus.
         btnAdd.setFocusable(false);
         btnEdit.setFocusable(false);
-        btnInvoice.setFocusable(false);
         btnRemove.setFocusable(false);
 
         // Add elements.
@@ -139,13 +152,139 @@ public class CarPanel extends JPanel implements ActionListener {
         add(pnlSearchBar);
         add(spTable);
 
+        // Add action.
+        btnAdd.addActionListener(this);
+        btnEdit.addActionListener(this);
+        btnRemove.addActionListener(this);
+        tblContent.addMouseListener(this);
+        initSearchBar();
+        refreshTable();
+
         setVisible(true);  
+    }
+    
+    // Search bar functionality.
+    private void initSearchBar() {
+        String placeholderText = "Enter keywords or names to filter";
+        TableRowSorter<TableModel> rowSorter
+           = new TableRowSorter<>(tblContent.getModel());
+        tblContent.setRowSorter(rowSorter);
+        txfSearch.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = txfSearch.getText();
+                if (!text.equals(placeholderText)){
+                    if (text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = txfSearch.getText();
+                    if (!text.equals(placeholderText)){
+                    if (text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
+    
+    private String[] getUserData() {
+        ArrayList<String> temp = new ArrayList();
+        for (int i = 0; i < headers.length; i++) {
+            temp.add(tblContent.
+                    getValueAt(currentlySelectedRow, i).toString());
+        }
+        return temp.toArray(new String[temp.size()]);
+    }
+    
+    private void refreshTable(){
+        model.setRowCount(0);
+        String[][] data = service.getCars();
+        for(String[] datum : data){
+            model.addRow(datum);
+        }
+        setBtnStatus(false);
+    }
+    
+    private void setBtnStatus(boolean active) {
+        if (active) {
+            btnEdit.setEnabled(true);
+            btnRemove.setEnabled(true);
+        }
+        else {
+            btnEdit.setEnabled(false);
+            btnRemove.setEnabled(false);
+        }
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnAdd){
+            CarMenu.setToAdd();
+            MainMenu.switchPanes("CARMENU");
+        }
+        else if (e.getSource() == btnEdit) {
+            String[] userData = getUserData();
+            CarMenu.setToEdit(userData);
+            MainMenu.switchPanes("CARMENU");
+        }
+        else if (e.getSource() == btnRemove) {
+            int yesnoFX = JOptionPane.YES_NO_OPTION;
+            if (JOptionPane.showConfirmDialog(
+                null, 
+            "Warning, this action is irreversible! Do you really wish to delete this record?",
+            "DELETING A RECORD",
+            yesnoFX
+            ) == JOptionPane.YES_OPTION) {
+                String selectedID = tblContent.getValueAt(
+                        currentlySelectedRow, 0).toString();
+                service.deleteData(selectedID, "tbl_car");
+                JOptionPane.showMessageDialog(null, 
+                            "Car record had been successfuly deleted.",
+                            "Car Record Deletion Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                refreshTable();
+            }
+        }
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnInvoice) {
-            new InvoiceFrame();
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == tblContent){
+            currentlySelectedRow = tblContent.rowAtPoint(e.getPoint());
+            setBtnStatus(true);
         }
+        else {
+            setBtnStatus(false);
+
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
     }
 }

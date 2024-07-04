@@ -68,12 +68,12 @@ public class BookingMenu extends JPanel implements ActionListener {
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
         
-        lblId = makeLabel(lblId, "Booking ID");
-        lblBookedCarID = makeLabel(lblBookedCarID, "Booked Card ID");
-        lblCustomerID = makeLabel(lblCustomerID, "Customer ID");
-        lblBookedDateTime = makeLabel(lblBookedDateTime, "Booked Date/Time");
-        lblReturnDT = makeLabel(lblReturnDT, "Return Date/Time");
-        lblStatus = makeLabel(lblStatus, "Status");
+        lblId = makeLabel(lblId, "Booking ID:");
+        lblBookedCarID = makeLabel(lblBookedCarID, "Booked Card ID:");
+        lblCustomerID = makeLabel(lblCustomerID, "Customer ID:");
+        lblBookedDateTime = makeLabel(lblBookedDateTime, "Booked Date/Time:");
+        lblReturnDT = makeLabel(lblReturnDT, "Return Date/Time:");
+        lblStatus = makeLabel(lblStatus, "Status:");
 
         fldId = makeField(fldId);
         fldBookedCarID = makeField(fldBookedCarID);
@@ -85,14 +85,14 @@ public class BookingMenu extends JPanel implements ActionListener {
         btnRegister = makeButton(btnRegister, "REGISTER");
         btnCancel = makeButton(btnCancel, "CANCEL");
         
-        lblHeader.setBounds(10,0, 500, 100);
-        lblSubheader.setBounds(10, 100, 500, intFldHeight);
-        lblId.setBounds(10, 150, 100, intFldHeight);
-        lblBookedCarID.setBounds(10, 200, 300, intFldHeight);
-        lblCustomerID.setBounds(10, 250, 300,intFldHeight);
-        lblBookedDateTime.setBounds(10, 300, 300,intFldHeight);
-        lblReturnDT.setBounds(10, 350, 300,intFldHeight);
-        lblStatus.setBounds(10, 400, 300,intFldHeight);
+        lblHeader.setBounds(50,0, 500, 100);
+        lblSubheader.setBounds(50, 100, 500, intFldHeight);
+        lblId.setBounds(50, 150, 100, intFldHeight);
+        lblBookedCarID.setBounds(50, 200, 300, intFldHeight);
+        lblCustomerID.setBounds(50, 250, 300,intFldHeight);
+        lblBookedDateTime.setBounds(50, 300, 300,intFldHeight);
+        lblReturnDT.setBounds(50, 350, 300,intFldHeight);
+        lblStatus.setBounds(50, 400, 300,intFldHeight);
         
         fldId.setBounds(200,150, 100,intFldHeight);
         fldBookedCarID.setBounds(200,200, 300,intFldHeight);
@@ -115,7 +115,7 @@ public class BookingMenu extends JPanel implements ActionListener {
     public static void setToEdit(String[] userData) {
         int i = 0;
         for (JTextField fld : fldArray) {
-            if (i < (fldArray.size() - 1)) {
+            if (i < fldArray.size()) {
                 fld.setText(userData[i]);
                 i++;
             }

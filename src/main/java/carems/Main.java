@@ -1,9 +1,15 @@
 package carems;
 
 import carems.gui.LoginMenu;
+import java.awt.EventQueue;
 
 public class Main {
     public static void main(String[] args) {
-       new LoginMenu();
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new LoginMenu();
+            }
+        });
     }
 }

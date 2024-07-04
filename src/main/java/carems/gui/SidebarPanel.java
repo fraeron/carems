@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 
@@ -80,7 +81,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnBookingDetail.setFont(fntDefault);
         btnBookingDetail.addActionListener(SidebarPanel.this);
 
-        btnCustomer = new JButton("Customer");
+        btnCustomer = new JButton("Customers and Invoice");
         btnCustomer.setBounds(0, 280, btnWidth, btnHeight);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCustomer.setFont(fntDefault);
@@ -92,7 +93,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnCar.setFont(fntDefault);
         btnCar.addActionListener(SidebarPanel.this);
         
-        btnOwner = new JButton("Owner");
+        btnOwner = new JButton("Owners");
         btnOwner.setBounds(0, 360, btnWidth, btnHeight);
         btnOwner.setBackground(clrMagmaOrange);
         btnOwner.setFont(fntDefault);
@@ -195,8 +196,16 @@ class SidebarPanel extends JPanel implements ActionListener{
             MainMenu.switchPanes("OWNER");
         }
         else if(e.getSource() == btnLogout){
-            new LoginMenu();
-            Parent.dispose();
+            int yesnoFX = JOptionPane.YES_NO_OPTION;
+            if (JOptionPane.showConfirmDialog(
+                null, 
+            "Are you sure you want to log out?",
+            "LOGGING OUT",
+            yesnoFX
+            ) == JOptionPane.YES_OPTION) {
+                new LoginMenu();
+                Parent.dispose();
+            }
         }
     }
 }

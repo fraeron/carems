@@ -5,7 +5,7 @@
   <img src="https://github.com/fraeron/carems/blob/main/img/gadc_logo.png" width=300>
 </p>
 
-This is a 2nd-year undergraduate project for the subject Object-Oriented Programming in the course Bachelor of Science in Information Technology (BSIT). 
+This is a 2nd-year undergraduate demo project for the subject Object-Oriented Programming in the course Bachelor of Science in Information Technology (BSIT). 
 
 The system is published by a fictional company named Golden Archer Development Corporation (GADC). This project features a system that offers a comprehensive solution for managing car rentals, ensuring vehicle availability, booking reservations, and maintaining records of car conditions. Our service is designed to provide an affordable and convenient way to access a wide variety without the commitment of purchasing. 
 

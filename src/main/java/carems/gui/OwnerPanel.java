@@ -1,22 +1,36 @@
 package carems.gui;
 
+import carems.backend.DataService;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JPanel;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 
-public class OwnerPanel extends JPanel{
+public class OwnerPanel extends JPanel 
+        implements ActionListener, MouseListener {
     private final JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
@@ -25,15 +39,15 @@ public class OwnerPanel extends JPanel{
     private final JPanel pnlControlBar = new JPanel();
     private final JTable tblContent;
     
+    // Init. tables functions.
+    private int currentlySelectedRow;
+    DataService service = new DataService();
+    DefaultTableModel model;
+    
     // Sample data for demo. Replace by using database's.
-    private final String[] sampleHeader = {
+    private final String[] headers = {
         "ID", "Name", "Car"};
-    private final String[][] sampleData = {
-        {"1", "Miguel O. Harem", "Honda Civic"},
-        {"2", "Michael Gyatt Sigma", "Ford F-250"},
-        {"3", "Gaylord Batumbakal", "Volvo 240"},
-        {"4", "Felisha M. Macawala", "DMC DeLorean"}
-    };
+    String[][] data = service.getOwners();
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -68,11 +82,17 @@ public class OwnerPanel extends JPanel{
         btnRemove = new JButton("Delete Owner");
         
         // Group table elements.
-        tblContent = new JTable(sampleData, sampleHeader);
+        model = new DefaultTableModel(data, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               return false;
+            }
+        };
+        tblContent = new JTable(model);
         JScrollPane spTable = new JScrollPane(tblContent);
         
         // Group search bar elements.
-        lblSearch = new JLabel("Search by Car Name:");
+        lblSearch = new JLabel("Search by Owner Name:");
         pnlSearchBar.add(lblSearch);        
         pnlSearchBar.add(txfSearch);    
         
@@ -124,6 +144,137 @@ public class OwnerPanel extends JPanel{
         add(pnlSearchBar);
         add(spTable);
 
+        // Add action.
+        btnAdd.addActionListener(this);
+        btnEdit.addActionListener(this);
+        btnRemove.addActionListener(this);
+        tblContent.addMouseListener(this);
+        spTable.addMouseListener(this);
+        initSearchBar();
+        refreshTable();
+
         setVisible(true);  
     }
+    
+    // Search bar functionality.
+    private void initSearchBar() {
+        String placeholderText = "Enter keywords or names to filter";
+        TableRowSorter<TableModel> rowSorter
+           = new TableRowSorter<>(tblContent.getModel());
+        tblContent.setRowSorter(rowSorter);
+        txfSearch.getDocument().addDocumentListener(new DocumentListener(){
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                String text = txfSearch.getText();
+                if (!text.equals(placeholderText)){
+                    if (text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                String text = txfSearch.getText();
+                    if (!text.equals(placeholderText)){
+                    if (text.trim().length() == 0) {
+                        rowSorter.setRowFilter(null);
+                    } else {
+                        rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    }
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+        });
+    }
+    
+    private String[] getUserData() {
+        ArrayList<String> temp = new ArrayList();
+        for (int i = 0; i < headers.length; i++) {
+            temp.add(tblContent.
+                    getValueAt(currentlySelectedRow, i).toString());
+        }
+        return temp.toArray(new String[temp.size()]);
+    }
+    
+    private void refreshTable(){
+        model.setRowCount(0);
+        String[][] data = service.getOwners();
+        for(String[] datum : data){
+            model.addRow(datum);
+        }
+        setBtnStatus(false);
+    }
+
+    private void setBtnStatus(boolean active) {
+        if (active) {
+            btnEdit.setEnabled(true);
+            btnRemove.setEnabled(true);
+        }
+        else {
+            btnEdit.setEnabled(false);
+            btnRemove.setEnabled(false);
+        }
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnAdd){
+            OwnerMenu.setToAdd();
+            MainMenu.switchPanes("OWNERMENU");
+        }
+        else if (e.getSource() == btnEdit) {
+            String[] userData = getUserData();
+            OwnerMenu.setToEdit(userData);
+            MainMenu.switchPanes("OWNERMENU");
+        }
+        else if (e.getSource() == btnRemove) {
+            int yesnoFX = JOptionPane.YES_NO_OPTION;
+            if (JOptionPane.showConfirmDialog(
+                null, 
+            "Warning, this action is irreversible! Do you really wish to delete this record?",
+            "DELETING A RECORD",
+            yesnoFX
+            ) == JOptionPane.YES_OPTION) {
+                String selectedID = tblContent.getValueAt(
+                        currentlySelectedRow, 0).toString();
+                service.deleteData(selectedID, "tbl_book");
+                JOptionPane.showMessageDialog(null, 
+                            "Owner had been successfuly deleted.",
+                            "Onwer Deletion Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                refreshTable();
+            }
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == tblContent ){
+            currentlySelectedRow = tblContent.rowAtPoint(e.getPoint());
+            setBtnStatus(true);
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {        
+    }
+
 }

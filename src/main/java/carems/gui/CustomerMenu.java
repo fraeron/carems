@@ -17,12 +17,14 @@ public class CustomerMenu extends JPanel implements ActionListener {
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
+    // Init. fonts.
     private final String defaultFont = "Arial";
     private final Font fntSubHeader = new Font(
             defaultFont, Font.PLAIN, 16);
     private final Font fntSupHeader = new Font(
             defaultFont, Font.PLAIN, 48);
     
+    // Init. components.
     static JButton btnRegister, btnCancel;
     JLabel lblHeader, lblSubheader;
     JLabel lblId, lblName, lblRentCar;
@@ -70,11 +72,11 @@ public class CustomerMenu extends JPanel implements ActionListener {
         btnRegister = makeButton(btnRegister, "REGISTER");
         btnCancel = makeButton(btnCancel, "CANCEL");
         
-        lblHeader.setBounds(10,0, 500, 100);
-        lblSubheader.setBounds(10, 100, 500, intFldHeight);
-        lblId.setBounds(10, 150, 100, intFldHeight);
-        lblName.setBounds(10, 200, 300, intFldHeight);
-        lblRentCar.setBounds(10, 250, 300, intFldHeight);
+        lblHeader.setBounds(50,0, 500, 100);
+        lblSubheader.setBounds(50, 100, 500, intFldHeight);
+        lblId.setBounds(50, 150, 100, intFldHeight);
+        lblName.setBounds(50, 200, 300, intFldHeight);
+        lblRentCar.setBounds(50, 250, 300, intFldHeight);
         
         fldId.setBounds(200, 150, 500, intFldHeight);        
         fldName.setBounds(200, 200, 500, intFldHeight);

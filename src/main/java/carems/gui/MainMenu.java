@@ -15,17 +15,24 @@ public class MainMenu extends JFrame {
     private static CardLayout lytCard = new CardLayout();
     private static final JPanel MainMenuPanel = new JPanel(lytCard);
     private static SidebarPanel pnlSidebar;
+    private static final ArrayList<String> lstPanes = new ArrayList<>();
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");
-    
+       
     public MainMenu(){ 
-        // Add history.
-        MainMenuPanel.add(new CarPanel(), "CAR");
-        MainMenuPanel.add(new HomePanel(), "HOME");
-        MainMenuPanel.add(new CustomerPanel(), "CUSTOMER");
-        MainMenuPanel.add(new OwnerPanel(), "OWNER");
-        MainMenuPanel.add(new BookingPanel(), "BOOKING");
+        // Add history (panels).
+        addPane(new HomePanel(), "HOME");
+        addPane(new CarPanel(), "CAR");
+        addPane(new CustomerPanel(), "CUSTOMER");
+        addPane(new OwnerPanel(), "OWNER");
+        addPane(new BookingPanel(), "BOOKING");
+        
+        // Add history (menus).
+        addPane(new CustomerMenu(), "CUSMENU");        
+        addPane(new BookingMenu(), "BOOKMENU");        
+        addPane(new OwnerMenu(), "OWNERMENU");        
+        addPane(new CarMenu(), "CARMENU");
 
         // Init. sidebar.
         pnlSidebar = new SidebarPanel(this);
@@ -56,16 +63,14 @@ public class MainMenu extends JFrame {
         // Start with this panel.
         switchPanes("HOME");
     }
+    
+    private void addPane(JPanel panel, String panelCode) {
+        MainMenuPanel.add(panel, panelCode);
+        lstPanes.add(panelCode);
+    }
 
     public static void switchPanes(String panelName) {
-        ArrayList<String> lstPanes = new ArrayList<>();
-        lstPanes.add("HOME"); 
-        lstPanes.add("CUSTOMER"); 
-        lstPanes.add("BOOKING"); 
-        lstPanes.add("CAR"); 
-        lstPanes.add("OWNER"); 
-
-        if (lstPanes.contains(panelName)) {
+        if (lstPanes.contains(panelName.toUpperCase())) {
             pnlSidebar.switchBtnColor(panelName);
             lytCard.show(MainMenuPanel, panelName);
         }
