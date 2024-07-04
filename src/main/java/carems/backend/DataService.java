@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class DataService {
     
     // No set password by default. Insert your DB password here if you have any.
-    // Gelo's password -> password123!
     private final String yourDBPassword = "";
     private final String connectionString = 
             "jdbc:mysql://localhost:3306/db_carems";

@@ -202,6 +202,7 @@ public class BookingPanel extends JPanel implements
         return temp.toArray(new String[temp.size()]);
     }
     
+    // Use this function if data needs updating manually.
     private void refreshTable(){
         model.setRowCount(0);
         String[][] data = service.getBookings();
@@ -252,7 +253,8 @@ public class BookingPanel extends JPanel implements
                 }
             }
     }
-
+    
+    // Set the buttons active if a table cell is clicked/selected.
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == tblContent ){
