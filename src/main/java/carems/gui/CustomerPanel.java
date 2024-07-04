@@ -230,7 +230,6 @@ public class CustomerPanel extends JPanel implements
         });
     }
     
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
@@ -268,6 +267,7 @@ public class CustomerPanel extends JPanel implements
         }
     }
 
+    // Set the buttons active if a table cell is clicked/selected.
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == tblContent ){

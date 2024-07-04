@@ -35,9 +35,9 @@ public class BookingMenu extends JPanel implements ActionListener {
     
     // Init. optimizations.
     static ArrayList<JTextField> fldArray = new ArrayList();
-    
     int intFldHeight = 25;
     
+    // Init. label helper.
     private JLabel makeLabel(JLabel label, String text) {
         label = new JLabel(text);
         label.setForeground(Color.WHITE);
@@ -45,6 +45,7 @@ public class BookingMenu extends JPanel implements ActionListener {
         return label;
     }
     
+    // Init. field helper.
     private JTextField makeField(JTextField fld) {
         fld = new JTextField();
         this.add(fld);
@@ -52,6 +53,7 @@ public class BookingMenu extends JPanel implements ActionListener {
         return fld;
     }
     
+    // Init. button helper.
     private JButton makeButton(JButton btn, String text) {
         btn = new JButton(text);
         this.add(btn);
@@ -105,6 +107,7 @@ public class BookingMenu extends JPanel implements ActionListener {
         btnCancel.setBounds(400, 500, 150, 50);
     }
     
+    // Set to add the menu.
     public static void setToAdd() {
         for (JTextField fld : fldArray) {
             fld.setText("");
@@ -112,6 +115,8 @@ public class BookingMenu extends JPanel implements ActionListener {
         btnRegister.setText("REGISTER");
         lblHeader.setText("Add Booking");
     }
+    
+    // Set to edit the menu.
     public static void setToEdit(String[] userData) {
         int i = 0;
         for (JTextField fld : fldArray) {
@@ -124,6 +129,7 @@ public class BookingMenu extends JPanel implements ActionListener {
         lblHeader.setText("Update Booking");
     }
     
+    // Get data from all fields.
     private ArrayList<String> getFldData(){
         ArrayList<String> fldData = new ArrayList();
         for (JTextField fld : fldArray) {
@@ -132,7 +138,6 @@ public class BookingMenu extends JPanel implements ActionListener {
         return fldData;
     }
  
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         DataService service = new DataService();

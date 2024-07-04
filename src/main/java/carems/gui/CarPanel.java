@@ -260,6 +260,7 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         }
     }
 
+    // Set the buttons active if a table cell is clicked/selected.
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == tblContent){
