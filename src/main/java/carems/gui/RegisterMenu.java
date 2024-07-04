@@ -31,9 +31,11 @@ public class RegisterMenu extends JFrame implements ActionListener {
 
     // Add footer path.
     private final String footerPath = "img/login_footer.png";
+    
+    // Init. buttons.
+    JButton btnLogin, btnCancel;
 
     public RegisterMenu() {
-       
         JPanel panel = new JPanel();
         panel.setBounds(5, 5, 800, 600);
         panel.setBackground(new Color(42, 42, 42));
@@ -136,12 +138,19 @@ public class RegisterMenu extends JFrame implements ActionListener {
             BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         panel.add(txtContact);
         
-        JButton LoginButton = new JButton("REGISTER");
-        LoginButton.setFont(new Font("Arial", Font.BOLD, 18));
-        LoginButton.setBounds(300, 420, 200, 50);
-        LoginButton.setForeground(new Color(42,42,42));
-        LoginButton.setBackground(new Color(255, 127, 39));
-        panel.add(LoginButton);
+        btnLogin = new JButton("REGISTER");
+        btnLogin.setFont(new Font("Arial", Font.BOLD, 18));
+        btnLogin.setBounds(150, 420, 200, 50);
+        btnLogin.setForeground(new Color(42,42,42));
+        btnLogin.setBackground(new Color(255, 127, 39));
+        panel.add(btnLogin);
+        
+        btnCancel = new JButton("CANCEL");
+        btnCancel.setFont(new Font("Arial", Font.BOLD, 18));
+        btnCancel.setBounds(450, 420, 200, 50);
+        btnCancel.setForeground(Color.WHITE);
+        btnCancel.setBackground(Color.GRAY);
+        panel.add(btnCancel);
        
         ImageIcon lockIcon = new ImageIcon("img/lock.png");
         Image lockImage = lockIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT);
@@ -156,13 +165,6 @@ public class RegisterMenu extends JFrame implements ActionListener {
         JLabel IconLabel = new JLabel(scaledPFPIcon);
         IconLabel.setBounds( 200, 110, 20,20);
         panel.add(IconLabel);
-        
-//        ImageIcon LogoIcon = new ImageIcon("img/carems_logo.png");
-//        Image LogoImage = LogoIcon.getImage().getScaledInstance(100, 40, Image.SCALE_DEFAULT);
-//        ImageIcon scaledLogoImage = new ImageIcon(LogoImage);
-//        JLabel Logoicon = new JLabel(scaledLogoImage);
-//        Logoicon.setBounds(10,0,200,200);
-//        panel.add(Logoicon);
 
         // Add footer image.
         try {
@@ -176,19 +178,21 @@ public class RegisterMenu extends JFrame implements ActionListener {
             e.printStackTrace();
         }
         
-        setTitle("Carems - Login");                  
-        setSize(800, 600);
-        setLayout(null);
-        setVisible(true);
-        setResizable(false);
-        setLocationRelativeTo(null);
+        // Add actions.
+        btnLogin.addActionListener(this);
+        btnCancel.addActionListener(this);
         
-        // Set settings.
+        // Set frame settings.
+        this.setTitle("Carems - Registration");                  
+        this.setSize(800, 600);
+        this.setLayout(null);
+        this.setVisible(true);
+        this.setResizable(false);
+        setLocationRelativeTo(null);
         this.setIconImage(logo.getImage());
         this.getContentPane().setBackground(new Color(42, 42, 42));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-           
-        LoginButton.addActionListener(this);
+        
     }
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -197,14 +201,25 @@ public class RegisterMenu extends JFrame implements ActionListener {
             String name = txtName.getText();
             String email = txtEmail.getText();
             String contact = txtContact.getText();
-                    
-            if (userData.addUser(Username, Password, name, email, contact)){
-                JOptionPane.showMessageDialog(null, "Added Successfully!", "Registered",JOptionPane.INFORMATION_MESSAGE);
+            
+            if (e.getSource() == btnLogin) {
+                if (userData.addUser(
+                        Username, 
+                        Password, 
+                        name, email, 
+                        contact)){
+                    JOptionPane.showMessageDialog(null, "Added Successfully!", "Registered",JOptionPane.INFORMATION_MESSAGE);
+                    new LoginMenu();
+                    this.dispose();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            else if (e.getSource() == btnCancel) {
                 new LoginMenu();
                 this.dispose();
             }
-            else {
-                JOptionPane.showMessageDialog(null, "Registration failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            
     }
 }
