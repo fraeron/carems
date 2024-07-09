@@ -15,11 +15,14 @@ import javax.swing.JTextField;
 
 import carems.backend.DataService;
 import java.awt.Cursor;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
@@ -74,7 +77,7 @@ public class LoginMenu extends JFrame implements ActionListener {
         L3.setFont(new Font("Arial", Font.PLAIN, 14));
         L3.setForeground(new Color(255,127,39));
         panel.add(L3);
-
+        
         T3 = new JPasswordField();
         T3.setText("OOP");
         T3.setBounds(200, 310, 400, 25);
@@ -86,6 +89,23 @@ public class LoginMenu extends JFrame implements ActionListener {
             T3.getBorder(), 
             BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         panel.add(T3);
+        
+        char echoChar = T3.getEchoChar();
+        JCheckBox chbSeePassword = new JCheckBox("Show Password");
+        chbSeePassword.setBounds(200, 340, 150, 25);
+        chbSeePassword.setBackground(null);
+        chbSeePassword.setFocusable(false);
+        chbSeePassword.setForeground(Color.WHITE);
+        chbSeePassword.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e){
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    T3.setEchoChar((char) 0);
+                } else {
+                    T3.setEchoChar(echoChar);
+                }
+            }
+        });
+        panel.add(chbSeePassword);
         
         LoginButton = new JButton("LOGIN");
         LoginButton.setFont(new Font("Arial", Font.BOLD, 18));
@@ -152,25 +172,32 @@ public class LoginMenu extends JFrame implements ActionListener {
            
         LoginButton.addActionListener(this);
         btnRegister.addActionListener(this);
+        
+        Login();
     }
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(e.getSource() == LoginButton){
-                String Username = T2.getText();
-                String Password = String.valueOf(T3.getPassword());
-                if (userData.getResult(Username, Password)){
-                    JOptionPane.showMessageDialog(null, "Successfully logged In!", "Logged In",JOptionPane.INFORMATION_MESSAGE);
-                    new MainMenu();
-                    this.dispose();
-                }
-                else {
-                    JOptionPane.showMessageDialog(null, "Login failed. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
-                }
+    
+    private void Login(){
+        new MainMenu();
+        this.dispose();
+    }
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == LoginButton){
+            String Username = T2.getText();
+            String Password = String.valueOf(T3.getPassword());
+            if (userData.getResult(Username, Password)){
+                JOptionPane.showMessageDialog(null, "Successfully logged In!", "Logged In",JOptionPane.INFORMATION_MESSAGE);
+                Login();
             }
-            else if(e.getSource() == btnRegister){
-                new RegisterMenu();
-                this.dispose();
+            else {
+                JOptionPane.showMessageDialog(null, "Login failed. Please try again.", "Login Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        else if(e.getSource() == btnRegister){
+            new RegisterMenu();
+            this.dispose();
+        }
     }
 }
    

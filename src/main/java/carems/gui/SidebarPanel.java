@@ -21,8 +21,8 @@ import javax.swing.JPanel;
 
 
 class SidebarPanel extends JPanel implements ActionListener{
-    private final JButton btnBookingDetail, btnCar, btnOwner, 
-    btnCustomer, btnHome, btnLogout;
+    private final JButton btnRentCar, btnReturnCar, btnCar, btnOwner, 
+    btnCustomer, btnHome, btnLogout, btnBooking;
     
     // Init. logo.
     private BufferedImage tmpLogo;
@@ -38,9 +38,14 @@ class SidebarPanel extends JPanel implements ActionListener{
     // Add color.
     private final Color clrDarkGrey = new Color(28, 28, 28);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
+    private final Color clrLabelHelper = Color.GRAY;
     
     // Init. fonts.
-    private final Font fntDefault = new Font("Arial", Font.PLAIN, 14);
+    private final Font fntDefault = new Font("Arial", Font.PLAIN, 14);     
+    private final Font fntLogout = new Font("Arial", Font.PLAIN, 12);   
+  
+    private final Font fntHelper = new Font("Arial", Font.PLAIN, 10);
+
 
     // Init. parent menu.
     private final JFrame Parent;
@@ -58,7 +63,7 @@ class SidebarPanel extends JPanel implements ActionListener{
 
         // Resize and add logo.
         lblLogo = new JLabel();
-        lblLogo.setBounds(10,50, 180, 75);
+        lblLogo.setBounds(10,15, 180, 75);
         try {
             tmpLogo = ImageIO.read(new File(logoPath));
         } catch (IOException e) {
@@ -70,64 +75,97 @@ class SidebarPanel extends JPanel implements ActionListener{
         
         // Add buttons.
         btnHome = new JButton("Home");
-        btnHome.setBounds(0, 200, btnWidth, btnHeight);
+        btnHome.setBounds(0, 120, btnWidth, btnHeight);
         btnHome.setBackground(clrMagmaOrange);
         btnHome.setFont(fntDefault);
         btnHome.addActionListener(SidebarPanel.this);
+        
+        JLabel lblTransaction = new JLabel("Transaction-related");
+        lblTransaction.setBounds(10, 180, btnWidth, 20);
+        lblTransaction.setForeground(clrLabelHelper);
+        lblTransaction.setFont(fntHelper);
+        this.add(lblTransaction);
 
-        btnBookingDetail = new JButton("Booking Details");
-        btnBookingDetail.setBounds(0, 240, btnWidth, btnHeight);
-        btnBookingDetail.setBackground(clrMagmaOrange);
-        btnBookingDetail.setFont(fntDefault);
-        btnBookingDetail.addActionListener(SidebarPanel.this);
+        btnRentCar = new JButton("Rent a Car");
+        btnRentCar.setBounds(0, 200, btnWidth, btnHeight);
+        btnRentCar.setBackground(clrMagmaOrange);
+        btnRentCar.setFont(fntDefault);
+        btnRentCar.addActionListener(SidebarPanel.this);
+        
+        btnReturnCar = new JButton("Return a Car");
+        btnReturnCar.setBounds(0, 240, btnWidth, btnHeight);
+        btnReturnCar.setBackground(clrMagmaOrange);
+        btnReturnCar.setFont(fntDefault);
+        btnReturnCar.addActionListener(SidebarPanel.this);
 
-        btnCustomer = new JButton("Customers and Invoice");
-        btnCustomer.setBounds(0, 280, btnWidth, btnHeight);
+        JLabel lblDatabase = new JLabel("Database-related");
+        lblDatabase.setBounds(10, 300, btnWidth, 10);
+        lblDatabase.setForeground(clrLabelHelper);
+        lblDatabase.setFont(fntHelper);
+        this.add(lblDatabase);
+        
+        btnBooking = new JButton("Booking Records");
+        btnBooking.setBounds(0, 320, btnWidth, btnHeight);
+        btnBooking.setBackground(clrMagmaOrange);
+        btnBooking.setFont(fntDefault);
+        btnBooking.addActionListener(SidebarPanel.this);
+        
+        btnCustomer = new JButton("Customer Records");
+        btnCustomer.setBounds(0, 360, btnWidth, btnHeight);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCustomer.setFont(fntDefault);
         btnCustomer.addActionListener(SidebarPanel.this);
         
-        btnCar = new JButton("Cars");
-        btnCar.setBounds(0, 320, btnWidth, btnHeight);
+        btnCar = new JButton("Car Records");
+        btnCar.setBounds(0, 400, btnWidth, btnHeight);
         btnCar.setBackground(clrMagmaOrange);
         btnCar.setFont(fntDefault);
         btnCar.addActionListener(SidebarPanel.this);
         
-        btnOwner = new JButton("Owners");
-        btnOwner.setBounds(0, 360, btnWidth, btnHeight);
+        btnOwner = new JButton("Owner Records");
+        btnOwner.setBounds(0, 440, btnWidth, btnHeight);
         btnOwner.setBackground(clrMagmaOrange);
         btnOwner.setFont(fntDefault);
         btnOwner.addActionListener(SidebarPanel.this);
         
         btnLogout = new JButton("Logout");
         btnLogout.setBounds(0, 500, btnWidth, btnHeight);
-        btnLogout.setBackground(clrMagmaOrange);
-        btnLogout.setFont(fntDefault);
+        switchBtnColors(btnLogout, 0);
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setFont(fntLogout);
         btnLogout.addActionListener(SidebarPanel.this);
 
         btnHome.setFocusable(false);
-        btnBookingDetail.setFocusable(false);
+        btnRentCar.setFocusable(false);
+        btnReturnCar.setFocusable(false);
         btnCustomer.setFocusable(false);
         btnOwner.setFocusable(false);
+        btnBooking.setFocusable(false);
         btnCar.setFocusable(false);
         btnLogout.setFocusable(false);
 
         // Set flat-look.
         btnHome.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
-        btnBookingDetail.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnRentCar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnReturnCar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
         btnCustomer.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
         btnOwner.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
         btnCar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
-        btnLogout.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+        btnLogout.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));        
+        btnBooking.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, clrMagmaOrange));
+
         
         // Add widgets.
         this.add(lblLogo);
-        this.add(btnBookingDetail);
+        this.add(btnRentCar);
+        this.add(btnReturnCar);
         this.add(btnCustomer);
         this.add(btnHome);
         this.add(btnCar);
         this.add(btnOwner);
-        this.add(btnLogout);
+        this.add(btnLogout);        
+        this.add(btnBooking);
+
     }
 
     public void switchBtnColors(JButton button, int face) {
@@ -144,36 +182,64 @@ class SidebarPanel extends JPanel implements ActionListener{
         if (btnName.equals("CAR")) {
             switchBtnColors(btnHome, 0);
             switchBtnColors(btnCustomer, 0);
-            switchBtnColors(btnBookingDetail, 0);
+            switchBtnColors(btnRentCar, 0);
+            switchBtnColors(btnReturnCar, 0);
+            switchBtnColors(btnBooking, 0);
             switchBtnColors(btnOwner, 0);
-            switchBtnColors(btnCar, 1);
+            switchBtnColors(btnCar, 1);            
         }
         else if (btnName.equals("HOME")) {
             switchBtnColors(btnHome, 1);
             switchBtnColors(btnCustomer, 0);
-            switchBtnColors(btnBookingDetail, 0);
+            switchBtnColors(btnRentCar, 0);
+            switchBtnColors(btnReturnCar, 0);
+            switchBtnColors(btnBooking, 0);
             switchBtnColors(btnOwner, 0);
             switchBtnColors(btnCar, 0);
         }
         else if (btnName.equals("CUSTOMER")) {
             switchBtnColors(btnHome, 0);
             switchBtnColors(btnCustomer, 1);
-            switchBtnColors(btnBookingDetail, 0);
+            switchBtnColors(btnRentCar, 0);
+            switchBtnColors(btnReturnCar, 0);
+            switchBtnColors(btnBooking, 0);
             switchBtnColors(btnOwner, 0);
             switchBtnColors(btnCar, 0);
         }
         else if (btnName.equals("BOOKING")) {
             switchBtnColors(btnHome, 0);
             switchBtnColors(btnCustomer, 0);
-            switchBtnColors(btnBookingDetail, 1);
+            switchBtnColors(btnRentCar, 0);
+            switchBtnColors(btnReturnCar, 0);
+            switchBtnColors(btnBooking, 1);
             switchBtnColors(btnOwner, 0);
             switchBtnColors(btnCar, 0);
         }
         else if (btnName.equals("OWNER")) {
             switchBtnColors(btnHome, 0);
             switchBtnColors(btnCustomer, 0);
-            switchBtnColors(btnBookingDetail, 0);
+            switchBtnColors(btnRentCar, 0);
+            switchBtnColors(btnReturnCar, 0);
+            switchBtnColors(btnBooking, 0);
             switchBtnColors(btnOwner, 1);
+            switchBtnColors(btnCar, 0);
+        }
+        else if (btnName.equals("RETURN")) {
+            switchBtnColors(btnHome, 0);
+            switchBtnColors(btnCustomer, 0);
+            switchBtnColors(btnRentCar, 0);
+            switchBtnColors(btnBooking, 0);
+            switchBtnColors(btnReturnCar, 1);
+            switchBtnColors(btnOwner, 0);
+            switchBtnColors(btnCar, 0);
+        }
+        else if (btnName.equals("RENT")) {
+            switchBtnColors(btnHome, 0);
+            switchBtnColors(btnCustomer, 0);
+            switchBtnColors(btnRentCar, 1);
+            switchBtnColors(btnBooking, 0);
+            switchBtnColors(btnReturnCar, 0);
+            switchBtnColors(btnOwner, 0);
             switchBtnColors(btnCar, 0);
         }
     }
@@ -189,7 +255,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         else if(e.getSource() == btnCustomer){
             MainMenu.switchPanes("CUSTOMER");
         }
-        else if(e.getSource() == btnBookingDetail){
+        else if(e.getSource() == btnBooking){
             MainMenu.switchPanes("BOOKING");
         }
         else if(e.getSource() == btnOwner){
