@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class OwnerMenu extends JPanel implements ActionListener {
+public class LocationMenu extends JPanel implements ActionListener {
 
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -56,7 +56,7 @@ public class OwnerMenu extends JPanel implements ActionListener {
         return btn;
     }
       
-    OwnerMenu() {
+    LocationMenu() {
         this.setLayout(null);
         this.setBackground(clrAshGrey);
         
@@ -65,9 +65,9 @@ public class OwnerMenu extends JPanel implements ActionListener {
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
         
-        lblId = makeLabel(lblId, "Booking ID");
-        lblName = makeLabel(lblName, "Name");
-        lblCar = makeLabel(lblCar, "Car");
+        lblId = makeLabel(lblId, "Location ID");
+        lblName = makeLabel(lblName, "City");
+        lblCar = makeLabel(lblCar, "Address");
 
         fldId = makeField(fldId);
         fldName = makeField(fldName);
@@ -139,7 +139,7 @@ public class OwnerMenu extends JPanel implements ActionListener {
                 }
         }
         else if (e.getSource() == btnCancel) {
-            MainMenu.switchPanes("OWNER");
+            MainMenu.switchPanes("LOCATION");
         }
     }
 }

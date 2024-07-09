@@ -29,7 +29,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 
-public class OwnerPanel extends JPanel 
+public class LocationPanel extends JPanel 
         implements ActionListener, MouseListener {
     private final JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
@@ -46,8 +46,8 @@ public class OwnerPanel extends JPanel
     
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
-        "ID", "Name", "Car"};
-    String[][] data = service.getOwners();
+        "ID", "City", "Address"};
+    String[][] data = service.getLocations();
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -71,15 +71,15 @@ public class OwnerPanel extends JPanel
             intMaxHeight
     );
 
-    public OwnerPanel() { 
+    public LocationPanel() { 
         setPreferredSize(pnlSize); 
         setLayout(null);
         
-        lblFlow = new JLabel("Home > Owners");
-        lblHeader = new JLabel("Owners");       
-        btnAdd = new JButton("Add Owner");        
-        btnEdit = new JButton("Edit Owner");        
-        btnRemove = new JButton("Delete Owner");
+        lblFlow = new JLabel("Home > Locations");
+        lblHeader = new JLabel("Locations");       
+        btnAdd = new JButton("Add Location");        
+        btnEdit = new JButton("Edit Location");        
+        btnRemove = new JButton("Delete Location");
         
         // Group table elements.
         model = new DefaultTableModel(data, headers) {
@@ -92,7 +92,7 @@ public class OwnerPanel extends JPanel
         JScrollPane spTable = new JScrollPane(tblContent);
         
         // Group search bar elements.
-        lblSearch = new JLabel("Search by Owner Name:");
+        lblSearch = new JLabel("Search a term, word, or name:");
         pnlSearchBar.add(lblSearch);        
         pnlSearchBar.add(txfSearch);    
         
@@ -204,7 +204,7 @@ public class OwnerPanel extends JPanel
     
     private void refreshTable(){
         model.setRowCount(0);
-        String[][] data = service.getOwners();
+        String[][] data = service.getLocations();
         for(String[] datum : data){
             model.addRow(datum);
         }
@@ -225,13 +225,13 @@ public class OwnerPanel extends JPanel
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
-            OwnerMenu.setToAdd();
-            MainMenu.switchPanes("OWNERMENU");
+            LocationMenu.setToAdd();
+            MainMenu.switchPanes("LOCMENU");
         }
         else if (e.getSource() == btnEdit) {
             String[] userData = getUserData();
-            OwnerMenu.setToEdit(userData);
-            MainMenu.switchPanes("OWNERMENU");
+            LocationMenu.setToEdit(userData);
+            MainMenu.switchPanes("LOCMENU");
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;
@@ -245,8 +245,8 @@ public class OwnerPanel extends JPanel
                         currentlySelectedRow, 0).toString();
                 service.deleteData(selectedID, "tbl_book");
                 JOptionPane.showMessageDialog(null, 
-                            "Owner had been successfuly deleted.",
-                            "Onwer Deletion Success", 
+                            "Location had been successfuly deleted.",
+                            "Location Deletion Success", 
                             JOptionPane.INFORMATION_MESSAGE);
                 refreshTable();
             }

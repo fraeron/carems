@@ -29,7 +29,7 @@ public class HomePanel extends JPanel implements ActionListener{
             defaultFont, Font.PLAIN, 12
     );
     private final Font fntISwearToGodIfThisThingIsStillNotUserFriendlyEnoughIWillCommitTheUnthinkable
-            = new Font(defaultFont, Font.PLAIN, 64);
+            = new Font(defaultFont, Font.PLAIN, 48);
     
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -77,7 +77,7 @@ public class HomePanel extends JPanel implements ActionListener{
         btnCar = new JButton("Car", new ImageIcon("img/car_logo.png"));
         btnOwner = new JButton("Owner", new ImageIcon("img/owner_logo.png"));
         btnBooking = new JButton("Booking", new ImageIcon("img/booking_logo.png"));
-        btnRent = new JButton("Rent");
+        btnRent = new JButton("Rent or Book");
         btnReturn = new JButton("Return");
 
         // Control all sizes of all buttons.
@@ -99,12 +99,6 @@ public class HomePanel extends JPanel implements ActionListener{
         
         btnRent.setForeground(Color.WHITE);
         btnReturn.setForeground(Color.WHITE);
-        
-        // Left-align.
-//        btnCustomer.setHorizontalAlignment(JButton.LEFT);        
-//        btnOwner.setHorizontalAlignment(JButton.LEFT);
-//        btnCar.setHorizontalAlignment(JButton.LEFT);
-//        btnBooking.setHorizontalAlignment(JButton.LEFT);
 
         // Add action listener to buttons.
         btnCustomer.addActionListener(this);

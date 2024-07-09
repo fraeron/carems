@@ -152,20 +152,20 @@ public class DataService {
         return data;
     }
     
-    public String[][] getOwners() {
+    public String[][] getLocations() {
         String[][] data = {};
         try{
             Connection con = DriverManager.getConnection(
                     connectionString, "root", yourDBPassword);
-            String query = "SELECT * FROM tbl_owner";
+            String query = "SELECT * FROM tbl_location";
             Statement stat = con.createStatement();
             ResultSet results = stat.executeQuery(query);
             ArrayList<String[]> tempArray = new ArrayList();
             while (results.next()) {
                 String[] tempList = {
                     results.getString("id"),                    
-                    results.getString("name"),
-                    results.getString("car")
+                    results.getString("city"),
+                    results.getString("address")
                 };
                 tempArray.add(tempList);
             }
@@ -269,8 +269,7 @@ public class DataService {
             while (results.next()) {
                 String[] tempList = {
                     results.getString("id"),
-                    results.getString("name"),
-                    results.getString("rented_car_id")
+                    results.getString("name")
                 };
                 tempArray.add(tempList);
             }

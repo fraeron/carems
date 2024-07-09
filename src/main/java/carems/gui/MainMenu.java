@@ -25,13 +25,12 @@ public class MainMenu extends JFrame {
         addPane(new HomePanel(), "HOME");
         addPane(new CarPanel(), "CAR");
         addPane(new CustomerPanel(), "CUSTOMER");
-        addPane(new OwnerPanel(), "OWNER");
+        addPane(new LocationPanel(), "LOCATION");
         addPane(new BookingPanel(), "BOOKING");
         
-        // Add history (menus).
-        addPane(new CustomerMenu(), "CUSMENU");        
+        // Add history (menus).     
         addPane(new BookingMenu(), "BOOKMENU");        
-        addPane(new OwnerMenu(), "OWNERMENU");        
+        addPane(new LocationMenu(), "LOCMENU");        
         addPane(new CarMenu(), "CARMENU");
 
         // Init. sidebar.

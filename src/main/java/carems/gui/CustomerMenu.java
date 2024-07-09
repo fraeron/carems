@@ -6,12 +6,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class CustomerMenu extends JPanel implements ActionListener {
+public class CustomerMenu extends JDialog implements ActionListener {
 
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -27,8 +26,8 @@ public class CustomerMenu extends JPanel implements ActionListener {
     // Init. components.
     static JButton btnRegister, btnCancel;
     JLabel lblHeader, lblSubheader;
-    JLabel lblId, lblName, lblRentCar;
-    static JTextField fldId, fldName, fldRentCar;
+    JLabel lblId, lblName;
+    static JTextField fldId, fldName;
     
     int intFldHeight = 25;
     
@@ -54,8 +53,7 @@ public class CustomerMenu extends JPanel implements ActionListener {
       
     CustomerMenu() {
         this.setLayout(null);
-        this.setBackground(clrAshGrey);
-        
+
         lblHeader = makeLabel(lblHeader, "Add Customer");
         lblSubheader = makeLabel(lblSubheader, "To save, please press REGISTER.");
         lblHeader.setFont(fntSupHeader);
@@ -63,11 +61,9 @@ public class CustomerMenu extends JPanel implements ActionListener {
         
         lblId = makeLabel(lblId, "Customer ID:");
         lblName = makeLabel(lblName, "Customer Full Name:");
-        lblRentCar = makeLabel(lblRentCar, "Rented car:");
         
         fldId = makeField(fldId);
         fldName = makeField(fldName);
-        fldRentCar = makeField(fldRentCar);
         
         btnRegister = makeButton(btnRegister, "REGISTER");
         btnCancel = makeButton(btnCancel, "CANCEL");
@@ -76,26 +72,29 @@ public class CustomerMenu extends JPanel implements ActionListener {
         lblSubheader.setBounds(50, 100, 500, intFldHeight);
         lblId.setBounds(50, 150, 100, intFldHeight);
         lblName.setBounds(50, 200, 300, intFldHeight);
-        lblRentCar.setBounds(50, 250, 300, intFldHeight);
         
         fldId.setBounds(200, 150, 500, intFldHeight);        
         fldName.setBounds(200, 200, 500, intFldHeight);
-        fldRentCar.setBounds(200, 250, 500, intFldHeight);
         
         btnRegister.setBounds(175, 400, 150, 50);        
         btnCancel.setBounds(400, 400, 150, 50);
+        
+        this.setBackground(clrAshGrey);
+        this.setSize(800, 600);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setModal(true);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     
     public static void setToAdd() {
         fldId.setText("");
         fldName.setText("");
-        fldRentCar.setText("");
         btnRegister.setText("REGISTER");
     }
     public static void setToEdit(String[] userData) {
         fldId.setText(userData[0]);
         fldName.setText(userData[1]);
-        fldRentCar.setText(userData[2]);
         btnRegister.setText("UPDATE");
     }
     
@@ -103,25 +102,24 @@ public class CustomerMenu extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         DataService service = new DataService();
         if (e.getSource() == btnRegister) {
-            if (service.addCustomer(
-                    fldId.getText(), 
-                    fldName.getText(), 
-                    fldRentCar.getText()
-            )) {
-                JOptionPane.showMessageDialog(
-                        null, 
-                        "Customer had been successfuly registered.",
-                        "Customer Registration Success", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                }
-            else {
-                    JOptionPane.showMessageDialog(
-                        null, 
-                        "Error in customer registration. "
-                        +"Please make sure all inputs are valid and try again.",
-                        "Customer Registration Failed", 
-                        JOptionPane.WARNING_MESSAGE);
-                }
+//            if (service.addCustomer(
+//                    fldId.getText(), 
+//                    fldName.getText()
+//            )) {
+//                JOptionPane.showMessageDialog(
+//                        null, 
+//                        "Customer had been successfuly registered.",
+//                        "Customer Registration Success", 
+//                        JOptionPane.INFORMATION_MESSAGE);
+//                }
+//            else {
+//                    JOptionPane.showMessageDialog(
+//                        null, 
+//                        "Error in customer registration. "
+//                        +"Please make sure all inputs are valid and try again.",
+//                        "Customer Registration Failed", 
+//                        JOptionPane.WARNING_MESSAGE);
+//                }
         }
         else if (e.getSource() == btnCancel) {
             MainMenu.switchPanes("CUSTOMER");

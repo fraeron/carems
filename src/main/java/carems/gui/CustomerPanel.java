@@ -67,7 +67,7 @@ public class CustomerPanel extends JPanel implements
     DefaultTableModel model;
 
     // Get database data.
-    private final String[] headers = {"ID", "Name", "Rented Car ID"};
+    private final String[] headers = {"ID", "Name"};
     private final String[][] data = service.getCustomers();
 
     
@@ -177,7 +177,7 @@ public class CustomerPanel extends JPanel implements
 
     private void refreshTable(){
         model.setRowCount(0);
-        String[][] data = service.getOwners();
+        String[][] data = service.getCustomers();
         for(String[] datum : data){
             model.addRow(datum);
         }
@@ -233,8 +233,8 @@ public class CustomerPanel extends JPanel implements
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
+            new CustomerMenu();
             CustomerMenu.setToAdd();
-            MainMenu.switchPanes("CUSMENU");
         }
         else if (e.getSource() == btnEdit) {
             String[] userData = getUserData();
