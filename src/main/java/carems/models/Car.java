@@ -1,6 +1,7 @@
 package carems.models;
 
 public class Car {
+    public String id;
     public String model;
     public String color;
     public String license_plate;

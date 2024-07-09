@@ -78,7 +78,7 @@ public class BookingPanel extends JPanel implements
         
         lblFlow = new JLabel("Home > Booking");
         lblHeader = new JLabel("Booking Details");       
-        btnAdd = new JButton("Book a Car");        
+        btnAdd = new JButton("Add a Book");        
         btnEdit = new JButton("Edit a Book");        
         btnRemove = new JButton("Delete a Book");
         

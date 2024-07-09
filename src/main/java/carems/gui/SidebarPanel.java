@@ -63,7 +63,7 @@ class SidebarPanel extends JPanel implements ActionListener{
 
         // Resize and add logo.
         lblLogo = new JLabel();
-        lblLogo.setBounds(10,15, 180, 75);
+        lblLogo.setBounds(10,20, 180, 75);
         try {
             tmpLogo = ImageIO.read(new File(logoPath));
         } catch (IOException e) {
@@ -80,7 +80,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnHome.setFont(fntDefault);
         btnHome.addActionListener(SidebarPanel.this);
         
-        JLabel lblTransaction = new JLabel("Transaction-related");
+        JLabel lblTransaction = new JLabel("<html><i>Transaction-related</i></html>");
         lblTransaction.setBounds(10, 180, btnWidth, 20);
         lblTransaction.setForeground(clrLabelHelper);
         lblTransaction.setFont(fntHelper);
@@ -98,7 +98,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnReturnCar.setFont(fntDefault);
         btnReturnCar.addActionListener(SidebarPanel.this);
 
-        JLabel lblDatabase = new JLabel("Database-related");
+        JLabel lblDatabase = new JLabel("<html><i>Database-related</i></html>");
         lblDatabase.setBounds(10, 300, btnWidth, 10);
         lblDatabase.setForeground(clrLabelHelper);
         lblDatabase.setFont(fntHelper);

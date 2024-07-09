@@ -187,6 +187,7 @@ public class DataService {
             ArrayList<String[]> tempArray = new ArrayList();
             while (results.next()) {
                 String[] tempList = {
+                    results.getString("id"),
                     results.getString("model"),
                     results.getString("color"),
                     results.getString("license_plate"),

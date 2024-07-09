@@ -8,17 +8,16 @@ import java.awt.Color;
 import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.Dimension;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HomePanel extends JPanel implements ActionListener{
-    private final JButton btnCustomer, btnCar, btnOwner, btnBooking;
-    private final JLabel lblHeader, lblSubheader;
-    private final JPanel pnlSelections;
+    private final JButton btnCustomer, btnCar, btnOwner, btnBooking; 
+    private final JLabel lblHeader, lblSubheader, lblDbRelated, lblTransaction;
+    private final JButton btnRent, btnReturn;
+    private final JPanel pnlDbRelated;
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -29,6 +28,8 @@ public class HomePanel extends JPanel implements ActionListener{
     private final Font fntDefault = new Font(
             defaultFont, Font.PLAIN, 12
     );
+    private final Font fntISwearToGodIfThisThingIsStillNotUserFriendlyEnoughIWillCommitTheUnthinkable
+            = new Font(defaultFont, Font.PLAIN, 64);
     
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -45,6 +46,8 @@ public class HomePanel extends JPanel implements ActionListener{
     public HomePanel() { 
         // Add titles.
         lblHeader = new JLabel("Home");
+        lblDbRelated = new JLabel("View, Add, Edit, or Remove Database Records:");
+        lblTransaction = new JLabel("Rent or Return a Car:");
         lblSubheader = new JLabel("Hello! Please select your type of transaction below.");
         lblHeader.setAlignmentX(CENTER_ALIGNMENT);
         lblSubheader.setAlignmentX(CENTER_ALIGNMENT);
@@ -52,68 +55,99 @@ public class HomePanel extends JPanel implements ActionListener{
         // Set colors.
         lblHeader.setForeground(clrMagmaOrange);
         lblSubheader.setForeground(clrMagmaOrange);
+        lblDbRelated.setForeground(clrMagmaOrange);
+        lblTransaction.setForeground(clrMagmaOrange);
 
         // Set fonts.
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
+        lblDbRelated.setFont(fntDefault);
+        lblTransaction.setFont(fntDefault);
 
         // Set layouts.
-        pnlSelections = new JPanel();
-        pnlSelections.setBackground(clrAshGrey);
-        pnlSelections.setMaximumSize(new Dimension(600, 400));
-        GridLayout grid = new GridLayout(2,2);
-        grid.setHgap(25);
-        grid.setVgap(25);
-        pnlSelections.setLayout(grid);
+        pnlDbRelated = new JPanel();
+        pnlDbRelated.setBackground(clrAshGrey);
+        pnlDbRelated.setMaximumSize(new Dimension(250, 100));
+        GridLayout grid = new GridLayout(4,1);
+        grid.setVgap(10);
+        pnlDbRelated.setLayout(grid);
 
         // Init. buttons.
         btnCustomer = new JButton("Customer", new ImageIcon("img/customer_logo.png"));
         btnCar = new JButton("Car", new ImageIcon("img/car_logo.png"));
         btnOwner = new JButton("Owner", new ImageIcon("img/owner_logo.png"));
         btnBooking = new JButton("Booking", new ImageIcon("img/booking_logo.png"));
+        btnRent = new JButton("Rent");
+        btnReturn = new JButton("Return");
 
         // Control all sizes of all buttons.
-        btnCustomer.setPreferredSize(new Dimension(150, 150));
+        btnCustomer.setPreferredSize(new Dimension(150, 50));
 
         // Set font and color of buttons.
+        btnRent.setFont(fntISwearToGodIfThisThingIsStillNotUserFriendlyEnoughIWillCommitTheUnthinkable);
+        btnReturn.setFont(fntISwearToGodIfThisThingIsStillNotUserFriendlyEnoughIWillCommitTheUnthinkable);
         btnCustomer.setFont(fntDefault);
         btnCar.setFont(fntDefault);
         btnOwner.setFont(fntDefault);
         btnBooking.setFont(fntDefault);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCar.setBackground(clrMagmaOrange);
+        btnRent.setBackground(clrMagmaOrange);
+        btnReturn.setBackground(clrMagmaOrange);
         btnOwner.setBackground(clrMagmaOrange);
         btnBooking.setBackground(clrMagmaOrange);
+        
+        btnRent.setForeground(Color.WHITE);
+        btnReturn.setForeground(Color.WHITE);
+        
+        // Left-align.
+//        btnCustomer.setHorizontalAlignment(JButton.LEFT);        
+//        btnOwner.setHorizontalAlignment(JButton.LEFT);
+//        btnCar.setHorizontalAlignment(JButton.LEFT);
+//        btnBooking.setHorizontalAlignment(JButton.LEFT);
 
         // Add action listener to buttons.
         btnCustomer.addActionListener(this);
         btnCar.addActionListener(this);
         btnOwner.addActionListener(this);
         btnBooking.addActionListener(this);
+        btnRent.addActionListener(this);
+        btnReturn.addActionListener(this);
 
         // Add widgets to frame selection.
-        pnlSelections.add(btnCustomer);
-        pnlSelections.add(btnCar);
-        pnlSelections.add(btnOwner);
-        pnlSelections.add(btnBooking);
-
+        pnlDbRelated.add(btnCustomer);
+        pnlDbRelated.add(btnCar);
+        pnlDbRelated.add(btnOwner);
+        pnlDbRelated.add(btnBooking);
+        
+        // Remove focus.
         btnCustomer.setFocusable(false);
         btnOwner.setFocusable(false);
         btnCar.setFocusable(false);
         btnBooking.setFocusable(false);
-
+        btnRent.setFocusable(false);
+        btnReturn.setFocusable(false);
+        
+        // Bound.
+        lblHeader.setBounds(325, 50, 200, 50);
+        lblSubheader.setBounds(225, 100, 500, 25);
+        lblTransaction.setBounds(190, 150, 300, 25);
+        btnRent.setBounds(50, 175, 400, 150);        
+        btnReturn.setBounds(50, 350, 400, 150);
+        lblDbRelated.setBounds(475, 150, 300, 25);
+        pnlDbRelated.setBounds(500, 175, 200, 325);
+        
         // Add widgets overall.
-        this.add(Box.createVerticalGlue());
         this.add(lblHeader);
         this.add(lblSubheader);
-        this.add(Box.createVerticalGlue());
-        this.add(pnlSelections);
-        this.add(Box.createVerticalGlue());
-        this.add(Box.createVerticalGlue());
+        this.add(lblDbRelated);        
+        this.add(lblTransaction);
+        this.add(pnlDbRelated);
+        this.add(btnRent);
+        this.add(btnReturn);
 
-        
         // Set panel properties.
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(null);
         this.setBackground(clrAshGrey);
         this.setPreferredSize(pnlSize); 
         this.setVisible(true);  
