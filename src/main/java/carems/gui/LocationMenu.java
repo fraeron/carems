@@ -7,13 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class LocationMenu extends JPanel implements ActionListener {
-
+public class LocationMenu extends JDialog implements ActionListener {
+    
+    static JPanel pnl = new JPanel(null);
+    
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
@@ -26,68 +29,67 @@ public class LocationMenu extends JPanel implements ActionListener {
             defaultFont, Font.PLAIN, 48);
     
     // Init. components.
-    static JButton btnRegister, btnCancel;
-    static JLabel lblHeader, lblSubheader;
-    JLabel lblId, lblName, lblCar;
+    static JButton btnRegister = makeButton("REGISTER");
+    static JButton btnCancel = makeButton("CANCEL");
+    static JLabel lblHeader = makeLabel("");
+    static JLabel lblSubheader = makeLabel("To save, please press REGISTER.");
+    JLabel lblId;
     static JTextField fldId, fldName, fldCar;
     
     // Init. optimizations.
     static ArrayList<JTextField> fldArray = new ArrayList();
     int intFldHeight = 25;
     
-    private JLabel makeLabel(JLabel label, String text) {
-        label = new JLabel(text);
+    private static JLabel makeLabel(String text) {
+        JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
-        this.add(label);
+        pnl.add(label);
         return label;
     }
     
     private JTextField makeField(JTextField fld) {
         fld = new JTextField();
-        this.add(fld);
+        pnl.add(fld);
         fldArray.add(fld);
         return fld;
     }
     
-    private JButton makeButton(JButton btn, String text) {
-        btn = new JButton(text);
-        this.add(btn);
-        btn.addActionListener(this);
+    private static JButton makeButton(String text) {
+        JButton btn = new JButton(text);
+        pnl.add(btn);
         return btn;
     }
       
-    LocationMenu() {
+    public LocationMenu() {
         this.setLayout(null);
         this.setBackground(clrAshGrey);
-        
-        lblHeader = makeLabel(lblHeader, "");
-        lblSubheader = makeLabel(lblSubheader, "To save, please press REGISTER.");
+
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
-        
-        lblId = makeLabel(lblId, "Location ID");
-        lblName = makeLabel(lblName, "City");
-        lblCar = makeLabel(lblCar, "Address");
 
-        fldId = makeField(fldId);
-        fldName = makeField(fldName);
-        fldCar = makeField(fldCar);
-        
-        btnRegister = makeButton(btnRegister, "REGISTER");
-        btnCancel = makeButton(btnCancel, "CANCEL");
+        lblId = createPanelQA("Location ID", 150);
+        fldName = createPanelQAF("City (to be used as category):", 200);
+        fldCar = createPanelQAF("Full address located in this city:", 250);
         
         lblHeader.setBounds(50,0, 500, 100);
         lblSubheader.setBounds(50, 100, 500, intFldHeight);
-        lblId.setBounds(50, 150, 100, intFldHeight);
-        lblName.setBounds(50, 200, 300, intFldHeight);
-        lblCar.setBounds(50, 250, 300,intFldHeight);
-        
-        fldId.setBounds(200,150, 100,intFldHeight);
-        fldName.setBounds(200,200, 300,intFldHeight);
-        fldCar.setBounds(200,250, 300,intFldHeight);
 
         btnRegister.setBounds(175, 500, 150, 50);        
         btnCancel.setBounds(400, 500, 150, 50);
+        
+        btnRegister.addActionListener(this);        
+        btnCancel.addActionListener(this);
+
+        pnl.setSize(800, 650);
+        pnl.setBackground(clrAshGrey);
+        pnl.setLayout(null);
+        this.setModal(true);
+        this.setSize(800, 650);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setLayout(null);
+        this.add(pnl);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     
     public static void setToAdd() {
@@ -95,7 +97,7 @@ public class LocationMenu extends JPanel implements ActionListener {
             fld.setText("");
         }
         btnRegister.setText("REGISTER");
-        lblHeader.setText("Add Owner");
+        lblHeader.setText("Add Location");
     }
     public static void setToEdit(String[] userData) {
         int i = 0;
@@ -106,7 +108,7 @@ public class LocationMenu extends JPanel implements ActionListener {
             }
         }
         btnRegister.setText("UPDATE");
-        lblHeader.setText("Update Owner");
+        lblHeader.setText("Update Location");
     }
     
     private ArrayList<String> getFldData(){
@@ -125,8 +127,8 @@ public class LocationMenu extends JPanel implements ActionListener {
             if (service.addBooking(getFldData())) {
                 JOptionPane.showMessageDialog(
                         null, 
-                        "Owner had been successfuly registered.",
-                        "Owner Registration Success", 
+                        "Location had been successfuly registered.",
+                        "Location Registration Success", 
                         JOptionPane.INFORMATION_MESSAGE);
                 }
             else {
@@ -134,12 +136,43 @@ public class LocationMenu extends JPanel implements ActionListener {
                         null, 
                         "Error in customer registration. "
                         +"Please make sure all inputs are valid and try again.",
-                        "Owner Registration Failed", 
+                        "Location Registration Failed", 
                         JOptionPane.WARNING_MESSAGE);
                 }
         }
         else if (e.getSource() == btnCancel) {
-            MainMenu.switchPanes("LOCATION");
+            this.dispose();
         }
+    }
+    
+     private JLabel createPanelQA( String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(Utils.getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y, 200, 20);
+        this.add(l);
+        
+        // Return a label for the answer part.
+        JLabel a = new JLabel("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setForeground(Color.WHITE);
+        a.setBounds(275, y, 425, 20);
+        this.add(a);
+        return a;
+    }
+    
+    private JTextField createPanelQAF(String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(Utils.getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y, 250, 20);
+        this.add(l);
+        
+        // Return a field for the answer part.
+        JTextField a = new JTextField("N/A");
+        a.setHorizontalAlignment(JLabel.LEFT);
+        a.setBounds(275, y, 425, 20);
+        this.add(a);
+        return a;
     }
 }

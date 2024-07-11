@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 public class MainMenu extends JFrame {
     // Init. history.
-    private static CardLayout lytCard = new CardLayout();
+    private static final CardLayout lytCard = new CardLayout();
     private static final JPanel MainMenuPanel = new JPanel(lytCard);
     private static SidebarPanel pnlSidebar;
     private static final ArrayList<String> lstPanes = new ArrayList<>();
@@ -29,11 +29,6 @@ public class MainMenu extends JFrame {
         addPane(new BookingPanel(), "BOOKING");
         addPane(new Rent(), "RENT");
         addPane(new Return(), "RETURN");
-        
-        // Add history (menus).     
-        addPane(new BookingMenu(), "BOOKMENU");        
-        addPane(new LocationMenu(), "LOCMENU");        
-        addPane(new CarMenu(), "CARMENU");
 
         // Init. sidebar.
         pnlSidebar = new SidebarPanel(this);

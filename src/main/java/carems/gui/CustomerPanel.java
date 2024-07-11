@@ -139,8 +139,8 @@ public class CustomerPanel extends JPanel implements
         lblFlow.setBounds(10, 0, intMaxWidth, 25);
         lblHeader.setBounds(10, 25, intMaxWidth, 60);
         pnlSearchBar.setBounds(0, 90, intMaxWidth, 25);
-        pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
-        spTable.setBounds(0, 165, intMaxWidth - 10, 400);
+        spTable.setBounds(0, 115, intMaxWidth - 15, 450);
+        pnlControlBar.setBounds(0, 565, intMaxWidth, 50);;
         
         // Add elements.
         add(lblFlow);

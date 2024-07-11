@@ -106,7 +106,7 @@ public class Rent extends JPanel{
         l.setBounds(15, y, 175, 20);
         parent.add(l);
         
-        // Return a field for the answer part.
+        // Return a combo for the answer part.
         JComboBox a = new JComboBox(contents);
         a.setBounds(130, y, 200, 20);
         parent.add(a);

@@ -135,8 +135,8 @@ public class BookingPanel extends JPanel implements
         lblFlow.setBounds(10, 0, intMaxWidth, 25);
         lblHeader.setBounds(10, 25, intMaxWidth, 60);
         pnlSearchBar.setBounds(0, 90, intMaxWidth, 25);
-        pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
-        spTable.setBounds(0, 165, intMaxWidth - 10, 400);
+        spTable.setBounds(0, 115, intMaxWidth - 15, 450);
+        pnlControlBar.setBounds(0, 565, intMaxWidth, 50);
 
         // Add elements.
         add(lblFlow);
@@ -227,12 +227,12 @@ public class BookingPanel extends JPanel implements
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
             BookingMenu.setToAdd();
-            MainMenu.switchPanes("BOOKMENU");
+            new BookingMenu();
         }
         else if (e.getSource() == btnEdit) {
             String[] userData = getUserData();
             BookingMenu.setToEdit(userData);
-            MainMenu.switchPanes("BOOKMENU");
+            new BookingMenu();
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;

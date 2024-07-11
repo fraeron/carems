@@ -104,23 +104,23 @@ class SidebarPanel extends JPanel implements ActionListener{
         lblDatabase.setFont(fntHelper);
         this.add(lblDatabase);
         
+        btnCar = new JButton("Manage Cars");
+        btnCar.setBounds(0, 320, btnWidth, btnHeight);
+        btnCar.setBackground(clrMagmaOrange);
+        btnCar.setFont(fntDefault);
+        btnCar.addActionListener(SidebarPanel.this);
+        
         btnBooking = new JButton("Booking Records");
-        btnBooking.setBounds(0, 320, btnWidth, btnHeight);
+        btnBooking.setBounds(0, 360, btnWidth, btnHeight);
         btnBooking.setBackground(clrMagmaOrange);
         btnBooking.setFont(fntDefault);
         btnBooking.addActionListener(SidebarPanel.this);
         
         btnCustomer = new JButton("Customer Records");
-        btnCustomer.setBounds(0, 360, btnWidth, btnHeight);
+        btnCustomer.setBounds(0, 400, btnWidth, btnHeight);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCustomer.setFont(fntDefault);
         btnCustomer.addActionListener(SidebarPanel.this);
-        
-        btnCar = new JButton("Manage Cars");
-        btnCar.setBounds(0, 400, btnWidth, btnHeight);
-        btnCar.setBackground(clrMagmaOrange);
-        btnCar.setFont(fntDefault);
-        btnCar.addActionListener(SidebarPanel.this);
         
         btnOwner = new JButton("Location Records");
         btnOwner.setBounds(0, 440, btnWidth, btnHeight);

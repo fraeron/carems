@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
@@ -29,8 +30,8 @@ public class CustomerMenu extends JDialog implements ActionListener {
     // Init. components.
     static JButton btnRegister, btnCancel;
     JLabel lblHeader, lblSubheader;
-    JLabel lblId, lblName;
-    static JTextField fldId, fldName;
+    JLabel lblId;
+    static JTextField fldId, fldName, driversLicense, creditCard;
     
     int intFldHeight = 25;
     
@@ -62,22 +63,16 @@ public class CustomerMenu extends JDialog implements ActionListener {
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
         
-        lblId = makeLabel(lblId, "Customer ID:");
-        lblName = makeLabel(lblName, "Customer Full Name:");
-        
-        fldId = makeField(fldId);
-        fldName = makeField(fldName);
+        lblId = createPanelQA("Customer ID:", 150);
+        fldName = createPanelQAF("Customer Full Name:", 200);
+        driversLicense = createPanelQAF("Driver's License Number:", 250);
+        creditCard = createPanelQAF("Credit Card Number:", 300);
         
         btnRegister = makeButton(btnRegister, "REGISTER");
         btnCancel = makeButton(btnCancel, "CANCEL");
         
         lblHeader.setBounds(50,0, 500, 100);
         lblSubheader.setBounds(50, 100, 500, intFldHeight);
-        lblId.setBounds(50, 150, 100, intFldHeight);
-        lblName.setBounds(50, 200, 300, intFldHeight);
-        
-        fldId.setBounds(200, 150, 500, intFldHeight);        
-        fldName.setBounds(200, 200, 500, intFldHeight);
         
         btnRegister.setBounds(175, 400, 150, 50);        
         btnCancel.setBounds(400, 400, 150, 50);
@@ -130,8 +125,38 @@ public class CustomerMenu extends JDialog implements ActionListener {
                 }
         }
         else if (e.getSource() == btnCancel) {
-            MainMenu.switchPanes("CUSTOMER");
+            this.dispose();
         }
     }
     
+    private JLabel createPanelQA( String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(Utils.getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y, 150, 20);
+        this.add(l);
+        
+        // Return a label for the answer part.
+        JLabel a = new JLabel("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setForeground(Color.WHITE);
+        a.setBounds(250, y, 450, 20);
+        this.add(a);
+        return a;
+    }
+    
+    private JTextField createPanelQAF(String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(Utils.getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y, 150, 20);
+        this.add(l);
+        
+        // Return a field for the answer part.
+        JTextField a = new JTextField("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setBounds(250, y, 450, 20);
+        this.add(a);
+        return a;
+    }
 }

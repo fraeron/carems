@@ -7,13 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class BookingMenu extends JPanel implements ActionListener {
-
+public class BookingMenu extends JDialog implements ActionListener {
+    static JPanel pnl = new JPanel();
+    
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
@@ -26,11 +29,13 @@ public class BookingMenu extends JPanel implements ActionListener {
             defaultFont, Font.PLAIN, 48);
     
     // Init. components.
-    static JButton btnRegister, btnCancel;
-    static JLabel lblHeader, lblSubheader;
+    static JButton btnRegister = makeButton("REGISTER");
+    static JButton btnCancel = makeButton("CANCEL");
+    static JLabel lblHeader  = makeLabel("Add a Booking");
+    static JLabel lblSubheader;
     JLabel lblId, lblBookedCarID, lblCustomerID, lblBookedDateTime, 
             lblReturnDT, lblStatus;
-    static JTextField fldId, fldBookedCarID, fldCustomerID, 
+    static JTextField fldBookedCarID, fldCustomerID, 
             fldBookedDateTime, fldReturnDT, fldStatus;
     
     // Init. optimizations.
@@ -38,73 +43,66 @@ public class BookingMenu extends JPanel implements ActionListener {
     int intFldHeight = 25;
     
     // Init. label helper.
-    private JLabel makeLabel(JLabel label, String text) {
-        label = new JLabel(text);
+    private static JLabel makeLabel(String text) {
+        JLabel label = new JLabel(text);
         label.setForeground(Color.WHITE);
-        this.add(label);
+        pnl.add(label);
         return label;
     }
     
     // Init. field helper.
-    private JTextField makeField(JTextField fld) {
+    private static JTextField makeField(JTextField fld) {
         fld = new JTextField();
-        this.add(fld);
         fldArray.add(fld);
+        pnl.add(fld);
         return fld;
     }
     
     // Init. button helper.
-    private JButton makeButton(JButton btn, String text) {
-        btn = new JButton(text);
-        this.add(btn);
-        btn.addActionListener(this);
+    private static JButton makeButton(String text) {
+        JButton btn = new JButton(text);
+        pnl.add(btn);
         return btn;
     }
+    
+    String[] status = {
+        "ONGOING", "LATE", "FINISHED"
+    };
       
-    BookingMenu() {
-        this.setLayout(null);
-        this.setBackground(clrAshGrey);
-        
-        lblHeader = makeLabel(lblHeader, "");
-        lblSubheader = makeLabel(lblSubheader, "To save, please press REGISTER.");
+    public BookingMenu() {        
+        lblSubheader = makeLabel("To save, please press REGISTER.");
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
+       
         
-        lblId = makeLabel(lblId, "Booking ID:");
-        lblBookedCarID = makeLabel(lblBookedCarID, "Booked Card ID:");
-        lblCustomerID = makeLabel(lblCustomerID, "Customer ID:");
-        lblBookedDateTime = makeLabel(lblBookedDateTime, "Booked Date/Time:");
-        lblReturnDT = makeLabel(lblReturnDT, "Return Date/Time:");
-        lblStatus = makeLabel(lblStatus, "Status:");
-
-        fldId = makeField(fldId);
-        fldBookedCarID = makeField(fldBookedCarID);
-        fldCustomerID = makeField(fldCustomerID);
-        fldBookedDateTime = makeField(fldBookedDateTime);
-        fldReturnDT = makeField(fldReturnDT);
-        fldStatus = makeField(fldStatus);
-        
-        btnRegister = makeButton(btnRegister, "REGISTER");
-        btnCancel = makeButton(btnCancel, "CANCEL");
-        
-        lblHeader.setBounds(50,0, 500, 100);
-        lblSubheader.setBounds(50, 100, 500, intFldHeight);
-        lblId.setBounds(50, 150, 100, intFldHeight);
-        lblBookedCarID.setBounds(50, 200, 300, intFldHeight);
-        lblCustomerID.setBounds(50, 250, 300,intFldHeight);
-        lblBookedDateTime.setBounds(50, 300, 300,intFldHeight);
-        lblReturnDT.setBounds(50, 350, 300,intFldHeight);
-        lblStatus.setBounds(50, 400, 300,intFldHeight);
-        
-        fldId.setBounds(200,150, 100,intFldHeight);
-        fldBookedCarID.setBounds(200,200, 300,intFldHeight);
-        fldCustomerID.setBounds(200,250, 300,intFldHeight);
-        fldBookedDateTime.setBounds(200,300, 300,intFldHeight);
-        fldReturnDT.setBounds(200,350, 300,intFldHeight);
-        fldStatus.setBounds(200,400, 300,intFldHeight);
+        lblId = createPanelQA("Booking ID:", 150);
+        JComboBox cbxBookedCarId = createPanelQAC(status, "Booked Car ID:", 200);
+        JComboBox cbxCustomerID = createPanelQAC(status, "Customer ID:", 250);
+        JButton cbxBookedDateTime = createPanelQAD("Booked Date:", 300);
+        JButton cbxReturnDT = createPanelQAD("Returned Date:", 350);
+        JComboBox cbxStatus = createPanelQAC(status, "Status:", 400);
         
         btnRegister.setBounds(175, 500, 150, 50);        
         btnCancel.setBounds(400, 500, 150, 50);
+        
+        btnRegister.addActionListener(this);
+        btnCancel.addActionListener(this);
+        
+        lblHeader.setBounds(50,0, 500, 100);
+        lblSubheader.setBounds(50, 100, 500, intFldHeight);
+        
+        pnl.add(lblHeader);
+        pnl.add(lblSubheader);
+        pnl.setSize(800, 650);
+        pnl.setBackground(clrAshGrey);
+        pnl.setLayout(null);
+        this.setModal(true);
+        this.setSize(800, 650);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setLayout(null);
+        this.add(pnl);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
     
     // Set to add the menu.
@@ -159,8 +157,58 @@ public class BookingMenu extends JPanel implements ActionListener {
                 }
         }
         else if (e.getSource() == btnCancel) {
-            MainMenu.switchPanes("BOOKING");
+            this.dispose();
         }
+    }
+    
+    private static Font getFont(int size){
+        return new Font("Arial", Font.PLAIN, size);
+    }
+    
+    private JComboBox createPanelQAC(String[] contents, String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y + 5, 300, intFldHeight);
+        pnl.add(l);
+        
+        // Return a combo for the answer part.
+        JComboBox a = new JComboBox(contents);
+        a.setBounds(150 + 50, y + 5, 300, intFldHeight);
+        pnl.add(a);
+        return a;
+    }
+    
+    private JLabel createPanelQA(String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y + 5, 175, 20);
+        pnl.add(l);
+        
+        // Return a label for the answer part.
+        JLabel a = new JLabel("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setForeground(Color.WHITE);
+        a.setBounds(150 + 50, y + 5, 200, 20);
+        pnl.add(a);
+        return a;
+    }
+    
+    private JButton createPanelQAD(String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y, 175, 20);
+        pnl.add(l);
+        
+        // Return a button (for datetime) for the answer part.
+        JButton a = new JButton("Select Date");
+        a.setBackground(Color.WHITE);
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setBounds(150 + 50, y, 200, 20);
+        pnl.add(a);
+        return a;
     }
     
 }

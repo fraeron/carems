@@ -44,14 +44,10 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     DataService service = new DataService();
     DefaultTableModel model;
     
-    //        JComboBox cbxIsAvailable = new JComboBox(new String[] {"Available", "Unavailable"});
-//        lblIsAvailable.setBounds(5, 20, 50, 20);
-//        this.add(lblIsAvailable);
-    
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
         "ID", "Model", "Color", "License Plate", "Category", "Fuel Type", 
-        "Is Available", "Condition"};
+        "Is Available", "Condition", "Price Per Day"};
     private final String[][] data = service.getCars();
 
     // Init. fonts.
@@ -140,8 +136,8 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         lblFlow.setBounds(10, 0, intMaxWidth, 25);
         lblHeader.setBounds(10, 25, intMaxWidth, 60);
         pnlSearchBar.setBounds(0, 90, intMaxWidth, 25);
-        pnlControlBar.setBounds(0, 115, intMaxWidth, 50);
-        spTable.setBounds(0, 165, intMaxWidth - 10, 400);
+        spTable.setBounds(0, 115, intMaxWidth - 15, 450);
+        pnlControlBar.setBounds(0, 565, intMaxWidth, 50);
 
 
         // Remove focus.
@@ -237,12 +233,12 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
             CarMenu.setToAdd();
-            MainMenu.switchPanes("CARMENU");
+            new CarMenu();
         }
         else if (e.getSource() == btnEdit) {
             String[] userData = getUserData();
             CarMenu.setToEdit(userData);
-            MainMenu.switchPanes("CARMENU");
+            new CarMenu();
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;

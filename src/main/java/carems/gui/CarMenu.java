@@ -6,13 +6,16 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class CarMenu extends JPanel implements ActionListener {
+public class CarMenu extends JDialog implements ActionListener {
 
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -26,88 +29,82 @@ public class CarMenu extends JPanel implements ActionListener {
             defaultFont, Font.PLAIN, 48);
     
     // Init. components.
-    static JButton btnRegister, btnCancel;
-    static JLabel lblHeader, lblSubheader;
-    JLabel lblModel, lblColor, lblLicPlate, lblCategory, 
-            lblFuelType, lblAvailable, lblCondition;
-    static JTextField fldModel, fldColor, fldLicPlate, fldCategory, 
-            fldFuelType, fldAvailable, fldCondition;
+    static JButton btnRegister = makeButton("REGISTER", 100);
+    static JButton btnCancel = makeButton("CANCEL", 425);
+    
+    static JLabel header = new JLabel("Add a Car Record");    
+    static JLabel subheader = new JLabel("Please set all the information needed below to register.");
     
     // Init. optimizations.
     static ArrayList<JTextField> fldArray = new ArrayList();
+    JPanel pnlInputs = new JPanel(null);
+    JLabel lblStatus;
     
-    int intFldHeight = 25;
+    String[] carColors = {
+        "Red", "Blue", "Green", "Orange", "Violet", "Yellow", "Black", "White",
+        "Gray/Silver"
+    };
     
-    private JLabel makeLabel(JLabel label, String text) {
-        label = new JLabel(text);
-        label.setForeground(Color.WHITE);
-        this.add(label);
-        return label;
-    }
+    String[] carCategories = {
+        "Micro", "Sedan", "Van", "Sports", "Super", "Big Truck", "Coupe", "Muscle",
+        "SUV", "Pickup", "Truck", "Mini Truck", "Mini Van", "Camper Van", "CUV"
+    };
     
-    private JTextField makeField(JTextField fld) {
-        fld = new JTextField();
-        this.add(fld);
-        fldArray.add(fld);
-        return fld;
-    }
+    String[] fuelCategory = {
+        "Gasoline", "Diesel", "Bio-diesel", "Ethanol"
+    };
     
-    private JButton makeButton(JButton btn, String text) {
-        btn = new JButton(text);
-        this.add(btn);
-        btn.addActionListener(this);
-        return btn;
-    }
+    String[] conditions = {
+        "GOOD", "OK", "BAD"
+    };
+    
+    String[] avails = {"AVAILABLE", "UNAVAILABLE"};
       
-    CarMenu() {
+    public CarMenu() {
+        // Header.
+        header.setForeground(clrMagmaOrange);
+        header.setFont(getFont(48));
+        header.setBounds(200, 20, 400, 50);
+        
+        // Subheader.
+        subheader.setForeground(clrMagmaOrange);
+        subheader.setFont(getFont(12));
+        subheader.setBounds(225, 50, 350, 50);
+        
+        this.add(header);
+        this.add(subheader);
+        
+        JLabel lblid = createPanelQA("Car Record ID:", 15, 30);
+        JTextField fldModel = createPanelQAF("Model:", 15, 60);
+        JComboBox cbxColor = createPanelQAC(carColors, "Color:", 15, 90);
+        JTextField fldLic = createPanelQAF("License Plate:", 15, 120);
+        JComboBox cbxCar = createPanelQAC(carCategories, "Category:", 15, 150);
+        JComboBox cbxFuel = createPanelQAC(fuelCategory, "Fuel:", 400, 30);
+        JComboBox cbxAvail = createPanelQAC(avails, "Availability:", 400, 60);
+        JComboBox cbxCondition = createPanelQAC(conditions, "Condition:", 400, 90);
+        JTextField fldPrice = createPanelQAF("Price/Day (in PHP):", 400, 120, 180);
+        
+        pnlInputs.setBackground(null);
+        pnlInputs.setBounds(0,100,800,200);
+        this.add(pnlInputs);
+        
+        this.add(btnRegister);        
+        this.add(btnCancel);
+        
+        btnRegister.addActionListener(this);
+        btnCancel.addActionListener(this);
+        
+        lblStatus = createStatus("Updates go here.");
+        lblStatus.setBounds(275, 475, 200, 20);
+        
+        this.setModal(true);
+        this.setSize(800, 650);
+        this.getContentPane().setBackground(clrAshGrey);
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setLayout(null);
-        this.setBackground(clrAshGrey);
-        
-        lblHeader = makeLabel(lblHeader, "");
-        lblSubheader = makeLabel(lblSubheader, "To save, please press REGISTER.");
-        lblHeader.setFont(fntSupHeader);
-        lblSubheader.setFont(fntSubHeader);
-        
-        lblModel = makeLabel(lblModel, "Model:");
-        lblColor = makeLabel(lblColor, "Color:");
-        lblLicPlate = makeLabel(lblLicPlate, "License Plate:");
-        lblCategory = makeLabel(lblCategory, "Category:");
-        lblFuelType = makeLabel(lblFuelType, "Fuel Type:");
-        lblAvailable = makeLabel(lblAvailable, "Availability:");
-        lblCondition = makeLabel(lblCondition, "Condition:");
-
-
-        fldModel = makeField (fldModel);
-        fldColor = makeField (fldColor);
-        fldLicPlate = makeField (fldLicPlate);
-        fldCategory = makeField (fldCategory);
-        fldFuelType = makeField (fldFuelType);
-        fldAvailable = makeField (fldAvailable);
-        fldCondition = makeField (fldCondition);
-        
-        btnRegister = makeButton(btnRegister, "REGISTER");
-        btnCancel = makeButton(btnCancel, "CANCEL");
-        
-        lblHeader.setBounds(50,0, 500, 100);
-        lblSubheader.setBounds(50, 100, 500, intFldHeight);
-        lblModel.setBounds(50,150,100,intFldHeight);
-        lblColor.setBounds(50,200,300,intFldHeight);
-        lblLicPlate.setBounds(50,250,300,intFldHeight);
-        lblCategory.setBounds(50,300,300,intFldHeight);
-        lblFuelType.setBounds(50,350,300,intFldHeight);
-        lblAvailable.setBounds(50,400,300,intFldHeight);
-        lblCondition.setBounds(50,450,300,intFldHeight);
-        
-        fldModel.setBounds(200,150,300,intFldHeight);
-        fldColor.setBounds(200,200,300,intFldHeight);
-        fldLicPlate.setBounds(200,250,300,intFldHeight);
-        fldCategory.setBounds(200,300,300,intFldHeight);
-        fldFuelType.setBounds(200,350,300,intFldHeight);
-        fldAvailable.setBounds(200,400,300,intFldHeight);
-        fldCondition.setBounds(200,450,300,intFldHeight);
-        
-        btnRegister.setBounds(175, 500, 150, 50);        
-        btnCancel.setBounds(400, 500, 150, 50);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
+       
     }
     
     public static void setToAdd() {
@@ -115,7 +112,9 @@ public class CarMenu extends JPanel implements ActionListener {
             fld.setText("");
         }
         btnRegister.setText("REGISTER");
-        lblHeader.setText("Add a Car Record");
+        header.setText("Add a Car Record");
+        subheader.setText("Please set all the information needed below to register.");
+
     }
     public static void setToEdit(String[] userData) {
         int i = 0;
@@ -126,7 +125,9 @@ public class CarMenu extends JPanel implements ActionListener {
             }
         }
         btnRegister.setText("UPDATE");
-        lblHeader.setText("Update Car Record");
+        header.setText("Update Car Record");        
+        subheader.setText("Please set all the information needed below to update.");
+
     }
     
     private ArrayList<String> getFldData(){
@@ -137,7 +138,6 @@ public class CarMenu extends JPanel implements ActionListener {
         return fldData;
     }
  
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         DataService service = new DataService();
@@ -159,7 +159,87 @@ public class CarMenu extends JPanel implements ActionListener {
                 }
         }
         else if (e.getSource() == btnCancel) {
-            MainMenu.switchPanes("CAR");
+            this.dispose();
         }
+    }
+    
+    private static Font getFont(int size){
+        return new Font("Arial", Font.PLAIN, size);
+    }
+    
+    private JLabel createStatus(String title) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(14));
+        l.setForeground(clrMagmaOrange);
+        l.setHorizontalAlignment(JLabel.CENTER);
+        this.add(l);
+        return l;
+    }
+    
+    private JComboBox createPanelQAC(String[] contents, String title, int x, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(x, y + 5, 175, 20);
+        pnlInputs.add(l);
+        
+        // Return a combo for the answer part.
+        JComboBox a = new JComboBox(contents);
+        a.setBounds(130 + x, y + 5, 200, 20);
+        pnlInputs.add(a);
+        return a;
+    }
+    
+    private JLabel createPanelQA(String title, int x, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(x, y + 5, 175, 20);
+        pnlInputs.add(l);
+        
+        // Return a label for the answer part.
+        JLabel a = new JLabel("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setForeground(Color.WHITE);
+        a.setBounds(130 + x, y + 5, 200, 20);
+        pnlInputs.add(a);
+        return a;
+    }
+    
+    private JTextField createPanelQAF(String title, int x, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(x, y + 5, 175, 20);
+        pnlInputs.add(l);
+        
+        // Return a field for the answer part.
+        JTextField a = new JTextField("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setBounds(130 + x, y + 5, 200, 20);
+        pnlInputs.add(a);
+        return a;
+    }
+    
+    private JTextField createPanelQAF(String title, int x, int y, int customFieldX) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(x, y + 5, 175, 20);
+        pnlInputs.add(l);
+        
+        // Return a field for the answer part.
+        JTextField a = new JTextField("N/A");
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setBounds(customFieldX + x, y + 5, 150, 20);
+        pnlInputs.add(a);
+        return a;
+    }
+    
+    private static JButton makeButton(String title, int x) {
+        JButton btn = new JButton(title);
+        btn.setFont(getFont(20));
+        btn.setBounds(x, 525, 250, 50);
+        return btn;
     }
 }
