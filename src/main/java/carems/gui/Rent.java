@@ -113,15 +113,6 @@ public class Rent extends JPanel{
         return a;
     }
     
-    private JTextField createPanelField(JPanel parent, String title, int y) {
-        JTextField l = new JTextField(title);
-        l.setFont(getFont(12));
-        l.setForeground(clrAshGrey);
-        l.setBounds(5, y, 150, 20);
-        parent.add(l);
-        return l;
-    }
-    
     private JButton createPanelButton(JPanel panel, String title, int y) {
         JButton btn = new JButton(title);
         btn.setBounds(75, y, 200, 25);
@@ -194,17 +185,9 @@ public class Rent extends JPanel{
         pnlControls.setLayout(null);
         pnlControls.setBackground(clrAshGrey);
         JButton btnBook = new JButton("Rent/Book");
-//        JButton btnBooking = new JButton("See Booking Records");
- 
-//        btnBook.setForeground(clrAshGrey);
-//        btnBook.setBackground(clrMagmaOrange);  
         btnBook.setFont(getFont(48));
-        
-//        btnBooking.setBounds(0, 0, 350, 25);
         btnBook.setBounds(0, 0, 350, 100);
-        
-        pnlControls.setBounds(20, 500, 350, 100);
-//        pnlControls.add(btnBooking);        
+        pnlControls.setBounds(20, 500, 350, 100); 
         pnlControls.add(btnBook);
         this.add(pnlControls);
     }
