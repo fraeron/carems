@@ -44,6 +44,10 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     DataService service = new DataService();
     DefaultTableModel model;
     
+    //        JComboBox cbxIsAvailable = new JComboBox(new String[] {"Available", "Unavailable"});
+//        lblIsAvailable.setBounds(5, 20, 50, 20);
+//        this.add(lblIsAvailable);
+    
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
         "ID", "Model", "Color", "License Plate", "Category", "Fuel Type", 

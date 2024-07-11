@@ -1,6 +1,7 @@
 package carems.gui;
 
 import carems.backend.DataService;
+import carems.models.Customer;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
 
 public class CustomerMenu extends JDialog implements ActionListener {
 
@@ -79,7 +82,7 @@ public class CustomerMenu extends JDialog implements ActionListener {
         btnRegister.setBounds(175, 400, 150, 50);        
         btnCancel.setBounds(400, 400, 150, 50);
         
-        this.setBackground(clrAshGrey);
+        this.getContentPane().setBackground(clrAshGrey);
         this.setSize(800, 600);
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setModal(true);
@@ -92,34 +95,39 @@ public class CustomerMenu extends JDialog implements ActionListener {
         fldName.setText("");
         btnRegister.setText("REGISTER");
     }
+    
     public static void setToEdit(String[] userData) {
         fldId.setText(userData[0]);
         fldName.setText(userData[1]);
         btnRegister.setText("UPDATE");
     }
     
+    private Customer getData(){
+        Customer customer = new Customer();
+        customer.id = fldId.getText();
+        customer.name = fldName.getText();
+        return customer;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         DataService service = new DataService();
         if (e.getSource() == btnRegister) {
-//            if (service.addCustomer(
-//                    fldId.getText(), 
-//                    fldName.getText()
-//            )) {
-//                JOptionPane.showMessageDialog(
-//                        null, 
-//                        "Customer had been successfuly registered.",
-//                        "Customer Registration Success", 
-//                        JOptionPane.INFORMATION_MESSAGE);
-//                }
-//            else {
-//                    JOptionPane.showMessageDialog(
-//                        null, 
-//                        "Error in customer registration. "
-//                        +"Please make sure all inputs are valid and try again.",
-//                        "Customer Registration Failed", 
-//                        JOptionPane.WARNING_MESSAGE);
-//                }
+            if (service.addCustomer(getData())) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Customer had been successfuly registered.",
+                        "Customer Registration Success", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            else {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Error in customer registration. "
+                        +"Please make sure all inputs are valid and try again.",
+                        "Customer Registration Failed", 
+                        JOptionPane.WARNING_MESSAGE);
+                }
         }
         else if (e.getSource() == btnCancel) {
             MainMenu.switchPanes("CUSTOMER");

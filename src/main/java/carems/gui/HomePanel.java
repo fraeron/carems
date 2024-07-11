@@ -161,5 +161,11 @@ public class HomePanel extends JPanel implements ActionListener{
         else if(e.getSource() == btnOwner){
             MainMenu.switchPanes("OWNER");
         }
+        else if (e.getSource() == btnRent){
+            MainMenu.switchPanes("RENT");
+        }
+        else if (e.getSource() == btnReturn){
+            MainMenu.switchPanes("RETURN");
+        }
     }
 }

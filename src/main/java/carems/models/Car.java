@@ -9,4 +9,5 @@ public class Car {
     public String fuel_type;
     public String is_available;
     public String car_condition;
+    public String price_per_day;
 }

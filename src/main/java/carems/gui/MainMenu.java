@@ -27,6 +27,8 @@ public class MainMenu extends JFrame {
         addPane(new CustomerPanel(), "CUSTOMER");
         addPane(new LocationPanel(), "LOCATION");
         addPane(new BookingPanel(), "BOOKING");
+        addPane(new Rent(), "RENT");
+        addPane(new Return(), "RETURN");
         
         // Add history (menus).     
         addPane(new BookingMenu(), "BOOKMENU");        
@@ -37,11 +39,11 @@ public class MainMenu extends JFrame {
         pnlSidebar = new SidebarPanel(this);
 
         // Add sidebar.
-        pnlSidebar.setBounds(0, 0, 200, 600);
+        pnlSidebar.setBounds(0, 0, 200, 650);
         this.add(pnlSidebar);
         
         // Add Main Menu Panel.
-        MainMenuPanel.setBounds(200, 0, 800, 600);
+        MainMenuPanel.setBounds(200, 0, 800, 650);
         this.getContentPane().setBackground(Color.GREEN);
         this.add(MainMenuPanel);
         lytCard.show(MainMenuPanel, "HOME");
@@ -49,7 +51,7 @@ public class MainMenu extends JFrame {
         // Set Main Menu properties.
         this.setIconImage(logo.getImage());
         this.setTitle("Carems - Car Rental Management System");
-        Dimension size = new Dimension(1000, 600);
+        Dimension size = new Dimension(1000, 650);
         this.setPreferredSize(size);
         this.setResizable(false);
         this.setLayout(null);

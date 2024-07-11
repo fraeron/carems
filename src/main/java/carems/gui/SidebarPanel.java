@@ -116,7 +116,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnCustomer.setFont(fntDefault);
         btnCustomer.addActionListener(SidebarPanel.this);
         
-        btnCar = new JButton("Car Records");
+        btnCar = new JButton("Manage Cars");
         btnCar.setBounds(0, 400, btnWidth, btnHeight);
         btnCar.setBackground(clrMagmaOrange);
         btnCar.setFont(fntDefault);
@@ -129,7 +129,7 @@ class SidebarPanel extends JPanel implements ActionListener{
         btnOwner.addActionListener(SidebarPanel.this);
         
         btnLogout = new JButton("Logout");
-        btnLogout.setBounds(0, 500, btnWidth, btnHeight);
+        btnLogout.setBounds(0, 550, btnWidth, btnHeight);
         switchBtnColors(btnLogout, 0);
         btnLogout.setForeground(Color.WHITE);
         btnLogout.setFont(fntLogout);
@@ -260,6 +260,12 @@ class SidebarPanel extends JPanel implements ActionListener{
         }
         else if(e.getSource() == btnOwner){
             MainMenu.switchPanes("LOCATION");
+        }
+        else if (e.getSource() == btnRentCar){
+            MainMenu.switchPanes("RENT");
+        }
+        else if (e.getSource() == btnReturnCar){
+            MainMenu.switchPanes("RETURN");
         }
         else if(e.getSource() == btnLogout){
             int yesnoFX = JOptionPane.YES_NO_OPTION;

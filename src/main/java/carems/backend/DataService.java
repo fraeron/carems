@@ -1,5 +1,7 @@
 package carems.backend;
 
+import carems.models.*;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,18 +17,48 @@ public class DataService {
     private final String connectionString = 
             "jdbc:mysql://localhost:3306/db_carems";
     
-    public boolean addCustomer(String id, String name, String carRentId) {
+    public static boolean isThereAFieldNull(Object object) {
+        for (Field field : Object.class.getFields()) {
+            try {
+                if (field.get(object) == null) {
+                    return true;
+                }
+            } catch (IllegalAccessException ex) {
+            } 
+        }
+        return false;
+    }
+    
+    private boolean areRequirementsMet(Object object){
+        if (isThereAFieldNull(object)){
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean addCustomer(Customer customer){
         boolean result = false;
-        if (!(id.isEmpty() && name.isEmpty() && carRentId.isEmpty())) {
+        if (areRequirementsMet(customer)) {
             try{
                 Connection con = DriverManager.getConnection(
                         connectionString, "root", yourDBPassword);
+                Field[] fields = Customer.class.getFields();
                 String query = 
-                        "INSERT INTO tbl_customer VALUES (?, ?, ?)";
+                        "INSERT INTO tbl_customer VALUES (";
+                for (int x = 0; x < fields.length; x++) {
+                    if (x == fields.length - 1){
+                        query += "?)";
+                    } else {
+                        query += "?,";
+                    }
+                }
                 PreparedStatement pst = con.prepareStatement(query);
-                pst.setString(1, id);
-                pst.setString(2, name);
-                pst.setString(3, carRentId);
+                for (int i = 0; i < fields.length; i++) {
+                    try{
+                        pst.setString(i + 1, fields[i].get(customer).toString());
+                    } catch (IllegalAccessException ex) {
+                    }
+                }
 
                 int rowsAffected = pst.executeUpdate();
                 if (rowsAffected > 0) {
