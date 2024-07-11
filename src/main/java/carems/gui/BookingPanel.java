@@ -41,14 +41,13 @@ public class BookingPanel extends JPanel implements
     
     // Init. tables functions.
     private int currentlySelectedRow;
-    DataService service = new DataService();
     DefaultTableModel model;
 
     
     // Init. data.
     private final String[] headers = {
         "ID", "Booked Car ID", "Customer ID", "Booked Date/Time", "Return Date/Time", "Status"};
-    String[][] data = service.getBookings();
+    String[][] data = Utils.unpackBook(DataService.bookings);
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -205,7 +204,7 @@ public class BookingPanel extends JPanel implements
     // Use this function if data needs updating manually.
     private void refreshTable(){
         model.setRowCount(0);
-        String[][] data = service.getBookings();
+        String[][] data = Utils.unpackBook(DataService.bookings);
         for(String[] datum : data){
             model.addRow(datum);
         }
@@ -244,7 +243,7 @@ public class BookingPanel extends JPanel implements
             ) == JOptionPane.YES_OPTION) {
                         String selectedID = tblContent.getValueAt(
                             currentlySelectedRow, 0).toString();
-                    service.deleteData(selectedID, "tbl_book");
+                    DataService.deleteData(selectedID, "tbl_book");
                     JOptionPane.showMessageDialog(null, 
                                 "Booking had been successfuly deleted.",
                                 "Booking Deletion Success", 

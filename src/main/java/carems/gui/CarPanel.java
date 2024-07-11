@@ -29,9 +29,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import carems.models.Car;
+
 
 public class CarPanel extends JPanel implements ActionListener, MouseListener {
-    private final JButton btnAdd, btnEdit, btnRemove;
+    private static JButton btnAdd = new JButton("Add Car"); 
+    private static JButton btnEdit = new JButton("Edit Car");
+    private static JButton btnRemove = new JButton("Delete Car");
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
@@ -41,14 +45,15 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     
     // Init. tables functions.
     private int currentlySelectedRow;
-    DataService service = new DataService();
-    DefaultTableModel model;
+    static DefaultTableModel model;
+    
+    private CarMenu menu = new CarMenu();
     
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
         "ID", "Model", "Color", "License Plate", "Category", "Fuel Type", 
         "Is Available", "Condition", "Price Per Day"};
-    private final String[][] data = service.getCars();
+    private final String[][] data = Utils.unpackCar(DataService.cars);
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -59,6 +64,8 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     private final Font fntDefault = new Font(
             defaultFont, Font.PLAIN, 12
     );
+    
+    private Car currentData;
     
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -78,9 +85,6 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         
         lblFlow = new JLabel("Home > Cars");
         lblHeader = new JLabel("Cars");       
-        btnAdd = new JButton("Add Car");        
-        btnEdit = new JButton("Edit Car");        
-        btnRemove = new JButton("Delete Car");
         
         // Group table elements.
         model = new DefaultTableModel(data, headers) {
@@ -200,25 +204,27 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         });
     }
     
-    private String[] getUserData() {
-        ArrayList<String> temp = new ArrayList();
-        for (int i = 0; i < headers.length; i++) {
-            temp.add(tblContent.
-                    getValueAt(currentlySelectedRow, i).toString());
+    private Car getUserData() {
+        for (Car car : DataService.cars) {
+            if (car.id.equals(tblContent.getValueAt(currentlySelectedRow, 
+                    0).toString())) {
+                currentData = car;
+            }
         }
-        return temp.toArray(new String[temp.size()]);
+        return currentData;
     }
     
-    private void refreshTable(){
+    public static void refreshTable(){
+        DataService.refreshData();
         model.setRowCount(0);
-        String[][] data = service.getCars();
+        String[][] data = Utils.unpackCar(DataService.cars);
         for(String[] datum : data){
             model.addRow(datum);
         }
         setBtnStatus(false);
     }
     
-    private void setBtnStatus(boolean active) {
+    private static void setBtnStatus(boolean active) {
         if (active) {
             btnEdit.setEnabled(true);
             btnRemove.setEnabled(true);
@@ -233,12 +239,11 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
             CarMenu.setToAdd();
-            new CarMenu();
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnEdit) {
-            String[] userData = getUserData();
-            CarMenu.setToEdit(userData);
-            new CarMenu();
+            CarMenu.setToEdit(getUserData());
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;
@@ -250,7 +255,7 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
             ) == JOptionPane.YES_OPTION) {
                 String selectedID = tblContent.getValueAt(
                         currentlySelectedRow, 0).toString();
-                service.deleteData(selectedID, "tbl_car");
+                DataService.deleteData(selectedID, "tbl_car");
                 JOptionPane.showMessageDialog(null, 
                             "Car record had been successfuly deleted.",
                             "Car Record Deletion Success", 

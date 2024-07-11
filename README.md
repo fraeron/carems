@@ -19,29 +19,32 @@ create table tbl_user (
     password varchar(50),
     name varchar(50),
     email varchar(50),
-    contact varchar(50)
+    contact varchar (50)
 )
 
 create table tbl_customer (
     id varchar(50),
     name varchar(50),
-    rented_car_id varchar(50)
+    drivers_license_id varchar(50),
+    credit_card_no varchar(50)
 )
 
 create table tbl_car (
+    id varchar(50),
     model varchar(50), 
     color varchar(50), 
     license_plate varchar(50), 
     category varchar(50),
     fuel_type varchar(50),
     is_available varchar(50),
-    car_condition varchar(50)
+    car_condition varchar(50),
+    price_per_day varchar(50)
 )
 
-create table tbl_owner (
+create table tbl_location (
     id varchar(50),
-    name varchar(50),
-    car varchar(50)
+    city varchar(50),
+    address varchar(50)
 )
 
 create table tbl_book (
@@ -50,33 +53,43 @@ create table tbl_book (
     customer_id varchar(50), 
     booked_datetime varchar(50), 
     return_datetime varchar(50), 
-    status_datetime varchar(50)
+    status varchar(50)
 )
 
-insert into tbl_user (username, password) VALUES 
-    ("walterWhite", "Heisenberg"),
-    ("unSya192", "sleezyRabbit"),
-    ("RonATT", "ohRon"),
-    ("OptimumPride", "autoBots"),
-    ("Carems", "OOP")
+insert into tbl_user VALUES 
+    ("walterWhite", "Heisenberg", "WALTER H. WHITE", "walter@breakingbad.com", "123456789"),
+    ("unSya192", "sleezyRabbit", "Jessie J. Jones", "jessiejessie@hahahaha.com", "123456789"),
+    ("RonATT", "ohRon", "Ronald Q. Weasley", "walter@hahahaha.com", "123456789"),
+    ("OptimumPride", "autoBots", "Optimum Lakas", "p800085b@optimump.com", "123456789"),
+    ("Carems", "OOP", "CAREMS", "SAULGOODMAN@BETTERCALLSAULRAHHHHHHH.com", "123456789")
 
 insert into tbl_customer VALUES 
-    ("1", "Raven D. Mcmurray", "1"),
-    ("2", "Kendrick L. Duckworth", "2"),
-    ("3", "Aubrey Graham", "3"),
-    ("4", "Fukuma S. Mizushi", "4")
+    ("1", "Raven D. Mcmurray", "A23-52-806752", "2456 1234 9932 0206"),
+    ("2", "Kendrick L. Duckworth", "B23-52-806752", "7878 1234 9932 0206"),
+    ("3", "Aubrey Graham", "C23-52-806752", "0025 1234 9932 0206"),
+    ("4", "Fukuma S. Mizushi", "D23-52-806752", "8450 1234 9932 0206"),
+    ("5", "Walter H. White", "D23-52-806752", "9655 1234 9932 0206"),
+    ("6", "Jessie J. Jones", "D23-52-806752", "4555 1234 5555 0206"),
+    ("7", "Ronald Q. Weasley", "D23-52-806752", "0515 4321 9932 0206"),
+    ("8", "Juan P. Delas Santos", "D23-52-806752", "4444 1234 9932 0206"),
+    ("9", "Aloe Vera L. Ligaya", "D23-52-806752", "8889 0006 9932 0206")
 
 insert into tbl_car VALUES
-    ("Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good"),
-    ("Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good"),
-    ("Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK"),
-    ("DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad")
+    ("1", "Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good", "1500"),
+    ("2", "Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good", "2000"),
+    ("3", "Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK", "1355"),
+    ("4", "DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad", "3000"),
+    ("5", "Audi A4 allroad", "Yellow", "BBC 2134", "Sports", "Unleaded", "No", "Bad", "3000"),
+    ("6", "GMC Acadia", "Green", "LOL 9999", "Sports", "Unleaded", "No", "OK", "3000"),
+    ("7", "Honda Accord", "Black", "6RR509", "Wagon", "Unleaded", "No", "OK", "1500"),
+    ("8", "Bentley Bentaga EWB", "Red", "U329OI", "Sedan", "Ethanol", "No", "Good", "2000"),
+    ("9", "Toyota Corolla Hybrid", "White", "80O84S", "Sedan", "Unleaded", "No", "Good", "1850")
 
-insert into tbl_owner VALUES 
-    ("1", "Miguel O. Harem", "Honda Civic"),
-    ("2", "Michael Gyatt Sigma", "Ford F-250"),
-    ("3", "Gaylord Batumbakal", "Volvo 240"),
-    ("4", "Felisha M. Macawala", "DMC DeLorean")
+insert into tbl_location VALUES 
+    ("1", "Biñan City", "Honda Civic"),
+    ("2", "Raccoon City", "Ford F-250"),
+    ("3", "City 13", "District #41, Invertus Balespus Street"),
+    ("4", "Sta. Rosa City", "House #13, Villa Caceres, Balibago, Sta. Rosa City")
 
 insert into tbl_book VALUES 
     ("1", "3", "1", "12/2/2023", "12/10/2023", "RETURNED"),

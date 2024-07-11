@@ -138,9 +138,8 @@ public class BookingMenu extends JDialog implements ActionListener {
  
     @Override
     public void actionPerformed(ActionEvent e) {
-        DataService service = new DataService();
         if (e.getSource() == btnRegister) {
-            if (service.addBooking(getFldData())) {
+            if (DataService.addBooking(getFldData())) {
                 JOptionPane.showMessageDialog(
                         null, 
                         "Booking had been successfuly added.",

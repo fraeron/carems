@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class HomePanel extends JPanel implements ActionListener{
-    private final JButton btnCustomer, btnCar, btnOwner, btnBooking; 
+    private final JButton btnCustomer, btnCar, btnLocation, btnBooking; 
     private final JLabel lblHeader, lblSubheader, lblDbRelated, lblTransaction;
     private final JButton btnRent, btnReturn;
     private final JPanel pnlDbRelated;
@@ -75,7 +75,7 @@ public class HomePanel extends JPanel implements ActionListener{
         // Init. buttons.
         btnCustomer = new JButton("Customer", new ImageIcon("img/customer_logo.png"));
         btnCar = new JButton("Car", new ImageIcon("img/car_logo.png"));
-        btnOwner = new JButton("Owner", new ImageIcon("img/owner_logo.png"));
+        btnLocation = new JButton("Locations", new ImageIcon("img/owner_logo.png"));
         btnBooking = new JButton("Booking", new ImageIcon("img/booking_logo.png"));
         btnRent = new JButton("Rent or Book");
         btnReturn = new JButton("Return");
@@ -88,13 +88,13 @@ public class HomePanel extends JPanel implements ActionListener{
         btnReturn.setFont(fntISwearToGodIfThisThingIsStillNotUserFriendlyEnoughIWillCommitTheUnthinkable);
         btnCustomer.setFont(fntDefault);
         btnCar.setFont(fntDefault);
-        btnOwner.setFont(fntDefault);
+        btnLocation.setFont(fntDefault);
         btnBooking.setFont(fntDefault);
         btnCustomer.setBackground(clrMagmaOrange);
         btnCar.setBackground(clrMagmaOrange);
         btnRent.setBackground(clrMagmaOrange);
         btnReturn.setBackground(clrMagmaOrange);
-        btnOwner.setBackground(clrMagmaOrange);
+        btnLocation.setBackground(clrMagmaOrange);
         btnBooking.setBackground(clrMagmaOrange);
         
         btnRent.setForeground(Color.WHITE);
@@ -103,7 +103,7 @@ public class HomePanel extends JPanel implements ActionListener{
         // Add action listener to buttons.
         btnCustomer.addActionListener(this);
         btnCar.addActionListener(this);
-        btnOwner.addActionListener(this);
+        btnLocation.addActionListener(this);
         btnBooking.addActionListener(this);
         btnRent.addActionListener(this);
         btnReturn.addActionListener(this);
@@ -111,12 +111,12 @@ public class HomePanel extends JPanel implements ActionListener{
         // Add widgets to frame selection.
         pnlDbRelated.add(btnCustomer);
         pnlDbRelated.add(btnCar);
-        pnlDbRelated.add(btnOwner);
+        pnlDbRelated.add(btnLocation);
         pnlDbRelated.add(btnBooking);
         
         // Remove focus.
         btnCustomer.setFocusable(false);
-        btnOwner.setFocusable(false);
+        btnLocation.setFocusable(false);
         btnCar.setFocusable(false);
         btnBooking.setFocusable(false);
         btnRent.setFocusable(false);
@@ -158,8 +158,8 @@ public class HomePanel extends JPanel implements ActionListener{
         else if(e.getSource() == btnBooking){
             MainMenu.switchPanes("BOOKING");
         }
-        else if(e.getSource() == btnOwner){
-            MainMenu.switchPanes("OWNER");
+        else if(e.getSource() == btnLocation){
+            MainMenu.switchPanes("LOCATION");
         }
         else if (e.getSource() == btnRent){
             MainMenu.switchPanes("RENT");

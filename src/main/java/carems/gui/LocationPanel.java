@@ -41,13 +41,12 @@ public class LocationPanel extends JPanel
     
     // Init. tables functions.
     private int currentlySelectedRow;
-    DataService service = new DataService();
     DefaultTableModel model;
     
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
         "ID", "City", "Address"};
-    String[][] data = service.getLocations();
+    String[][] data = Utils.unpackLocation(DataService.locations);
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -204,7 +203,7 @@ public class LocationPanel extends JPanel
     
     private void refreshTable(){
         model.setRowCount(0);
-        String[][] data = service.getLocations();
+        String[][] data = Utils.unpackLocation(DataService.locations);
         for(String[] datum : data){
             model.addRow(datum);
         }
@@ -243,7 +242,7 @@ public class LocationPanel extends JPanel
             ) == JOptionPane.YES_OPTION) {
                 String selectedID = tblContent.getValueAt(
                         currentlySelectedRow, 0).toString();
-                service.deleteData(selectedID, "tbl_book");
+                DataService.deleteData(selectedID, "tbl_book");
                 JOptionPane.showMessageDialog(null, 
                             "Location had been successfuly deleted.",
                             "Location Deletion Success", 

@@ -1,5 +1,6 @@
 package carems.gui;
 
+import carems.backend.DataService;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,8 +20,13 @@ public class MainMenu extends JFrame {
 
     // Add logo path.
     ImageIcon logo = new ImageIcon("img/carems_icon.png");
+    
+    
        
     public MainMenu(){ 
+        // Init.
+        new DataService();
+    
         // Add history (panels).
         addPane(new HomePanel(), "HOME");
         addPane(new CarPanel(), "CAR");

@@ -63,12 +63,11 @@ public class CustomerPanel extends JPanel implements
     
     // Set value for JTable selections
     private int currentlySelectedRow;
-    DataService service = new DataService();
     DefaultTableModel model;
 
     // Get database data.
-    private final String[] headers = {"ID", "Name"};
-    private final String[][] data = service.getCustomers();
+    private final String[] headers = {"ID", "Name", "Driver's License No.", "Credit Card No."};
+    private final String[][] data = Utils.unpackCustomer(DataService.customers);
 
     
     public CustomerPanel() { 
@@ -177,7 +176,7 @@ public class CustomerPanel extends JPanel implements
 
     private void refreshTable(){
         model.setRowCount(0);
-        String[][] data = service.getCustomers();
+        String[][] data = Utils.unpackCustomer(DataService.customers);
         for(String[] datum : data){
             model.addRow(datum);
         }
@@ -251,7 +250,7 @@ public class CustomerPanel extends JPanel implements
             ) == JOptionPane.YES_OPTION) {
                 String selectedID = tblContent.getValueAt(
                         currentlySelectedRow, 0).toString();
-                service.deleteCustomer(selectedID);
+                DataService.deleteCustomer(selectedID);
                 JOptionPane.showMessageDialog(null, 
                             "Customer had been successfuly deleted.",
                             "Customer deletion Success", 

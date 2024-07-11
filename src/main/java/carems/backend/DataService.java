@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class DataService {
     
     // No set password by default. Insert your DB password here if you have any.
-    private final String yourDBPassword = "";
-    private final String connectionString = 
+    private static final String yourDBPassword = "";
+    private static final String connectionString = 
             "jdbc:mysql://localhost:3306/db_carems";
     
     public static boolean isThereAFieldNull(Object object) {
@@ -29,14 +29,32 @@ public class DataService {
         return false;
     }
     
-    private boolean areRequirementsMet(Object object){
+    public static ArrayList<User> users = new ArrayList(); // Admin list.    
+    public static ArrayList<Customer> customers = new ArrayList();    
+    public static ArrayList<Car> cars = new ArrayList();    
+    public static ArrayList<Location> locations = new ArrayList();
+    public static ArrayList<Book> bookings = new ArrayList();
+    
+    public DataService(){
+        refreshData();
+    }
+    
+    public static void refreshData(){
+        getUsers();
+        getCustomers();
+        getCars();
+        getLocations();
+        getBookings();
+    }
+    
+    private static boolean areRequirementsMet(Object object){
         if (isThereAFieldNull(object)){
             return false;
         }
         return true;
     }
     
-    public boolean addCustomer(Customer customer){
+    public static boolean addCustomer(Customer customer){
         boolean result = false;
         if (areRequirementsMet(customer)) {
             try{
@@ -76,7 +94,7 @@ public class DataService {
         return result;
     }
     
-    public boolean addBooking(ArrayList<String> bookingData) {
+    public static boolean addBooking(ArrayList<String> bookingData) {
         boolean result = false;
         boolean emptyBooking = false;
         for (int i = 0; i < bookingData.size(); i++) {
@@ -116,7 +134,7 @@ public class DataService {
         return result;
     }
     
-    public boolean addRecord (ArrayList<String> data, String tableName) {
+    public static boolean addRecord (ArrayList<String> data, String tableName) {
         boolean result = false;
         boolean emptyBooking = false;
         for (int i = 0; i < data.size(); i++) {
@@ -131,11 +149,11 @@ public class DataService {
                 String query = 
                         "INSERT INTO " + tableName + " VALUES ('";
                 for (String datum : data) {
-                    if (data.equals(data.get(data.size() - 1))) {
-                        query += data + "')";
+                    if (datum.equals(data.get(data.size() - 1))) {
+                        query += datum + "')";
                     }
                     else {
-                        query += data + "', '";
+                        query += datum + "', '";
                     }
                 }
                 System.out.println(query);
@@ -157,87 +175,41 @@ public class DataService {
     }
     
     
-    public String[][] getBookings() {
-        String[][] data = {};
+    public static boolean updateRecord (ArrayList<String> data, 
+            ArrayList<String> dataNames, String tableName) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).isEmpty()) {
+                return false;
+            }
+        }
         try{
             Connection con = DriverManager.getConnection(
                     connectionString, "root", yourDBPassword);
-            String query = "SELECT * FROM tbl_book";
-            Statement stat = con.createStatement();
-            ResultSet results = stat.executeQuery(query);
-            ArrayList<String[]> tempArray = new ArrayList();
-            while (results.next()) {
-                String[] tempList = {
-                    results.getString("id"),                    
-                    results.getString("booked_car_id"),
-                    results.getString("customer_id"),
-                    results.getString("booked_datetime"),
-                    results.getString("return_datetime"),
-                    results.getString("status_datetime")
-                };
-                tempArray.add(tempList);
+            String query = 
+                    "UPDATE " + tableName + " SET ";
+            for (int i=1; i < data.size(); i++) {
+                if (data.get(i).equals(data.get(data.size() - 1))) {
+                    query += dataNames.get(i) + "='"+data.get(i) + "'";
+                }
+                else {
+                    query += dataNames.get(i) + "='" + data.get(i) +"',";
+                }
             }
-            data = tempArray.toArray(String[][]::new);
-        } catch (SQLException ex) {
+            query += "WHERE id = '" + data.get(0) + "'";
+            System.out.println(query);
+            PreparedStatement pst = con.prepareStatement(query);
+            int rowsAffected = pst.executeUpdate();
+            pst.close();
+            con.close();
+            return rowsAffected == 1;
+        } 
+        catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return data;
+        return false;
     }
     
-    public String[][] getLocations() {
-        String[][] data = {};
-        try{
-            Connection con = DriverManager.getConnection(
-                    connectionString, "root", yourDBPassword);
-            String query = "SELECT * FROM tbl_location";
-            Statement stat = con.createStatement();
-            ResultSet results = stat.executeQuery(query);
-            ArrayList<String[]> tempArray = new ArrayList();
-            while (results.next()) {
-                String[] tempList = {
-                    results.getString("id"),                    
-                    results.getString("city"),
-                    results.getString("address")
-                };
-                tempArray.add(tempList);
-            }
-            data = tempArray.toArray(String[][]::new);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return data;
-    }
-    
-    public String[][] getCars() {
-        String[][] data = {};
-        try{
-            Connection con = DriverManager.getConnection(
-                    connectionString, "root", yourDBPassword);
-            String query = "SELECT * FROM tbl_car";
-            Statement stat = con.createStatement();
-            ResultSet results = stat.executeQuery(query);
-            ArrayList<String[]> tempArray = new ArrayList();
-            while (results.next()) {
-                String[] tempList = {
-                    results.getString("id"),
-                    results.getString("model"),
-                    results.getString("color"),
-                    results.getString("license_plate"),
-                    results.getString("category"),
-                    results.getString("fuel_type"),
-                    results.getString("is_available"),
-                    results.getString("car_condition")
-                };
-                tempArray.add(tempList);
-            }
-            data = tempArray.toArray(String[][]::new);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return data;
-    }
-    
-    public boolean deleteData(String id, String tableName) {
+    public static boolean deleteData(String id, String tableName) {
         boolean result = false;
         try{
             Connection con = DriverManager.getConnection(
@@ -263,7 +235,7 @@ public class DataService {
         return result;
     }
     
-    public boolean deleteCustomer(String id) {
+    public static boolean deleteCustomer(String id) {
         boolean result = false;
         try{
             Connection con = DriverManager.getConnection(
@@ -289,30 +261,7 @@ public class DataService {
         return result;
     }
  
-    public String[][] getCustomers() {
-        String[][] customers = {};
-        try{
-            Connection con = DriverManager.getConnection(
-                    connectionString, "root", yourDBPassword);
-            String query = "SELECT * FROM tbl_customer";
-            Statement stat = con.createStatement();
-            ResultSet results = stat.executeQuery(query);
-            ArrayList<String[]> tempArray = new ArrayList();
-            while (results.next()) {
-                String[] tempList = {
-                    results.getString("id"),
-                    results.getString("name")
-                };
-                tempArray.add(tempList);
-            }
-            customers = tempArray.toArray(String[][]::new);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return customers;
-    }
-    
-    public boolean getResult(String userName, String password) {
+    public static boolean getResult(String userName, String password) {
         boolean result = false;
         try{
             Connection con = DriverManager.getConnection(
@@ -337,7 +286,7 @@ public class DataService {
             }
         return result;
     }
-    public Boolean addUser(
+    public static Boolean addUser(
             String userName, String password, 
             String name, String email, String contact) {
         boolean result = false;
@@ -366,4 +315,119 @@ public class DataService {
         }
         return result;
     }
+    
+    // START OF GETTERS FOR MODELS.
+    
+    public static void getLocations() {
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_location";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            locations.clear();
+            while (results.next()) {
+                Location owner = new Location();
+                owner.id = results.getString("id");
+                owner.city = results.getString("city");
+                owner.address = results.getString("address");
+                locations.add(owner);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public static void getUsers(){
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_user";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            users.clear();
+            while (results.next()) {
+                User user  = new User();
+                user.username = results.getString("username"); 
+                user.password  = results.getString("password"); 
+                user.name = results.getString("name"); 
+                user.email = results.getString("email"); 
+                user.contact = results.getString("contact");
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public static void getBookings() {
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_book";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            bookings.clear();
+            while (results.next()) {
+                Book booking = new Book();
+                booking.id = results.getString("id");                    
+                booking.booked_car_id = results.getString("booked_car_id");
+                booking.customer_id = results.getString("customer_id");
+                booking.booked_datetime = results.getString("booked_datetime");
+                booking.return_datetime = results.getString("return_datetime");
+                booking.status = results.getString("status");
+                bookings.add(booking);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public static void getCustomers() {
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_customer";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            customers.clear();
+            while (results.next()) {
+                Customer customer  = new Customer();
+                customer.id = results.getString("id");
+                customer.name = results.getString("name");                
+                customer.drivers_license_id = results.getString("drivers_license_id");
+                customer.credit_card_no = results.getString("credit_card_no");
+                customers.add(customer);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public static void getCars() {
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_car";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            cars.clear();
+            while (results.next()) {
+                Car car = new Car();
+                car.id = results.getString("id");
+                car.model = results.getString("model");
+                car.color = results.getString("color");
+                car.license_plate = results.getString("license_plate");
+                car.category = results.getString("category");
+                car.fuel_type = results.getString("fuel_type");
+                car.is_available = results.getString("is_available");
+                car.car_condition = results.getString("car_condition");
+                car.price_per_day = results.getString("price_per_day");
+                cars.add(car);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    /// END OF GETTERS FOR MODELS.
 }
