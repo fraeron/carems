@@ -39,6 +39,64 @@ public class DataService {
         refreshData();
     }
     
+    public static String getAnId(int type){
+        /*
+        type:
+        1 -> Book
+        2 -> Car
+        3 -> Customer
+        4 -> Location
+        */
+        refreshData();
+        int id = 1;
+        
+        switch (type) {
+            case 1 -> {
+                for (Book book : bookings) {
+                    if (id != Integer.parseInt(book.id)){
+                        return String.valueOf(id);
+                    }
+                    else {
+                        id++;
+                    }
+                }
+            }
+            case 2 -> {
+                for (Car car : cars) {
+                    if (id != Integer.parseInt(car.id)){
+                        return String.valueOf(id);
+                    }
+                    else {
+                        id++;
+                    }
+                }
+            }
+            case 3 -> {
+                for (Customer customer : customers) {
+                    if (id != Integer.parseInt(customer.id)){
+                        return String.valueOf(id);
+                    }
+                    else {
+                        id++;
+                    }
+                }
+            }
+            case 4 -> {
+                for (Location location : locations) {
+                    if (id != Integer.parseInt(location.id)){
+                        return String.valueOf(id);
+                    }
+                    else {
+                        id++;
+                    }
+                }
+            }
+            default -> {
+            }
+        }
+        return String.valueOf(id);
+    }
+    
     public static void refreshData(){
         getUsers();
         getCustomers();
@@ -158,9 +216,6 @@ public class DataService {
         }
         return result;
     }
-    
-    
-    
     
     public static boolean addBooking(Book book) {
         boolean result = false;

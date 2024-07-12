@@ -97,7 +97,7 @@ public class CarMenu extends JDialog implements ActionListener {
     
     public static void setToAdd() {
         currentData = new Car();
-        lblid.setText(String.valueOf(DataService.cars.size() + 1));
+        lblid.setText(String.valueOf(DataService.getAnId(2)));
         fldModel.setText(null);
         cbxColor.setSelectedItem(null);
         fldLic.setText(null);

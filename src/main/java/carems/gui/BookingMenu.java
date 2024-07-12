@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 
 public class BookingMenu extends JDialog implements ActionListener {
     static JPanel pnl = new JPanel();
+    static Book currentData = new Book();
     
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -106,7 +107,7 @@ public class BookingMenu extends JDialog implements ActionListener {
     public static void setToAdd() {
         btnRegister.setText("REGISTER");
         lblHeader.setText("Add Booking");
-        lblId.setText(String.valueOf(DataService.bookings.size() + 1));
+        lblId.setText(DataService.getAnId(1));
         fldcarid.setText("");
         fldcusid.setText("");
         btndate.setText("");
@@ -116,6 +117,7 @@ public class BookingMenu extends JDialog implements ActionListener {
     
     // Set to edit the menu.
     public static void setToEdit(Book book) {
+        currentData = book;
         lblId.setText(book.id);
         fldcarid.setText(book.booked_car_id);
         fldcusid.setText(book.customer_id);
@@ -127,23 +129,26 @@ public class BookingMenu extends JDialog implements ActionListener {
     }
     
     // Get data from all fields.
-    private ArrayList<String> getFldData(){
-        ArrayList<String> fldData = new ArrayList();
-        for (JTextField fld : fldArray) {
-            fldData.add(fld.getText());
-        }
-        return fldData;
+    private void getData(){
+        currentData.id = lblId.getText();
+        currentData.booked_car_id = fldcarid.getText();
+        currentData.customer_id = fldcusid.getText();
+        currentData.booked_datetime = btndate.getText();
+        currentData.return_datetime = btnreturn.getText();
+        currentData.status = cbxstatus.getSelectedItem().toString();
     }
  
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnRegister) {
-            if (DataService.addBooking(getFldData())) {
+            getData();
+            if (DataService.addBooking(currentData)) {
                 JOptionPane.showMessageDialog(
                         null, 
-                        "Booking had been successfuly added.",
+                        "Booking had been successfully added.",
                         "Booking Registration Success", 
                         JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
                 }
             else {
                     JOptionPane.showMessageDialog(
