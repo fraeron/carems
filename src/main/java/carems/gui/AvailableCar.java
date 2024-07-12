@@ -16,16 +16,17 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import static javax.swing.WindowConstants.HIDE_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
 
 
-public class Available extends JDialog implements ActionListener,
+public class AvailableCar extends JDialog implements ActionListener,
         MouseListener {
 
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
-    static JTable table;
+    JTable table;
     
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -33,19 +34,11 @@ public class Available extends JDialog implements ActionListener,
             defaultFont, Font.PLAIN, 16);
     private final Font fntSupHeader = new Font(
             defaultFont, Font.PLAIN, 48);
-    
+    static DefaultTableModel model;
     static JButton btnSel;
     static JButton btnAdd;
     
-    int type = 1;
     int currentlySelectedRow;
-    
-    private JLabel makeLabel(JLabel label, String text) {
-        label = new JLabel(text);
-        label.setForeground(Color.WHITE);
-        this.add(label);
-        return label;
-    }
     
     private JButton makeButton(String text) {
         JButton btn = new JButton(text);
@@ -54,28 +47,18 @@ public class Available extends JDialog implements ActionListener,
         return btn;
     }
     
-    private String[][] getCarAvailable(){
+    private static String[][] getCarAvailable(){
         ArrayList<Car> availables = DataService.getAvailableCars();
         return Utils.unpackCar(availables);
     }
-    
-    private String[][] getCustomerAvailable(){
-        ArrayList<Customer> availables = DataService.customers;
-        return Utils.unpackCustomer(availables);
-    }
-    
+
     private final String[] headers = {
         "ID", "Model", "Color", "License Plate", "Category", "Fuel Type", 
         "Is Available", "Condition", "VIN", "Price Per Day"};
-    
-    private final String[] cusHeaders = {
-        "ID", "Name", "Driver's License No.", "Credit Card No."
-    };
-
+   
       
-    public Available(int givenType) {
+    public AvailableCar() {
         this.setLayout(null);
-        type = givenType;
         
         btnSel = makeButton("Select");
         btnAdd = makeButton("Add");
@@ -83,14 +66,20 @@ public class Available extends JDialog implements ActionListener,
         btnSel.setBounds(0, 500, 400, 50);        
         btnAdd.setBounds(400, 500, 400, 50);
         btnSel.setEnabled(false);
-
-        if (type == 1){
-            table = new JTable(getCarAvailable(), headers);
-        } else {
-            table = new JTable(getCustomerAvailable(), cusHeaders);
-        }
-        table.addMouseListener(this);
         
+        // Group table elements.
+        DataService.refreshData();
+        String[][] data;
+        
+        model = new DefaultTableModel(getCarAvailable(), headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               return false;
+            }
+        };
+            
+        table = new JTable(model);
+        table.addMouseListener(this);
         JScrollPane sp = new JScrollPane(table);
         sp.setBounds(0, 0, 785, 500);
         this.add(sp);
@@ -100,7 +89,7 @@ public class Available extends JDialog implements ActionListener,
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setModal(true);
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this.setVisible(false);
     }
     
     public Customer pickCustomer(){
@@ -112,6 +101,16 @@ public class Available extends JDialog implements ActionListener,
             }
         }
         return currentData;
+    }
+    
+    
+    public static void refresh(){
+        DataService.refreshData();
+        String[][] data = getCarAvailable();
+        model.setRowCount(0);
+        for(String[] datum : data){
+            model.addRow(datum);
+        }
     }
     
     public Car pickCar() {
@@ -139,11 +138,8 @@ public class Available extends JDialog implements ActionListener,
         if (e.getSource() == btnSel) {
             this.dispose();
         } if (e.getSource() == btnAdd) {
-            if (type == 1) {
-                CarPanel.menu.setVisible(true);
-            } else {
-                CustomerPanel.menu.setVisible(true);
-            }
+            CarPanel.menu.setToAdd();
+            CarPanel.menu.setVisible(true);
         }
     }
     

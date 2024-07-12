@@ -37,6 +37,9 @@ public class Rent extends JPanel implements ActionListener{
     private static JLabel lblcarcond ;
     private static JButton btnSelCar;
     
+    AvailableCar carMenu = new AvailableCar();
+    AvailableCus cusMenu = new AvailableCus();
+    
     int dayDiff;
     
     JButton btnRent;
@@ -357,8 +360,9 @@ public class Rent extends JPanel implements ActionListener{
     }
     
     private void doRent(){
+        DataService.refreshData();
         Book book = new Book();
-        book.id = String.valueOf(DataService.bookings.size() + 1);
+        book.id = DataService.getAnId(1);
         book.booked_car_id = lblcarid.getText();
         book.customer_id = lblcusid.getText();
         book.booked_datetime = btncusdate.getText();
@@ -373,11 +377,16 @@ public class Rent extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        carMenu.refresh();        
+        cusMenu.refresh();
+
         if (e.getSource() == btnSelCar) {
-            addInfo(new Available(1).pickCar()); // 1 -> Car
+            carMenu.setVisible(true);
+            addInfo(carMenu.pickCar()); // 1 -> Car
             updateTotal();
         } else if (e.getSource() == btnSelCus) {
-            addInfo(new Available(2).pickCustomer()); // 2 -> Customer
+            cusMenu.setVisible(true);
+            addInfo(cusMenu.pickCustomer()); // 2 -> Customer
             updateTotal();
         } else if (e.getSource() == btnRent) {
             doRent();

@@ -32,6 +32,8 @@ public class Return extends JPanel{
     JButton btndate, btnreturn;
     JLabel lblelapsed;
     JLabel lblfine;
+    
+    int dayDiff;
 
     // Init. history
     Book book;
@@ -83,6 +85,7 @@ public class Return extends JPanel{
     }
     
     private void showInfo(){
+        System.out.println("wut");
         if (cbxbookid.getSelectedItem() != null) {
             String bookid = cbxbookid.getSelectedItem().toString();
             book = DataService.getBooking(bookid);
@@ -105,20 +108,27 @@ public class Return extends JPanel{
     }
     
     private void calculateInfo(){
-        String startDate = book.return_datetime;
+        String startDate = book.booked_datetime;
         String endDate = btndate.getText();
+        String actualDate = book.return_datetime;
         String[] ds1 = startDate.split("-");
-        String[] ds2 = endDate.split("-");
+        String[] ds2 = endDate.split("-");        
+        String[] ds3 = actualDate.split("-");
+
         
-        int dayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
+        int correctDayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
+        int actualDayDiff = Integer.parseInt(ds3[0]) - Integer.parseInt(ds1[0]);
+        int lateDays = correctDayDiff - actualDayDiff;
         int fine = 250;
-        float calculated = dayDiff * fine;
-        if (dayDiff < 0) {
-            lblelapsed.setText("Less than a day.");
-            lblfine.setText("<html>On time or ahead of time. No fine.</html>");  
+        float calculated = lateDays * fine;
+        lblelapsed.setText((actualDayDiff + lateDays) + " Day(s)");
+        if (lateDays < 0) {
+            lblelapsed.setText("Less than target day.");
+            lblfine.setText("<html>Ahead of time. No fine.</html>");  
+        } else if (lateDays == 0){
+            lblfine.setText("Arrived on time. No fine.");
         }
         else {
-            lblelapsed.setText("Late for " + dayDiff + " Day(s)");
             lblfine.setText("PHP " + calculated); 
         }    
         btnreturn.setEnabled(true);
@@ -157,9 +167,8 @@ public class Return extends JPanel{
             @Override
             public void itemStateChanged(ItemEvent e) {
                 DataService.refreshData();
-                if (e.getSource() == cbxbookid) {
-                    showInfo();
-                } 
+                System.out.println("cbxbookid is being used");
+                showInfo();
             }
         });
 
@@ -172,7 +181,11 @@ public class Return extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 // Update book with date and status.
                 book.return_datetime = btndate.getText();
-                book.status = "RETURNED";
+                if (lblfine.getText().startsWith("PHP")) {
+                    book.status = "LATE RETURNED";
+                } else {
+                    book.status = "RETURNED";
+                }
                 DataService.updateRecord(
                         Utils.toArrayString(book), 
                         Utils.toArrayStringKeys(book), 
@@ -208,6 +221,8 @@ public class Return extends JPanel{
     
     public void refreshTable(){
         DataService.refreshData();
+        showInfo();
+        changeSelections(cbxbookid, DataService.getOngoingBooks());
         model.setRowCount(0);
         String[][] data = Utils.unpackBook(DataService.bookings);
         for(String[] datum : data){

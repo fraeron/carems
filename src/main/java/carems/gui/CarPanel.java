@@ -34,7 +34,7 @@ import carems.models.Car;
 
 public class CarPanel extends JPanel implements ActionListener, MouseListener {
     private static JButton btnAdd = new JButton("Add Car"); 
-    private static JButton btnEdit = new JButton("Edit Car");
+    private static JButton btnEdit = new JButton("Manage Car");
     private static JButton btnRemove = new JButton("Delete Car");
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
@@ -63,6 +63,9 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
             defaultFont, Font.PLAIN, 48);
     private final Font fntDefault = new Font(
             defaultFont, Font.PLAIN, 12
+    );
+    private final Font fntButton = new Font(
+            defaultFont, Font.PLAIN, 20
     );
     
     private Car currentData;
@@ -125,9 +128,9 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         txfSearch.setFont(fntDefault);
         lblFlow.setFont(fntSubHeader);        
         lblHeader.setFont(fntSupHeader);
-        btnAdd.setFont(fntDefault);
-        btnEdit.setFont(fntDefault);
-        btnRemove.setFont(fntDefault);
+        btnAdd.setFont(fntButton);
+        btnEdit.setFont(fntButton);
+        btnRemove.setFont(fntButton);
         tblContent.setFont(fntDefault);
         spTable.setFont(fntDefault);
 
@@ -171,7 +174,7 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         pnlControlBar.add(btnRefresh);
         btnRefresh.setBackground(clrAshGrey);      
         btnRefresh.setForeground(clrMagmaOrange);
-        btnRefresh.setFont(fntDefault);
+        btnRefresh.setFont(fntButton);
         btnRefresh.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){

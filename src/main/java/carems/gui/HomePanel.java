@@ -7,6 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import static java.awt.Component.CENTER_ALIGNMENT;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -51,6 +55,12 @@ public class HomePanel extends JPanel implements ActionListener{
         lblSubheader = new JLabel("Hello! Please select your type of transaction below.");
         lblHeader.setAlignmentX(CENTER_ALIGNMENT);
         lblSubheader.setAlignmentX(CENTER_ALIGNMENT);
+         
+        // Add footer design.
+        ImageIcon imgFooterI = new ImageIcon("img/footer.png");
+        JLabel imgFooter = new JLabel(imgFooterI);
+        imgFooter.setBounds(0, 525, 800, 100);
+        this.add(imgFooter);
 
         // Set colors.
         lblHeader.setForeground(clrMagmaOrange);
@@ -75,7 +85,7 @@ public class HomePanel extends JPanel implements ActionListener{
         // Init. buttons.
         btnCustomer = new JButton("Customer", new ImageIcon("img/customer_logo.png"));
         btnCar = new JButton("Car", new ImageIcon("img/car_logo.png"));
-        btnLocation = new JButton("Locations", new ImageIcon("img/owner_logo.png"));
+        btnLocation = new JButton("Locations", new ImageIcon("img/location_logo.png"));
         btnBooking = new JButton("Booking", new ImageIcon("img/booking_logo.png"));
         btnRent = new JButton("Rent or Book");
         btnReturn = new JButton("Return");

@@ -89,7 +89,7 @@ insert into tbl_car VALUES
     ("1", "Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good", "2HGFG3B8XEH562177", "1500", "GOOD","GOOD","GOOD","GOOD","GOOD","GOOD","GOOD","GOOD","GOOD", "img/cars/hondacivic.jpg"),
     ("2", "Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good", "1VWBP7A37DC096586", "2000","OK","GOOD","GOOD","GOOD","OK","GOOD","OK","OK","OK", "img/cars/fordf250.jpg"),
     ("3", "Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK", "2GTEK133181335795", "1355","GOOD","GOOD","OK","GOOD","GOOD","OK","OK","OK","GOOD", "img/cars/volvo240.jpg"),
-    ("4", "DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad", "1GYS3BEF0ER200768", "3000","BAD","GOOD","BAD","BAD","BAD","BAD","BAD","BAD","BAD", "img/cars/dmcdelorean.jpg"),
+    ("4", "DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad", "1GYS3BEF0ER200768", "3000","BAD","GOOD","BAD","BAD","BAD","BAD","BAD","BAD","BAD", "img/cars/dmcdelorean.png"),
     ("5", "Audi A4 allroad", "Yellow", "BBC 2134", "Sports", "Unleaded", "No", "Bad", "5P3BC5ED9YE138122", "3000","BAD","GOOD","BAD","GOOD","OK","GOOD","GOOD","GOOD","BAD", "img/cars/audia4allroad.jpeg"),
     ("6", "GMC Acadia", "Green", "LOL 9999", "Sports", "Unleaded", "No", "OK", "2C3BZ5ED9LO138122", "3000","GOOD","GOOD","OK","GOOD","GOOD","OK","OK","OK","GOOD", "img/cars/gmcacadia.jpg"),
     ("7", "Honda Accord", "Black", "6RR509", "Wagon", "Unleaded", "No", "OK", "7O3KE5ED9AN138122", "1500","GOOD","GOOD","OK","GOOD","GOOD","OK","OK","OK","GOOD", "img/cars/hondaaccord.JPG"),

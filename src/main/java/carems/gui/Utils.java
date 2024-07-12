@@ -10,18 +10,13 @@ public class Utils {
         return new Font("Arial", Font.PLAIN, size);
     }
     
-    public static int getMissingNumber (int target, ArrayList<Integer> arr) {
-        int[] hash = new int[target+1];
-        
-        for (int i = 0; i < target - 1; i++) {
-            hash[arr.get(i)]++;
+    public static int getNewId (ArrayList<Integer> arr) {
+        int maximum = arr.get(0);
+        for (int i = 1; i < arr.size(); i++) {
+            if (maximum < arr.get(i))
+                maximum = arr.get(i);
         }
-        for (int i = 1; i <= target; i++) {
-            if (hash[i] == 0) {
-                return i;
-            }
-        }
-        return -1;
+        return maximum + 1;
     }
     
     public static ArrayList<String> toArrayString(Car data){

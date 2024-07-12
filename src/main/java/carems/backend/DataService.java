@@ -56,28 +56,28 @@ public class DataService {
                 for (Book book : bookings) {
                     arr.add(Integer.valueOf(book.id));
                 }
-                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                int result = Utils.getNewId(arr);
                 return String.valueOf(result);
             }
             case 2 -> {
-                for (Car book : cars) {
-                    arr.add(Integer.valueOf(book.id));
+                for (Car car : cars) {
+                    arr.add(Integer.valueOf(car.id));
                 }
-                int result = Utils.getMissingNumber(cars.size() + 1, arr);
+                int result = Utils.getNewId(arr);
                 return String.valueOf(result);
             }
             case 3 -> {
-                for (Customer book : customers) {
-                    arr.add(Integer.valueOf(book.id));
+                for (Customer cus : customers) {
+                    arr.add(Integer.valueOf(cus.id));
                 }
-                int result = Utils.getMissingNumber(customers.size() + 1, arr);
+                int result = Utils.getNewId(arr);
                 return String.valueOf(result);
             }
             case 4 -> {
-                for (Location book : locations) {
-                    arr.add(Integer.valueOf(book.id));
+                for (Location loc : locations) {
+                    arr.add(Integer.valueOf(loc.id));
                 }
-                int result = Utils.getMissingNumber(locations.size() + 1, arr);
+                int result = Utils.getNewId(arr);
                 return String.valueOf(result);
             }
             default -> {
@@ -601,7 +601,18 @@ public class DataService {
                 car.fuel_type = results.getString("fuel_type");
                 car.is_available = results.getString("is_available");
                 car.car_condition = results.getString("car_condition");
+                car.vin = results.getString("vin");
                 car.price_per_day = results.getString("price_per_day");
+                car.engine = results.getString("engine");
+                car.oil = results.getString("oil");
+                car.air = results.getString("air");
+                car.coolant = results.getString("coolant");
+                car.brake = results.getString("brake");
+                car.tire = results.getString("tire");
+                car.belt = results.getString("belt");
+                car.steer = results.getString("steer");
+                car.chassis = results.getString("chassis");
+                car.photo_filepath = results.getString("photo_filepath");
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
