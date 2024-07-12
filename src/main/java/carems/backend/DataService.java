@@ -1,5 +1,6 @@
 package carems.backend;
 
+import carems.gui.Utils;
 import carems.models.*;
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -48,53 +49,41 @@ public class DataService {
         4 -> Location
         */
         refreshData();
-        int id = 1;
+        ArrayList<Integer> arr = new ArrayList();
         
         switch (type) {
             case 1 -> {
                 for (Book book : bookings) {
-                    if (id != Integer.parseInt(book.id)){
-                        return String.valueOf(id);
-                    }
-                    else {
-                        id++;
-                    }
+                    arr.add(Integer.valueOf(book.id));
                 }
+                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                return String.valueOf(result);
             }
             case 2 -> {
-                for (Car car : cars) {
-                    if (id != Integer.parseInt(car.id)){
-                        return String.valueOf(id);
-                    }
-                    else {
-                        id++;
-                    }
+                for (Car book : cars) {
+                    arr.add(Integer.valueOf(book.id));
                 }
+                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                return String.valueOf(result);
             }
             case 3 -> {
-                for (Customer customer : customers) {
-                    if (id != Integer.parseInt(customer.id)){
-                        return String.valueOf(id);
-                    }
-                    else {
-                        id++;
-                    }
+                for (Customer book : customers) {
+                    arr.add(Integer.valueOf(book.id));
                 }
+                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                return String.valueOf(result);
             }
             case 4 -> {
-                for (Location location : locations) {
-                    if (id != Integer.parseInt(location.id)){
-                        return String.valueOf(id);
-                    }
-                    else {
-                        id++;
-                    }
+                for (Location book : locations) {
+                    arr.add(Integer.valueOf(book.id));
                 }
+                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                return String.valueOf(result);
             }
             default -> {
             }
         }
-        return String.valueOf(id);
+        return "1";
     }
     
     public static void refreshData(){
