@@ -651,4 +651,23 @@ public class DataService {
         }
         return customer;
     }
+    
+    public static Location getLocation(String locid) {
+        Location location = new Location();
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_location WHERE id='"+ locid + "'";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            while (results.next()) {
+                location.id = results.getString("id");
+                location.city = results.getString("city");
+                location.address = results.getString("address");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return location;
+    }
 }

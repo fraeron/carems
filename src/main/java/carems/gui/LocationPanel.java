@@ -31,7 +31,7 @@ import javax.swing.table.TableRowSorter;
 
 public class LocationPanel extends JPanel 
         implements ActionListener, MouseListener {
-    private final JButton btnAdd, btnEdit, btnRemove;
+    private static JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
@@ -41,7 +41,9 @@ public class LocationPanel extends JPanel
     
     // Init. tables functions.
     private int currentlySelectedRow;
-    DefaultTableModel model;
+    static DefaultTableModel model;
+    
+    LocationMenu menu = new LocationMenu();
     
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
@@ -73,6 +75,7 @@ public class LocationPanel extends JPanel
     public LocationPanel() { 
         setPreferredSize(pnlSize); 
         setLayout(null);
+        setVisible(true); 
         
         lblFlow = new JLabel("Home > Locations");
         lblHeader = new JLabel("Locations");       
@@ -116,6 +119,7 @@ public class LocationPanel extends JPanel
         // Set fonts per element.
         lblSearch.setFont(fntDefault);
         txfSearch.setFont(fntDefault);
+        txfSearch.setMaximumSize(new Dimension(500, 20));
         lblFlow.setFont(fntSubHeader);        
         lblHeader.setFont(fntSupHeader);
         btnAdd.setFont(fntDefault);
@@ -152,9 +156,7 @@ public class LocationPanel extends JPanel
         initSearchBar();
         refreshTable();
 
-        setVisible(true);  
-        
-        
+
         // Insert refresh button.
         JButton btnRefresh = new JButton("Refresh Records");
         pnlControlBar.add(btnRefresh);
@@ -207,17 +209,11 @@ public class LocationPanel extends JPanel
             }
         });
     }
+
     
-    private String[] getUserData() {
-        ArrayList<String> temp = new ArrayList();
-        for (int i = 0; i < headers.length; i++) {
-            temp.add(tblContent.
-                    getValueAt(currentlySelectedRow, i).toString());
-        }
-        return temp.toArray(new String[temp.size()]);
-    }
-    
-    private void refreshTable(){
+    public static void refreshTable(){
+        System.out.println("refreshed");
+        DataService.refreshData();
         model.setRowCount(0);
         String[][] data = Utils.unpackLocation(DataService.locations);
         for(String[] datum : data){
@@ -226,7 +222,7 @@ public class LocationPanel extends JPanel
         setBtnStatus(false);
     }
 
-    private void setBtnStatus(boolean active) {
+    private static void setBtnStatus(boolean active) {
         if (active) {
             btnEdit.setEnabled(true);
             btnRemove.setEnabled(true);
@@ -240,13 +236,13 @@ public class LocationPanel extends JPanel
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
-            LocationMenu.setToAdd();
-            new LocationMenu();
+            menu.setToAdd();
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnEdit) {
-            String[] userData = getUserData();
-            LocationMenu.setToEdit(userData);
-            new LocationMenu();
+            menu.setToEdit(DataService.getLocation(tblContent.getValueAt(
+                        currentlySelectedRow, 0).toString()));
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;
@@ -258,7 +254,7 @@ public class LocationPanel extends JPanel
             ) == JOptionPane.YES_OPTION) {
                 String selectedID = tblContent.getValueAt(
                         currentlySelectedRow, 0).toString();
-                DataService.deleteData(selectedID, "tbl_book");
+                DataService.deleteData(selectedID, "tbl_location");
                 JOptionPane.showMessageDialog(null, 
                             "Location had been successfuly deleted.",
                             "Location Deletion Success", 

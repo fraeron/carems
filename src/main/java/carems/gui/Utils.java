@@ -50,6 +50,32 @@ public class Utils {
         return result;
     }
     
+    public static ArrayList<String> toArrayString(Location data){
+        ArrayList<String> result = new ArrayList();
+        Field[] fields = Location.class.getFields();
+        for (int i = 0; i < fields.length; i++) {
+            try {
+                result.add(fields[i].get(data).toString());
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                System.out.println(ex);
+            }
+        }
+        return result;
+    }
+    
+    public static ArrayList<String> toArrayStringKeys(Location data){
+        ArrayList<String> result = new ArrayList();
+        Field[] fields = Location.class.getFields();
+        for (int i = 0; i < fields.length; i++) {
+            try {
+                result.add(fields[i].getName());
+            } catch (IllegalArgumentException ex) {
+                System.out.println(ex);
+            }
+        }
+        return result;
+    }
+    
     public static ArrayList<String> toArrayString(Customer data){
         ArrayList<String> result = new ArrayList();
         Field[] fields = Customer.class.getFields();

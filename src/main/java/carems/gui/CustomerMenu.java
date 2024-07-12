@@ -82,12 +82,13 @@ public class CustomerMenu extends JDialog implements ActionListener {
         this.setVisible(false);
     }
     
-    public static void setToAdd() {
+    public void setToAdd() {
         lblId.setText(DataService.getAnId(3));
         fldName.setText("");
         fldCredit.setText("");
         fldDrivers.setText("");
         btnRegister.setText("REGISTER");
+        lblSubheader.setText("To save, please press REGISTER.");
     }
     
     public void setToEdit(Customer customer) {
@@ -97,6 +98,7 @@ public class CustomerMenu extends JDialog implements ActionListener {
         fldCredit.setText(customer.credit_card_no);
         fldDrivers.setText(customer.drivers_license_id);
         btnRegister.setText("UPDATE");
+        lblSubheader.setText("To update, please press UPDATE.");
     }
     
     private void getData(){

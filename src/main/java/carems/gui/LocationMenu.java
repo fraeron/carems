@@ -1,6 +1,7 @@
 package carems.gui;
 
 import carems.backend.DataService;
+import carems.models.Location;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,6 +17,7 @@ import javax.swing.JTextField;
 public class LocationMenu extends JDialog implements ActionListener {
     
     static JPanel pnl = new JPanel(null);
+    Location currentData = new Location();
     
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -34,7 +36,7 @@ public class LocationMenu extends JDialog implements ActionListener {
     static JLabel lblHeader = makeLabel("");
     static JLabel lblSubheader = makeLabel("To save, please press REGISTER.");
     JLabel lblId;
-    static JTextField fldId, fldName, fldCar;
+    static JTextField fldCity, fldCar;
     
     // Init. optimizations.
     static ArrayList<JTextField> fldArray = new ArrayList();
@@ -46,13 +48,7 @@ public class LocationMenu extends JDialog implements ActionListener {
         pnl.add(label);
         return label;
     }
-    
-    private JTextField makeField(JTextField fld) {
-        fld = new JTextField();
-        pnl.add(fld);
-        fldArray.add(fld);
-        return fld;
-    }
+   
     
     private static JButton makeButton(String text) {
         JButton btn = new JButton(text);
@@ -68,7 +64,7 @@ public class LocationMenu extends JDialog implements ActionListener {
         lblSubheader.setFont(fntSubHeader);
 
         lblId = createPanelQA("Location ID", 150);
-        fldName = createPanelQAF("City (to be used as category):", 200);
+        fldCity = createPanelQAF("City (to be used as category):", 200);
         fldCar = createPanelQAF("Full address located in this city:", 250);
         
         lblHeader.setBounds(50,0, 500, 100);
@@ -89,56 +85,82 @@ public class LocationMenu extends JDialog implements ActionListener {
         this.setLayout(null);
         this.add(pnl);
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this.setVisible(false);
     }
     
-    public static void setToAdd() {
-        for (JTextField fld : fldArray) {
-            fld.setText("");
-        }
+    public void setToAdd() {
+        lblId.setText(DataService.getAnId(4));
+        fldCity.setText("");
+        fldCar.setText("");
         btnRegister.setText("REGISTER");
         lblHeader.setText("Add Location");
-    }
-    public static void setToEdit(String[] userData) {
-        int i = 0;
-        for (JTextField fld : fldArray) {
-            if (i < fldArray.size()) {
-                fld.setText(userData[i]);
-                i++;
-            }
-        }
-        btnRegister.setText("UPDATE");
-        lblHeader.setText("Update Location");
+        lblSubheader.setText("To save, please press REGISTER.");
     }
     
-    private ArrayList<String> getFldData(){
-        ArrayList<String> fldData = new ArrayList();
-        for (JTextField fld : fldArray) {
-            fldData.add(fld.getText());
-        }
-        return fldData;
+    public void setToEdit(Location location) {
+        currentData = location;
+        lblId.setText(location.id);
+        fldCity.setText(location.city);
+        fldCar.setText(location.address);
+        btnRegister.setText("UPDATE");
+        lblHeader.setText("Update Location");
+        lblSubheader.setText("To update, please press UPDATE.");
+    }
+    
+    private void getData(){
+        currentData.id = lblId.getText();
+        currentData.city = fldCity.getText();
+        currentData.address = fldCar.getText();
     }
  
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        DataService service = new DataService();
+        DataService.refreshData();
         if (e.getSource() == btnRegister) {
-            if (service.addBooking(getFldData())) {
+            getData();
+            if (btnRegister.getText().equals("UPDATE")){
+                if (DataService.updateRecordCar(
+                        Utils.toArrayString(currentData), 
+                        Utils.toArrayStringKeys(currentData), 
+                        "tbl_location")) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Location had been successfully updated.",
+                            "Location Update Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
+                    }
+                else {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Error in location update."
+                        +"Please make sure all inputs are valid and try again.",
+                        "Location Update Failed", 
+                        JOptionPane.WARNING_MESSAGE);
+                    }
+            } 
+            else {
+                if (DataService.addRecord(Utils.toArrayString(currentData), 
+                        "tbl_location")) {
                 JOptionPane.showMessageDialog(
                         null, 
                         "Location had been successfuly registered.",
                         "Location Registration Success", 
                         JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);;
                 }
-            else {
-                    JOptionPane.showMessageDialog(
-                        null, 
-                        "Error in customer registration. "
-                        +"Please make sure all inputs are valid and try again.",
-                        "Location Registration Failed", 
-                        JOptionPane.WARNING_MESSAGE);
-                }
+                else {
+                        JOptionPane.showMessageDialog(
+                            null, 
+                            "Error in location registration."
+                            +"Please make sure all inputs are valid and try again.",
+                            "Location Registration Failed", 
+                            JOptionPane.WARNING_MESSAGE);
+                    }
+                
+            }
+            LocationPanel.refreshTable();
         }
         else if (e.getSource() == btnCancel) {
             this.dispose();
@@ -150,14 +172,14 @@ public class LocationMenu extends JDialog implements ActionListener {
         l.setFont(Utils.getFont(12));
         l.setForeground(Color.WHITE);
         l.setBounds(50, y, 200, 20);
-        this.add(l);
+        pnl.add(l);
         
         // Return a label for the answer part.
         JLabel a = new JLabel("N/A");
-        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setHorizontalAlignment(JLabel.LEFT);
         a.setForeground(Color.WHITE);
         a.setBounds(275, y, 425, 20);
-        this.add(a);
+        pnl.add(a);
         return a;
     }
     
@@ -166,13 +188,13 @@ public class LocationMenu extends JDialog implements ActionListener {
         l.setFont(Utils.getFont(12));
         l.setForeground(Color.WHITE);
         l.setBounds(50, y, 250, 20);
-        this.add(l);
+        pnl.add(l);
         
         // Return a field for the answer part.
         JTextField a = new JTextField("N/A");
         a.setHorizontalAlignment(JLabel.LEFT);
         a.setBounds(275, y, 425, 20);
-        this.add(a);
+        pnl.add(a);
         return a;
     }
 }
