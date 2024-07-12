@@ -337,9 +337,7 @@ public class CarMenu extends JDialog implements ActionListener {
         pnlInputs.add(a);
         return a;
     }
-    
-    
-    
+       
     private static JButton makeButton(String title, int x) {
         JButton btn = new JButton(title);
         btn.setFont(getFont(20));

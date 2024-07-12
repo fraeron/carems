@@ -6,6 +6,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -18,8 +23,8 @@ class DatePicker {
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
     // Init. calendar
-    int month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
-    int year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
+    int month = Calendar.getInstance().get(Calendar.MONTH);
+    int year = Calendar.getInstance().get(Calendar.YEAR);
     JButton btnMonthYear = new JButton(""); // Selector for year as well.
     String day = "";
     JDialog d;
@@ -27,6 +32,16 @@ class DatePicker {
     
     // Init. all possible days as buttons
     JButton[] button = new JButton[49];
+    
+    public static long subtractDates(String date1, String date2) {
+        // Make sure dates are in (DD-MM-YYYY)
+        String europeanDatePattern = "dd-MM-yyyy";
+        DateTimeFormatter euroFormat = DateTimeFormatter.ofPattern(europeanDatePattern);
+        LocalDate d1 = LocalDate.parse(date1, euroFormat);
+        LocalDate d2 = LocalDate.parse(date2, euroFormat);
+        Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
+        return diff.toDays();
+    }
     
     public DatePicker(String initDate) {
         d = new JDialog();
@@ -111,12 +126,12 @@ class DatePicker {
     public void displayDate() {
         for (int x = 7; x < button.length; x++)
             button[x].setText("");
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+        SimpleDateFormat sdf = new SimpleDateFormat(
                 "MMMM yyyy");
-        java.util.Calendar cal = java.util.Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.set(year, month, 0);
-        int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
-        int daysInMonth = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++)
             button[x].setText("" + day);
         btnMonthYear.setText(sdf.format(cal.getTime()));
@@ -126,9 +141,8 @@ class DatePicker {
     public String setPickedDate() {
         if (day.equals(""))
             return day;
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-                "dd-MM-yyyy");
-        java.util.Calendar cal = java.util.Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
         cal.set(year, month  - 1, Integer.parseInt(day));
         return sdf.format(cal.getTime());
     }

@@ -40,7 +40,8 @@ public class Rent extends JPanel implements ActionListener{
     AvailableCar carMenu = new AvailableCar();
     AvailableCus cusMenu = new AvailableCus();
     
-    int dayDiff;
+    long dayDiff;
+    String startDate, endDate;
     
     JButton btnRent;
     
@@ -323,31 +324,38 @@ public class Rent extends JPanel implements ActionListener{
         
         if (!lblcarprice.getText().equals("N/A") && 
                 !lblcusid.getText().equals("N/A")){
-            String startDate = btncusdate.getText();
-            String endDate = btncusdateDrop.getText();
+            startDate = btncusdate.getText();
+            endDate = btncusdateDrop.getText();
             if (!startDate.equals("Select Date") &&
                     !endDate.equals("Select Date")){
-                String[] ds1 = startDate.split("-");
-                String[] ds2 = endDate.split("-");
-                
-                dayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
+               
+                // Max rent is 30 days.    
+                // Minimum one day rent policy.
+                dayDiff = DatePicker.subtractDates(startDate, endDate);
                 float calculated = Float.parseFloat(lblcarprice.getText()) * dayDiff;
-                if (dayDiff >= 1) { // Minimum one day rent policy.
+                if (dayDiff > 0 && dayDiff <= 30) {
                     lblTotalHeader.setText("Net Total for " + dayDiff + " days:");
                     lblTotal.setText("PHP " + calculated);
                     btnRent.setEnabled(true);
                 }
                 else {
-                    lblTotalHeader.setText("Incorrect date set.");
+                    if (dayDiff < 1) {
+                        lblTotalHeader.setText("Incorrect. Days cannot be less than 1.");
+                    } else {
+                        lblTotalHeader.setText("Incorrect. Days cannot be more than 30.");
+                    }
                     lblTotal.setText("PHP 0.00");
+                    btnRent.setEnabled(false);
                 }
             } else {
                 lblTotalHeader.setText("Please pick your dates.");
                 lblTotal.setText("PHP 0.00");
+                btnRent.setEnabled(false);
             }
         } else {
             lblTotalHeader.setText("Net Total:");
             lblTotal.setText("PHP 0.00");
+            btnRent.setEnabled(false);
         }
     }
     
@@ -396,6 +404,8 @@ public class Rent extends JPanel implements ActionListener{
                     Float.parseFloat(lblcarprice.getText()),
                     String.valueOf(dayDiff),
                     Float.parseFloat(lblTotal.getText().replace("PHP ", "")),
+                    startDate,
+                    endDate,
                     false);
             resetInputs();
             updateTotal();

@@ -173,7 +173,7 @@ public class LoginMenu extends JFrame implements ActionListener {
         LoginButton.addActionListener(this);
         btnRegister.addActionListener(this);
         
-        Login();
+//        Login();
     }
     
     private void Login(){

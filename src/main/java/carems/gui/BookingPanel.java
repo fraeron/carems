@@ -60,6 +60,9 @@ public class BookingPanel extends JPanel implements
     private final Font fntDefault = new Font(
             defaultFont, Font.PLAIN, 12
     );
+    private final Font fntButton = new Font(
+            defaultFont, Font.PLAIN, 20
+    );
     
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -121,9 +124,9 @@ public class BookingPanel extends JPanel implements
         txfSearch.setFont(fntDefault);
         lblFlow.setFont(fntSubHeader);        
         lblHeader.setFont(fntSupHeader);
-        btnAdd.setFont(fntDefault);
-        btnEdit.setFont(fntDefault);
-        btnRemove.setFont(fntDefault);
+        btnAdd.setFont(fntButton);
+        btnEdit.setFont(fntButton);
+        btnRemove.setFont(fntButton);
         tblContent.setFont(fntDefault);
         spTable.setFont(fntDefault);
 
@@ -162,7 +165,7 @@ public class BookingPanel extends JPanel implements
         pnlControlBar.add(btnRefresh);
         btnRefresh.setBackground(clrAshGrey);      
         btnRefresh.setForeground(clrMagmaOrange);
-        btnRefresh.setFont(fntDefault);
+        btnRefresh.setFont(fntButton);
         btnRefresh.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){

@@ -10,7 +10,7 @@ This is a 2nd-year undergraduate demo project for the subject Object-Oriented Pr
 The system is published by a fictional company named Golden Archer Development Corporation (GADC). This project features a system that offers a comprehensive solution for managing car rentals, ensuring vehicle availability, booking reservations, and maintaining records of car conditions. Our service is designed to provide an affordable and convenient way to access a wide variety without the commitment of purchasing. 
 
 ## Code for creating database
-Below are the MySQL statements for having the demo database used for this project:
+For testing, start by importing the database (sql/db_carems.sql) used in this project or use the MySQL statements below to enter manually:
 ```
 create database db_carems
 
@@ -104,8 +104,8 @@ insert into tbl_location VALUES
     ("5", "Biñan City", "PUP Biñan, Brgy. Zapote, Biñan City, Laguna")
 
 insert into tbl_book VALUES 
-    ("1", "3", "1", "12/2/2023", "12/10/2023", "RETURNED"),
-    ("2", "3", "1", "1/5/2024", "1/6/2024", "RETURNED")
+    ("1", "3", "1", "12-2-2023", "12/10-2023", "RETURNED"),
+    ("2", "3", "1", "1-5-2024", "1-6-2024", "RETURNED")
 
 ```
 

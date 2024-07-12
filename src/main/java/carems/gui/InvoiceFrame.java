@@ -62,7 +62,7 @@ public class InvoiceFrame extends JFrame {
             """;
 
     private String templateBody = """
-        %s         |  1/1/2020 - 1/3/2020 | PHP %.2f    |      %s DAYS       | PHP %.2f |
+        %s         |  %s - %s | PHP %.2f    |      %s DAYS       | PHP %.2f |
             """;
         
     private String templateFoot = """
@@ -80,25 +80,31 @@ public class InvoiceFrame extends JFrame {
 
             """;
 
-    private String generateInvoice(String name, String carname, float ratePerDay, String days, float cost) {
+    private String generateInvoice(
+            String name, String carname, 
+            float ratePerDay, String days, 
+            float cost, String startdate, String enddate) {
         LocalDate currentTime = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String dateString = currentTime.format(format);
         return
                 headerInvoice +
                 String.format(templateHead, rand.nextInt(1000), name, dateString) + 
-                String.format(templateBody, carname, ratePerDay, days, cost) + 
+                String.format(templateBody, carname, startdate, enddate, ratePerDay, days, cost) + 
                 String.format(templateFoot, dateString);
     }
     
-    private String generateReceipt(String name, String carname, float ratePerDay, String days, float cost){
+    private String generateReceipt(
+            String name, String carname, 
+            float ratePerDay, String days, 
+            float cost, String startdate, String enddate){
         LocalDate currentTime = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String dateString = currentTime.format(format);
         return
                 headerReceipt +
                 String.format(headReceipt, rand.nextInt(1000), name, dateString) + 
-                String.format(templateBody, carname, ratePerDay, days, cost) + 
+                String.format(templateBody, carname, startdate, enddate, ratePerDay, days, cost) + 
                 String.format(templateFoot, dateString);
     }
 
@@ -125,6 +131,8 @@ public class InvoiceFrame extends JFrame {
             float ratePerDay, 
             String days, 
             float cost,
+            String startDate,
+            String endDate,
             boolean isReceipt) {
         
         initialize();
@@ -134,13 +142,17 @@ public class InvoiceFrame extends JFrame {
                 carname, 
                 ratePerDay, 
                 days, 
-                cost));
+                cost,
+                startDate,
+                endDate));
         } else {
             txtData.setText(generateInvoice(name, 
                 carname, 
                 ratePerDay, 
                 days, 
-                cost));
+                cost,
+                startDate,
+                endDate));
         }
         
     }

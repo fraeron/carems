@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.time.format.DateTimeParseException;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -33,7 +34,7 @@ public class Return extends JPanel{
     JLabel lblelapsed;
     JLabel lblfine;
     
-    int dayDiff;
+    String startDate, endDate, actualDate;
 
     // Init. history
     Book book;
@@ -85,7 +86,6 @@ public class Return extends JPanel{
     }
     
     private void showInfo(){
-        System.out.println("wut");
         if (cbxbookid.getSelectedItem() != null) {
             String bookid = cbxbookid.getSelectedItem().toString();
             book = DataService.getBooking(bookid);
@@ -108,30 +108,42 @@ public class Return extends JPanel{
     }
     
     private void calculateInfo(){
-        String startDate = book.booked_datetime;
-        String endDate = btndate.getText();
-        String actualDate = book.return_datetime;
-        String[] ds1 = startDate.split("-");
-        String[] ds2 = endDate.split("-");        
-        String[] ds3 = actualDate.split("-");
-
+        startDate = book.booked_datetime;
+        endDate = btndate.getText();
+        actualDate = book.return_datetime;
         
-        int correctDayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
-        int actualDayDiff = Integer.parseInt(ds3[0]) - Integer.parseInt(ds1[0]);
-        int lateDays = correctDayDiff - actualDayDiff;
-        int fine = 250;
-        float calculated = lateDays * fine;
-        lblelapsed.setText((actualDayDiff + lateDays) + " Day(s)");
-        if (lateDays < 0) {
-            lblelapsed.setText("Less than target day.");
-            lblfine.setText("<html>Ahead of time. No fine.</html>");  
-        } else if (lateDays == 0){
-            lblfine.setText("Arrived on time. No fine.");
+        try{
+            long correctDayDiff = DatePicker.subtractDates(startDate, endDate);
+            long actualDayDiff = DatePicker.subtractDates(startDate, actualDate);
+            long lateDays = correctDayDiff - actualDayDiff;
+            long pastTravelled = correctDayDiff * -1;
+            int fine = 250;
+            float calculated = lateDays * fine;
+            lblelapsed.setText((actualDayDiff + lateDays) + " Day(s)");
+            if (pastTravelled > 0) {
+                lblelapsed.setText("Incorrect date set.");
+                btnreturn.setEnabled(false);
+            }
+            else if (lateDays < 0) {
+                lblelapsed.setText("Less than target day.");
+                lblfine.setText("<html>Ahead of time. No fine.</html>"); 
+                btnreturn.setEnabled(true);
+            } 
+            else if (lateDays == 0){
+                lblfine.setText("Arrived on time. No fine.");
+                btnreturn.setEnabled(true);
+            }
+            else {
+                lblfine.setText("<html>PHP " + calculated + 
+                        ". Penalty of " + lateDays + " day(s).</html>"); 
+                btnreturn.setEnabled(true);
+            }
+        } catch (DateTimeParseException ex) {
+            lblelapsed.setText("N/A");
+            btndate.setText("Select Date");
+            lblfine.setText("N/A");
+            btnreturn.setEnabled(false);
         }
-        else {
-            lblfine.setText("PHP " + calculated); 
-        }    
-        btnreturn.setEnabled(true);
     }
         
     
@@ -210,6 +222,8 @@ public class Return extends JPanel{
                         price,
                         lblelapsed.getText(),
                         total,
+                        startDate,
+                        actualDate,
                         true);
                 
                 resetInfo();

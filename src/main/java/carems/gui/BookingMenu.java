@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -49,13 +50,6 @@ public class BookingMenu extends JDialog implements ActionListener {
         return label;
     }
     
-    // Init. field helper.
-    private static JTextField makeField(JTextField fld) {
-        fld = new JTextField();
-        fldArray.add(fld);
-        pnl.add(fld);
-        return fld;
-    }
     
     // Init. button helper.
     private static JButton makeButton(String text) {
@@ -68,11 +62,24 @@ public class BookingMenu extends JDialog implements ActionListener {
         "ONGOING", "LATE RETURNED", "RETURNED"
     };
     
-    static JTextField fldcarid = createPanelQAF("Booked Car ID:", 200);
-    static JTextField fldcusid = createPanelQAF("Customer ID:", 250);
+    private static void changeSelections(JComboBox cbx, String[] selections) {
+        DefaultComboBoxModel<String> model 
+            = new DefaultComboBoxModel<>(selections);
+        cbx.setModel(model);
+    }
+    
+    static DefaultComboBoxModel cusmodel 
+            = new DefaultComboBoxModel(DataService.getCarIds());
+    static DefaultComboBoxModel bookmodel
+            = new DefaultComboBoxModel(DataService.getCusIds());
+    
+    static JComboBox cbxcarid = createPanelQAC(cusmodel, "Booked Car ID:", 200);
+    static JComboBox cbxcusid = createPanelQAC(bookmodel, "Customer ID:", 250);
     static JButton btndate = createPanelQAD("Booked Date:", 300);
     static JButton btnreturn = createPanelQAD("Returned Date:", 350);
     static JComboBox cbxstatus = createPanelQAC(status, "Status:", 400);
+    
+    
       
     public BookingMenu() {        
         lblSubheader = makeLabel("To save, please press REGISTER.");
@@ -101,15 +108,21 @@ public class BookingMenu extends JDialog implements ActionListener {
         this.add(pnl);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
+        
+        changeSelections(cbxcarid, DataService.getCarIds());
+        changeSelections(cbxcusid, DataService.getCusIds());
+        
     }
     
     // Set to add the menu.
     public static void setToAdd() {
+        changeSelections(cbxcarid, DataService.getCarIds());
+        changeSelections(cbxcusid, DataService.getCusIds());
         btnRegister.setText("REGISTER");
         lblHeader.setText("Add Booking");
         lblId.setText(DataService.getAnId(1));
-        fldcarid.setText("");
-        fldcusid.setText("");
+        cbxcarid.setSelectedItem("");
+        cbxcusid.setSelectedItem("");
         btndate.setText("");
         btnreturn.setText("");
         cbxstatus.setSelectedItem(null);
@@ -117,10 +130,12 @@ public class BookingMenu extends JDialog implements ActionListener {
     
     // Set to edit the menu.
     public static void setToEdit(Book book) {
+        changeSelections(cbxcarid, DataService.getCarIds());
+        changeSelections(cbxcusid, DataService.getCusIds());
         currentData = book;
         lblId.setText(book.id);
-        fldcarid.setText(book.booked_car_id);
-        fldcusid.setText(book.customer_id);
+        cbxcarid.setSelectedItem(book.booked_car_id);
+        cbxcusid.setSelectedItem(book.customer_id);
         btndate.setText(book.booked_datetime);
         btnreturn.setText(book.return_datetime);
         cbxstatus.setSelectedItem(book.status);
@@ -131,8 +146,8 @@ public class BookingMenu extends JDialog implements ActionListener {
     // Get data from all fields.
     private void getData(){
         currentData.id = lblId.getText();
-        currentData.booked_car_id = fldcarid.getText();
-        currentData.customer_id = fldcusid.getText();
+        currentData.booked_car_id = cbxcarid.getSelectedItem().toString();
+        currentData.customer_id = cbxcusid.getSelectedItem().toString();
         currentData.booked_datetime = btndate.getText();
         currentData.return_datetime = btnreturn.getText();
         currentData.status = cbxstatus.getSelectedItem().toString();
@@ -168,7 +183,23 @@ public class BookingMenu extends JDialog implements ActionListener {
         return new Font("Arial", Font.PLAIN, size);
     }
     
-    private static JComboBox createPanelQAC(String[] contents, String title, int y) {
+    private static JComboBox createPanelQAC(DefaultComboBoxModel contents, 
+            String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y + 5, 300, intFldHeight);
+        pnl.add(l);
+        
+        // Return a combo for the answer part.
+        JComboBox a = new JComboBox(contents);
+        a.setBounds(150 + 50, y + 5, 300, intFldHeight);
+        pnl.add(a);
+        return a;
+    }
+    
+    private static JComboBox createPanelQAC(String[] contents, 
+            String title, int y) {
         JLabel l = new JLabel(title);
         l.setFont(getFont(12));
         l.setForeground(Color.WHITE);
@@ -210,6 +241,7 @@ public class BookingMenu extends JDialog implements ActionListener {
         a.setBackground(Color.WHITE);
         a.setHorizontalAlignment(JLabel.CENTER);
         a.setBounds(150 + 50, y, 200, 20);
+        a.setText("Select Date");
         
         a.addActionListener(new ActionListener() {
             @Override
@@ -219,21 +251,5 @@ public class BookingMenu extends JDialog implements ActionListener {
         });
         pnl.add(a);
         return a;
-    }
-    
-    private static JTextField createPanelQAF(String title, int y) {
-        JLabel l = new JLabel(title);
-        l.setFont(getFont(12));
-        l.setForeground(Color.WHITE);
-        l.setBounds(50, y, 175, 20);
-        pnl.add(l);
-        
-        // Return a field for the answer part.
-        JTextField a = new JTextField("N/A");
-        a.setHorizontalAlignment(JLabel.CENTER);
-        a.setBounds(150 + 50, y, 200, 20);
-        pnl.add(a);
-        return a;
-    }
-    
+    } 
 }

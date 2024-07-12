@@ -123,6 +123,24 @@ public class DataService {
         return alFinal.toArray(String[]::new);
     }
     
+    public static String[]getCarIds(){
+        refreshData();
+        ArrayList<String> alFinal = new ArrayList();
+        for (Car car : cars) {
+                alFinal.add(car.id);
+            }
+        return alFinal.toArray(String[]::new);
+    }
+    
+    public static String[]getCusIds(){
+        refreshData();
+        ArrayList<String> alFinal = new ArrayList();
+        for (Customer cus : customers) {
+                alFinal.add(cus.id);
+            }
+        return alFinal.toArray(String[]::new);
+    }
+    
     public static boolean addCustomer(Customer customer){
         boolean result = false;
         if (areRequirementsMet(customer)) {
