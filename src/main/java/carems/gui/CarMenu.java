@@ -37,7 +37,7 @@ public class CarMenu extends JDialog implements ActionListener {
     };
     
     static String[] fuelCategory = {
-        "Gasoline", "Diesel", "Bio-diesel", "Ethanol"
+        "Gasoline", "Diesel", "Bio-diesel", "Ethanol", "Unleaded"
     };
     
     static String[] conditions = {
@@ -154,6 +154,7 @@ public class CarMenu extends JDialog implements ActionListener {
                             "Car had been successfully updated.",
                             "Car Update Success", 
                             JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
                     }
                 else {
                     JOptionPane.showMessageDialog(
@@ -237,20 +238,7 @@ public class CarMenu extends JDialog implements ActionListener {
         return a;
     }
     
-    private static JTextField createPanelQAF(String title, int x, int y, int customFieldX) {
-        JLabel l = new JLabel(title);
-        l.setFont(getFont(12));
-        l.setForeground(Color.WHITE);
-        l.setBounds(x, y + 5, 175, 20);
-        pnlInputs.add(l);
-        
-        // Return a field for the answer part.
-        JTextField a = new JTextField("N/A");
-        a.setHorizontalAlignment(JLabel.CENTER);
-        a.setBounds(customFieldX + x, y + 5, 150, 20);
-        pnlInputs.add(a);
-        return a;
-    }
+    
     
     private static JButton makeButton(String title, int x) {
         JButton btn = new JButton(title);

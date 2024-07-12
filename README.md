@@ -68,11 +68,11 @@ insert into tbl_customer VALUES
     ("2", "Kendrick L. Duckworth", "B23-52-806752", "7878 1234 9932 0206"),
     ("3", "Aubrey Graham", "C23-52-806752", "0025 1234 9932 0206"),
     ("4", "Fukuma S. Mizushi", "D23-52-806752", "8450 1234 9932 0206"),
-    ("5", "Walter H. White", "D23-52-806752", "9655 1234 9932 0206"),
-    ("6", "Jessie J. Jones", "D23-52-806752", "4555 1234 5555 0206"),
-    ("7", "Ronald Q. Weasley", "D23-52-806752", "0515 4321 9932 0206"),
-    ("8", "Juan P. Delas Santos", "D23-52-806752", "4444 1234 9932 0206"),
-    ("9", "Aloe Vera L. Ligaya", "D23-52-806752", "8889 0006 9932 0206")
+    ("5", "Walter H. White", "E23-52-806752", "9655 1234 9932 0206"),
+    ("6", "Jessie J. Jones", "F23-52-806752", "4555 1234 5555 0206"),
+    ("7", "Ronald Q. Weasley", "G23-52-806752", "0515 4321 9932 0206"),
+    ("8", "Juan P. Delas Santos", "H23-52-806752", "4444 1234 9932 0206"),
+    ("9", "Aloe Vera L. Ligaya", "I23-52-806752", "8889 0006 9932 0206")
 
 insert into tbl_car VALUES
     ("1", "Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good", "1500"),
@@ -86,10 +86,11 @@ insert into tbl_car VALUES
     ("9", "Toyota Corolla Hybrid", "White", "80O84S", "Sedan", "Unleaded", "No", "Good", "1850")
 
 insert into tbl_location VALUES 
-    ("1", "Biñan City", "Honda Civic"),
-    ("2", "Raccoon City", "Ford F-250"),
+    ("1", "Biñan City", "Timbao Barangay Hall, Brgy. Timbao, Biñan City, Laguna"),
+    ("2", "Raccoon City", "Brgy. Somewhere, Raccoon City"),
     ("3", "City 13", "District #41, Invertus Balespus Street"),
-    ("4", "Sta. Rosa City", "House #13, Villa Caceres, Balibago, Sta. Rosa City")
+    ("4", "Sta. Rosa City", "House #13, Villa Caceres, Balibago, Sta. Rosa City"),
+    ("5", "Biñan City", "PUP Biñan, Brgy. Zapote, Biñan City, Laguna")
 
 insert into tbl_book VALUES 
     ("1", "3", "1", "12/2/2023", "12/10/2023", "RETURNED"),

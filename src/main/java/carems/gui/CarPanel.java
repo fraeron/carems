@@ -47,7 +47,7 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     private int currentlySelectedRow;
     static DefaultTableModel model;
     
-    private CarMenu menu = new CarMenu();
+    public static CarMenu menu = new CarMenu();
     
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
@@ -165,6 +165,21 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
         refreshTable();
 
         setVisible(true);  
+        
+        // Insert refresh button.
+        JButton btnRefresh = new JButton("Refresh Records");
+        pnlControlBar.add(btnRefresh);
+        btnRefresh.setBackground(clrAshGrey);      
+        btnRefresh.setForeground(clrMagmaOrange);
+        btnRefresh.setFont(fntDefault);
+        btnRefresh.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == btnRefresh) {
+                    refreshTable();
+                }
+            }
+        });
     }
     
     // Search bar functionality.
@@ -238,11 +253,11 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
-            CarMenu.setToAdd();
+            menu.setToAdd();
             menu.setVisible(true);
         }
         else if (e.getSource() == btnEdit) {
-            CarMenu.setToEdit(getUserData());
+            menu.setToEdit(getUserData());
             menu.setVisible(true);
         }
         else if (e.getSource() == btnRemove) {

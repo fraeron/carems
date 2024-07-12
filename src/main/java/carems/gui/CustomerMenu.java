@@ -82,7 +82,7 @@ public class CustomerMenu extends JDialog implements ActionListener {
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setModal(true);
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this.setVisible(false);
     }
     
     public static void setToAdd() {

@@ -31,13 +31,16 @@ import javax.swing.table.TableRowSorter;
 public class CustomerPanel extends JPanel implements 
         ActionListener, 
         MouseListener {
-    private final JButton btnAdd, btnEdit, btnRemove, btnInvoice;
+    private final JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
     private final JPanel pnlSearchBar = new JPanel();    
     private final JPanel pnlControlBar = new JPanel();
     private final JTable tblContent;
+    
+    
+    public static CustomerMenu menu = new CustomerMenu();
 
     // Init. fonts.
     private final String defaultFont = "Arial";
@@ -79,7 +82,6 @@ public class CustomerPanel extends JPanel implements
         btnAdd = new JButton("Add Customer");        
         btnEdit = new JButton("Edit Customer");        
         btnRemove = new JButton("Delete Customer");
-        btnInvoice = new JButton("Generate Invoice");
         
         // Group table elements.
         model = new DefaultTableModel(data, headers) {
@@ -100,7 +102,6 @@ public class CustomerPanel extends JPanel implements
         pnlControlBar.add(btnAdd);
         pnlControlBar.add(btnEdit);
         pnlControlBar.add(btnRemove);
-        pnlControlBar.add(btnInvoice);
         
         // Color elements (background).
         this.setBackground(clrAshGrey);
@@ -114,15 +115,12 @@ public class CustomerPanel extends JPanel implements
         btnAdd.setForeground(clrMagmaOrange);        
         btnEdit.setForeground(clrMagmaOrange);        
         btnRemove.setForeground(clrMagmaOrange);
-        btnInvoice.setBackground(clrAshGrey);
-        btnInvoice.setForeground(clrMagmaOrange);
        
         // Set fonts per element.
         lblSearch.setFont(fntDefault);
         txfSearch.setFont(fntDefault);
         lblFlow.setFont(fntSubHeader);        
         lblHeader.setFont(fntSupHeader);
-        btnInvoice.setFont(fntDefault);
         btnAdd.setFont(fntDefault);
         btnEdit.setFont(fntDefault);
         btnRemove.setFont(fntDefault);
@@ -152,25 +150,36 @@ public class CustomerPanel extends JPanel implements
         btnAdd.addActionListener(this);
         btnEdit.addActionListener(this);
         btnRemove.addActionListener(this);
-        btnInvoice.setFocusable(false);
-        btnInvoice.addActionListener(this);
         tblContent.addMouseListener(this);
         initSearchBar();
         refreshTable();
         
         setVisible(true);  
+        
+        // Insert refresh button.
+        JButton btnRefresh = new JButton("Refresh Records");
+        pnlControlBar.add(btnRefresh);
+        btnRefresh.setBackground(clrAshGrey);      
+        btnRefresh.setForeground(clrMagmaOrange);
+        btnRefresh.setFont(fntDefault);
+        btnRefresh.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == btnRefresh) {
+                    refreshTable();
+                }
+            }
+        });
     }
 
     private void setBtnStatus(boolean active) {
         if (active) {
             btnEdit.setEnabled(true);
             btnRemove.setEnabled(true);
-            btnInvoice.setEnabled(true);
         }
         else {
             btnEdit.setEnabled(false);
             btnRemove.setEnabled(false);
-            btnInvoice.setEnabled(false);
         }
     }
 
@@ -232,13 +241,13 @@ public class CustomerPanel extends JPanel implements
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
-            new CustomerMenu();
-            CustomerMenu.setToAdd();
+            menu.setToAdd();
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnEdit) {
             String[] userData = getUserData();
-            CustomerMenu.setToEdit(userData);
-            MainMenu.switchPanes("CUSMENU");
+            menu.setToEdit(userData);
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;
@@ -257,13 +266,13 @@ public class CustomerPanel extends JPanel implements
                             JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        else if (e.getSource() == btnInvoice) {
-            String carname = tblContent.getValueAt(
-                currentlySelectedRow, 2).toString();
-            String name = tblContent.getValueAt(
-                currentlySelectedRow, 1).toString();
-            new InvoiceFrame(name, carname);
-        }
+//        else if (e.getSource() == btnInvoice) {
+//            String carname = tblContent.getValueAt(
+//                currentlySelectedRow, 2).toString();
+//            String name = tblContent.getValueAt(
+//                currentlySelectedRow, 1).toString();
+//            new InvoiceFrame(name, carname);
+//        }
     }
 
     // Set the buttons active if a table cell is clicked/selected.

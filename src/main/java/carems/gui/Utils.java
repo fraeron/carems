@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-
 public class Utils {
     public static Font getFont(int size){
         return new Font("Arial", Font.PLAIN, size);
@@ -27,6 +26,33 @@ public class Utils {
     public static ArrayList<String> toArrayStringKeys(Car data){
         ArrayList<String> result = new ArrayList();
         Field[] fields = Car.class.getFields();
+        for (int i = 0; i < fields.length; i++) {
+            try {
+                result.add(fields[i].getName());
+            } catch (IllegalArgumentException ex) {
+                System.out.println(ex);
+            }
+        }
+        return result;
+    }
+    
+    
+    public static ArrayList<String> toArrayString(Book data){
+        ArrayList<String> result = new ArrayList();
+        Field[] fields = Book.class.getFields();
+        for (int i = 0; i < fields.length; i++) {
+            try {
+                result.add(fields[i].get(data).toString());
+            } catch (IllegalArgumentException | IllegalAccessException ex) {
+                System.out.println(ex);
+            }
+        }
+        return result;
+    }
+    
+    public static ArrayList<String> toArrayStringKeys(Book data){
+        ArrayList<String> result = new ArrayList();
+        Field[] fields = Book.class.getFields();
         for (int i = 0; i < fields.length; i++) {
             try {
                 result.add(fields[i].getName());
@@ -124,4 +150,15 @@ public class Utils {
         return alObjects.toArray(String[][]::new);
     }
     
+    
+    public static String[] getTimeSet() {
+        String[] time = new String[24];
+        time[0] = "12:00 AM";
+        for (int i = 1; i < 24; i++) {
+            if (i < 12 ) time[i] = i +":00 AM";
+            else time[i] = i +":00 PM";
+        }
+        
+        return time;
+    }
 }

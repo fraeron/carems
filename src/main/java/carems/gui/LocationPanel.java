@@ -153,6 +153,22 @@ public class LocationPanel extends JPanel
         refreshTable();
 
         setVisible(true);  
+        
+        
+        // Insert refresh button.
+        JButton btnRefresh = new JButton("Refresh Records");
+        pnlControlBar.add(btnRefresh);
+        btnRefresh.setBackground(clrAshGrey);      
+        btnRefresh.setForeground(clrMagmaOrange);
+        btnRefresh.setFont(fntDefault);
+        btnRefresh.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == btnRefresh) {
+                    refreshTable();
+                }
+            }
+        });
     }
     
     // Search bar functionality.

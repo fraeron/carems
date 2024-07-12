@@ -79,7 +79,7 @@ public class InvoiceFrame extends JFrame {
 
     private void initialize() {
         this.setPreferredSize(new Dimension(750, 650));
-        this.setTitle("Carems - Sample Invoice");
+        this.setTitle("Carems - Invoice - Thank you for renting!");
         txtData = new JTextArea(28, 28);
         txtData.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         txtData.setVisible(true);

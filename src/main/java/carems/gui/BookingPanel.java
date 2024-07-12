@@ -1,6 +1,7 @@
 package carems.gui;
 
 import carems.backend.DataService;
+import carems.models.Book;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -43,6 +44,9 @@ public class BookingPanel extends JPanel implements
     private int currentlySelectedRow;
     DefaultTableModel model;
 
+    BookingMenu menu = new BookingMenu();
+    
+    Book currentData = new Book();
     
     // Init. data.
     private final String[] headers = {
@@ -78,7 +82,7 @@ public class BookingPanel extends JPanel implements
         lblFlow = new JLabel("Home > Booking");
         lblHeader = new JLabel("Booking Details");       
         btnAdd = new JButton("Add a Book");        
-        btnEdit = new JButton("Edit a Book");        
+        btnEdit = new JButton("Edit a Book");       
         btnRemove = new JButton("Delete a Book");
         
         // Group table elements.
@@ -153,6 +157,22 @@ public class BookingPanel extends JPanel implements
         refreshTable();
 
         setVisible(true);  
+        
+        
+        // Insert refresh button.
+        JButton btnRefresh = new JButton("Refresh Records");
+        pnlControlBar.add(btnRefresh);
+        btnRefresh.setBackground(clrAshGrey);      
+        btnRefresh.setForeground(clrMagmaOrange);
+        btnRefresh.setFont(fntDefault);
+        btnRefresh.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == btnRefresh) {
+                    refreshTable();
+                }
+            }
+        });
     }
     
     // Search bar functionality.
@@ -192,18 +212,11 @@ public class BookingPanel extends JPanel implements
         });
     }
     
-    private String[] getUserData() {
-        ArrayList<String> temp = new ArrayList();
-        for (int i = 0; i < headers.length; i++) {
-            temp.add(tblContent.
-                    getValueAt(currentlySelectedRow, i).toString());
-        }
-        return temp.toArray(new String[temp.size()]);
-    }
-    
+
     // Use this function if data needs updating manually.
     private void refreshTable(){
         model.setRowCount(0);
+        DataService.refreshData();
         String[][] data = Utils.unpackBook(DataService.bookings);
         for(String[] datum : data){
             model.addRow(datum);
@@ -226,12 +239,14 @@ public class BookingPanel extends JPanel implements
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
             BookingMenu.setToAdd();
-            new BookingMenu();
+            menu.setVisible(true);
         }
         else if (e.getSource() == btnEdit) {
-            String[] userData = getUserData();
-            BookingMenu.setToEdit(userData);
-            new BookingMenu();
+            currentData = DataService.getBooking(tblContent.
+                    getValueAt(currentlySelectedRow, 0).toString());
+            BookingMenu.setToEdit(currentData);
+            menu.setVisible(true);
+
         }
         else if (e.getSource() == btnRemove) {
             int yesnoFX = JOptionPane.YES_NO_OPTION;
@@ -248,9 +263,9 @@ public class BookingPanel extends JPanel implements
                                 "Booking had been successfuly deleted.",
                                 "Booking Deletion Success", 
                                 JOptionPane.INFORMATION_MESSAGE);
-                    refreshTable();
                 }
             }
+        refreshTable();
     }
     
     // Set the buttons active if a table cell is clicked/selected.

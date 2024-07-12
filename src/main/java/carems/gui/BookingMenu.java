@@ -1,6 +1,7 @@
 package carems.gui;
 
 import carems.backend.DataService;
+import carems.models.Book;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -33,14 +34,11 @@ public class BookingMenu extends JDialog implements ActionListener {
     static JButton btnCancel = makeButton("CANCEL");
     static JLabel lblHeader  = makeLabel("Add a Booking");
     static JLabel lblSubheader;
-    JLabel lblId, lblBookedCarID, lblCustomerID, lblBookedDateTime, 
-            lblReturnDT, lblStatus;
-    static JTextField fldBookedCarID, fldCustomerID, 
-            fldBookedDateTime, fldReturnDT, fldStatus;
+    static JLabel lblId = createPanelQA("Booking ID:", 150);
     
     // Init. optimizations.
     static ArrayList<JTextField> fldArray = new ArrayList();
-    int intFldHeight = 25;
+    static int intFldHeight = 25;
     
     // Init. label helper.
     private static JLabel makeLabel(String text) {
@@ -65,22 +63,21 @@ public class BookingMenu extends JDialog implements ActionListener {
         return btn;
     }
     
-    String[] status = {
-        "ONGOING", "LATE", "FINISHED"
+    static String[] status = {
+        "ONGOING", "LATE RETURNED", "RETURNED"
     };
+    
+    static JTextField fldcarid = createPanelQAF("Booked Car ID:", 200);
+    static JTextField fldcusid = createPanelQAF("Customer ID:", 250);
+    static JButton btndate = createPanelQAD("Booked Date:", 300);
+    static JButton btnreturn = createPanelQAD("Returned Date:", 350);
+    static JComboBox cbxstatus = createPanelQAC(status, "Status:", 400);
       
     public BookingMenu() {        
         lblSubheader = makeLabel("To save, please press REGISTER.");
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
-       
-        
-        lblId = createPanelQA("Booking ID:", 150);
-        JComboBox cbxBookedCarId = createPanelQAC(status, "Booked Car ID:", 200);
-        JComboBox cbxCustomerID = createPanelQAC(status, "Customer ID:", 250);
-        JButton cbxBookedDateTime = createPanelQAD("Booked Date:", 300);
-        JButton cbxReturnDT = createPanelQAD("Returned Date:", 350);
-        JComboBox cbxStatus = createPanelQAC(status, "Status:", 400);
+      
         
         btnRegister.setBounds(175, 500, 150, 50);        
         btnCancel.setBounds(400, 500, 150, 50);
@@ -102,27 +99,29 @@ public class BookingMenu extends JDialog implements ActionListener {
         this.setLayout(null);
         this.add(pnl);
         this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        this.setVisible(false);
     }
     
     // Set to add the menu.
     public static void setToAdd() {
-        for (JTextField fld : fldArray) {
-            fld.setText("");
-        }
         btnRegister.setText("REGISTER");
         lblHeader.setText("Add Booking");
+        lblId.setText(String.valueOf(DataService.bookings.size() + 1));
+        fldcarid.setText("");
+        fldcusid.setText("");
+        btndate.setText("");
+        btnreturn.setText("");
+        cbxstatus.setSelectedItem(null);
     }
     
     // Set to edit the menu.
-    public static void setToEdit(String[] userData) {
-        int i = 0;
-        for (JTextField fld : fldArray) {
-            if (i < fldArray.size()) {
-                fld.setText(userData[i]);
-                i++;
-            }
-        }
+    public static void setToEdit(Book book) {
+        lblId.setText(book.id);
+        fldcarid.setText(book.booked_car_id);
+        fldcusid.setText(book.customer_id);
+        btndate.setText(book.booked_datetime);
+        btnreturn.setText(book.return_datetime);
+        cbxstatus.setSelectedItem(book.status);
         btnRegister.setText("UPDATE");
         lblHeader.setText("Update Booking");
     }
@@ -164,7 +163,7 @@ public class BookingMenu extends JDialog implements ActionListener {
         return new Font("Arial", Font.PLAIN, size);
     }
     
-    private JComboBox createPanelQAC(String[] contents, String title, int y) {
+    private static JComboBox createPanelQAC(String[] contents, String title, int y) {
         JLabel l = new JLabel(title);
         l.setFont(getFont(12));
         l.setForeground(Color.WHITE);
@@ -178,7 +177,7 @@ public class BookingMenu extends JDialog implements ActionListener {
         return a;
     }
     
-    private JLabel createPanelQA(String title, int y) {
+    private static JLabel createPanelQA(String title, int y) {
         JLabel l = new JLabel(title);
         l.setFont(getFont(12));
         l.setForeground(Color.WHITE);
@@ -194,7 +193,7 @@ public class BookingMenu extends JDialog implements ActionListener {
         return a;
     }
     
-    private JButton createPanelQAD(String title, int y) {
+    private static JButton createPanelQAD(String title, int y) {
         JLabel l = new JLabel(title);
         l.setFont(getFont(12));
         l.setForeground(Color.WHITE);
@@ -204,6 +203,28 @@ public class BookingMenu extends JDialog implements ActionListener {
         // Return a button (for datetime) for the answer part.
         JButton a = new JButton("Select Date");
         a.setBackground(Color.WHITE);
+        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setBounds(150 + 50, y, 200, 20);
+        
+        a.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e){
+                a.setText(new DatePicker("").setPickedDate());
+            }
+        });
+        pnl.add(a);
+        return a;
+    }
+    
+    private static JTextField createPanelQAF(String title, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(50, y, 175, 20);
+        pnl.add(l);
+        
+        // Return a field for the answer part.
+        JTextField a = new JTextField("N/A");
         a.setHorizontalAlignment(JLabel.CENTER);
         a.setBounds(150 + 50, y, 200, 20);
         pnl.add(a);

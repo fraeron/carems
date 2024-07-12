@@ -27,7 +27,7 @@ class DatePicker {
         String[] header = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat" };
 
         JPanel p2 = new JPanel(new GridLayout(1, 3));
-        JButton previous = new JButton("<<");
+        JButton previous = new JButton("Prev.");
         previous.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 month--;
@@ -38,7 +38,7 @@ class DatePicker {
 
         p2.add(btnMonthYear);
 
-        JButton next = new JButton(">>");
+        JButton next = new JButton("Next");
         next.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
                 month++;
@@ -100,8 +100,6 @@ class DatePicker {
 
         displayDate();
         d.setVisible(true);
-        
-        
     }
  
     public void displayDate() {

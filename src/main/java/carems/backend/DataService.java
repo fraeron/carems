@@ -54,6 +54,31 @@ public class DataService {
         return true;
     }
     
+    public static ArrayList<Car> getAvailableCars(){
+        ArrayList<Car> available = new ArrayList();
+        for (Car car : cars){
+            if (car.is_available.equals("Yes")) {
+                available.add(car);
+            }
+        }
+        return available;
+    }
+    
+    public static String[]getOngoingBooks(){     
+        ArrayList<String> alFinal = new ArrayList();
+        for (Book book : bookings) {
+            for (Car car : cars){
+                if (car.id.equals(book.booked_car_id) && 
+                        !book.status.equals("RETURNED")){
+                    if (car.is_available.equals("No")) {
+                        alFinal.add(book.id);
+                    }
+                }
+            }
+        }
+        return alFinal.toArray(String[]::new);
+    }
+    
     public static boolean addCustomer(Customer customer){
         boolean result = false;
         if (areRequirementsMet(customer)) {
@@ -134,6 +159,46 @@ public class DataService {
         return result;
     }
     
+    
+    
+    
+    public static boolean addBooking(Book book) {
+        boolean result = false;
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            Field[] fields = Book.class.getFields();
+            String query = 
+                    "INSERT INTO tbl_book VALUES (";
+            for (int x = 0; x < fields.length; x++) {
+                if (x == fields.length - 1){
+                    query += "?)";
+                } else {
+                    query += "?,";
+                }
+            }
+            PreparedStatement pst = con.prepareStatement(query);
+            for (int i = 0; i < fields.length; i++) {
+                try{
+                    pst.setString(i + 1, fields[i].get(book).toString());
+                } catch (IllegalAccessException ex) {
+                }
+            }
+            int rowsAffected = pst.executeUpdate();
+            if (rowsAffected > 0) {
+                result = true; // Insertion successful
+            } else {
+                result = false; // Insertion failed
+            }
+            pst.close();
+            con.close();
+        } 
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return result;
+    }
+    
     public static boolean addRecord (ArrayList<String> data, String tableName) {
         boolean result = false;
         boolean emptyBooking = false;
@@ -195,7 +260,7 @@ public class DataService {
                     query += dataNames.get(i) + "='" + data.get(i) +"',";
                 }
             }
-            query += "WHERE id = '" + data.get(0) + "'";
+            query += "WHERE id = '" + data.get(0) + "'"; // Id must always be on first index.
             System.out.println(query);
             PreparedStatement pst = con.prepareStatement(query);
             int rowsAffected = pst.executeUpdate();
@@ -430,4 +495,53 @@ public class DataService {
         }
     }
     /// END OF GETTERS FOR MODELS.
+    
+    // START OF GETTER FOR SINGLE MODELS.
+    public static Car getCar(String carId) {
+        Car car = new Car();
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_car WHERE id = '" + carId + "'";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            while (results.next()) {
+                car.id = results.getString("id");
+                car.model = results.getString("model");
+                car.color = results.getString("color");
+                car.license_plate = results.getString("license_plate");
+                car.category = results.getString("category");
+                car.fuel_type = results.getString("fuel_type");
+                car.is_available = results.getString("is_available");
+                car.car_condition = results.getString("car_condition");
+                car.price_per_day = results.getString("price_per_day");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return car;
+    }
+    
+    public static Book getBooking(String bookid) {
+        Book booking = new Book();
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_book";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            while (results.next()) {
+                booking.id = results.getString("id");                    
+                booking.booked_car_id = results.getString("booked_car_id");
+                booking.customer_id = results.getString("customer_id");
+                booking.booked_datetime = results.getString("booked_datetime");
+                booking.return_datetime = results.getString("return_datetime");
+                booking.status = results.getString("status");
+                bookings.add(booking);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return booking;
+    }
 }

@@ -1,14 +1,24 @@
 package carems.gui;
 
+import carems.backend.DataService;
+import carems.models.Book;
+import carems.models.Car;
+import carems.models.Customer;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Return extends JPanel{
@@ -16,11 +26,24 @@ public class Return extends JPanel{
     private final Color clrAshGrey = new Color(42, 42, 42);    
     private final Color clrMagmaOrange = new Color(255, 127, 39);
     
+    JComboBox cbxbookid;
+    JLabel lblcarid;
+    JLabel lblcustomerid;
+    JButton btndate, btnreturn;
+    JLabel lblelapsed;
+    JLabel lblfine;
+
+    // Init. history
+    Book book;
+    Car car;
+    Customer cus;
+    DefaultTableModel model;
+    
+    JTable tbl;
     JLabel header = new JLabel("Return a Car");    
     JLabel subheader = new JLabel("Please set all the information needed below "
             + "to return.");
 
-    
     private Font getFont(int size){
         return new Font("Arial", Font.PLAIN, size);
     }
@@ -28,6 +51,7 @@ public class Return extends JPanel{
     public Return(){
         this.setBackground(clrAshGrey);
         this.setLayout(null);
+        this.setSize(800, 650);
         
         // Header.
         header.setForeground(clrMagmaOrange);
@@ -45,7 +69,59 @@ public class Return extends JPanel{
 
         this.add(header);
         this.add(subheader);
+        
+        btnreturn.setEnabled(false);
+        
+        changeSelections(cbxbookid, DataService.getOngoingBooks());
+        cbxbookid.setSelectedItem(null);
     }
+    
+    private void changeSelections(JComboBox cbx, String[] selections) {
+        DefaultComboBoxModel<String> model 
+            = new DefaultComboBoxModel<>(selections);
+        cbx.setModel(model);
+    }
+    
+    private void showInfo(){
+        if (cbxbookid.getSelectedItem() != null) {
+            String bookid = cbxbookid.getSelectedItem().toString();
+            book = DataService.getBooking(bookid);
+            lblcarid.setText(book.booked_car_id);
+            lblcustomerid.setText(book.customer_id); 
+            car = DataService.getCar(book.booked_car_id);
+        }
+    }
+    
+    private void resetInfo(){
+        cbxbookid.setSelectedItem(null);
+        btnreturn.setEnabled(false);
+        lblcarid.setText("N/A");
+        lblcustomerid.setText("N/A"); 
+        lblelapsed.setText("N/A");
+        btndate.setText("Select Date");
+        lblfine.setText("N/A");
+    }
+    
+    private void calculateInfo(){
+        String startDate = book.return_datetime;
+        String endDate = btndate.getText();
+        String[] ds1 = startDate.split("-");
+        String[] ds2 = endDate.split("-");
+        
+        int dayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
+        int fine = 250;
+        float calculated = dayDiff * fine;
+        if (dayDiff < 0) {
+            lblelapsed.setText("Less than a day.");
+            lblfine.setText("<html>On time or ahead of time. No fine.</html>");  
+        }
+        else {
+            lblelapsed.setText("Late for " + dayDiff + " Day(s)");
+            lblfine.setText("PHP " + calculated); 
+        }    
+        btnreturn.setEnabled(true);
+    }
+        
     
     private void initInfoPanel(){
         JPanel pnlSelCus = new JPanel();
@@ -55,27 +131,103 @@ public class Return extends JPanel{
         pnlSelCus.setBounds(20, 100, 350, 360);
         this.add(pnlSelCus);
         
-        JComboBox cbxcarid = createPanelQAC(pnlSelCus, new String[]{}, 
-                "Car ID:", 50);        
-        JComboBox cbxcustomerid = createPanelQAC(pnlSelCus, new String[]{}, 
-                "Customer ID:", 90); 
-        JButton cbxdate = createPanelQAD(pnlSelCus, "Date Returned:", 130);
-        JLabel lblelapsed = createPanelQA(pnlSelCus, "Days Elapsed:", 170);
-        JLabel lblfine = createPanelQA(pnlSelCus, "Fine:", 210);
+        cbxbookid = createPanelQAC(pnlSelCus, new String[]{}, 
+                "Ongoing Book ID:", 50);    
+        lblcarid = createPanelQA(pnlSelCus, "Car ID:", 90);        
+        lblcustomerid = createPanelQA(pnlSelCus, "Customer ID:", 130); 
+        btndate = createPanelQAD(pnlSelCus, "Date Returned:", 170);
+        lblelapsed = createPanelQA(pnlSelCus, "Days Elapsed:", 210);
+        lblfine = createPanelQA(pnlSelCus, "Fine for late (in PHP):", 250);
+        lblfine.setBounds(150, 250, 150, 30);
+        
+        btndate.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DataService.refreshData();
+                if (e.getSource() == btndate) {
+                    btndate.setText(new DatePicker("").setPickedDate());
+                    calculateInfo();
+                } 
+            }
+        });
+        
+        cbxbookid.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                DataService.refreshData();
+                if (e.getSource() == cbxbookid) {
+                    showInfo();
+                } 
+            }
+        });
 
-        JButton btnBook = new JButton("Return");
-        btnBook.setFont(getFont(48));
-        btnBook.setBounds(20, 475, 350, 100);
-        this.add(btnBook);
+        btnreturn = new JButton("Return");
+        btnreturn.setFont(getFont(48));
+        btnreturn.setBounds(20, 475, 350, 125);
+        
+        btnreturn.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Update book with date and status.
+                book.return_datetime = btndate.getText();
+                book.status = "RETURNED";
+                DataService.updateRecord(
+                        Utils.toArrayString(book), 
+                        Utils.toArrayStringKeys(book), 
+                        "tbl_book");
+                
+                // Update car.
+                car.is_available = "Yes";
+                DataService.updateRecord(
+                        Utils.toArrayString(car), 
+                        Utils.toArrayStringKeys(car), 
+                        "tbl_car");
+                
+                resetInfo();
+                refreshTable();
+            }
+        });
+        this.add(btnreturn);
+    }
+    
+    public void refreshTable(){
+        DataService.refreshData();
+        model.setRowCount(0);
+        String[][] data = Utils.unpackBook(DataService.bookings);
+        for(String[] datum : data){
+            model.addRow(datum);
+        }
     }
     
     private void initTablePanel(){
-        String[] headers = {"Customer ID", "Car ID", "Return Date", "Elapsed", "Fine"};
-        String[][]data = {{"1", "Dummy", "12/8/2024", "12", "1100.00"}};
-        JTable table = new JTable(data, headers);
-        JScrollPane sp = new JScrollPane(table);
+        String[] headers = {
+        "ID", "Booked Car ID", "Customer ID", "Booked Date/Time", "Return Date/Time", "Status"};
+        String[][] data = Utils.unpackBook(DataService.bookings);
+        // Group table elements.
+        model = new DefaultTableModel(data, headers) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+               return false;
+            }
+        };
+        tbl = new JTable(model);
+        JScrollPane sp = new JScrollPane(tbl);
+        sp.setBounds(380, 100, 390, 435);
         this.add(sp);
-        sp.setBounds(380, 100, 390, 475);
+        
+        
+        JButton btnRefresh = new JButton("Refresh Data");
+        btnRefresh.setBounds(380, 550, 390, 50);
+        btnRefresh.setBackground(clrMagmaOrange);
+        btnRefresh.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                if (e.getSource() == btnRefresh) {
+                    refreshTable();
+                }
+            }
+        });
+        this.add(btnRefresh);
     }
     
     private JLabel createPanelHeader(String title) {
@@ -133,4 +285,20 @@ public class Return extends JPanel{
         parent.add(a);
         return a;
     }
+
+    
+//    private void doReturn(){
+//        Book book = new Book();
+//        book.id = String.valueOf(DataService.bookings.size() + 1);
+//        book.booked_car_id = lblcarid.getText();
+//        book.customer_id = lblcusid.getText();
+//        book.booked_datetime = btncusdate.getText();
+//        book.return_datetime = btncusdateDrop.getText();
+//        book.status = "ONGOING";
+//        DataService.addBooking(book);
+//        Car currentCar = DataService.getCar(lblcarid.getText());
+//        currentCar.is_available = "No";
+//        DataService.updateRecord(Utils.toArrayString(currentCar),
+//                Utils.toArrayStringKeys(currentCar), "tbl_car");
+//    }
 }
