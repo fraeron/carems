@@ -66,12 +66,14 @@ public class CarMenu extends JDialog implements ActionListener {
         // Header.
         header.setForeground(clrMagmaOrange);
         header.setFont(getFont(48));
-        header.setBounds(200, 20, 425, 50);
+        header.setHorizontalAlignment(JLabel.CENTER);
+        header.setBounds(190, 20, 425, 50);
         
         // Subheader.
         subheader.setForeground(clrMagmaOrange);
+        subheader.setHorizontalAlignment(JLabel.CENTER);
         subheader.setFont(getFont(12));
-        subheader.setBounds(225, 50, 350, 50);
+        subheader.setBounds(225, 55, 350, 50);
         
         this.add(header);
         this.add(subheader);
@@ -93,6 +95,10 @@ public class CarMenu extends JDialog implements ActionListener {
         this.setLayout(null);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
+    }
+    
+    private void addMaintenancePanel(){
+        
     }
     
     public static void setToAdd() {

@@ -18,9 +18,19 @@ public class InvoiceFrame extends JFrame {
     Random rand = new Random();
     JTextArea txtData;
 
-    private String header = "\r\n\r\n /$$$$$$                               /$$                    \r\n|_  $$_/                              |__/                    \r\n  | $$   /$$$$$$$  /$$    /$$ /$$$$$$  /$$  /$$$$$$$  /$$$$$$ \r\n  | $$  | $$__  $$|  $$  /$$//$$__  $$| $$ /$$_____/ /$$__  $$\r\n  | $$  | $$  \\ $$ \\  $$/$$/| $$  \\ $$| $$| $$      | $$$$$$$$\r\n  | $$  | $$  | $$  \\  $$$/ | $$  | $$| $$| $$      | $$_____/\r\n /$$$$$$| $$  | $$   \\  $/  |  $$$$$$/| $$|  $$$$$$$|  $$$$$$$\r\n|______/|__/  |__/    \\_/    \\______/ |__/ \\_______/ \\_______/\r\n\n";
-
-
+    private String headerInvoice = "\r\n\r\n /$$$$$$                               /$$                    \r\n|_  $$_/                              |__/                    \r\n  | $$   /$$$$$$$  /$$    /$$ /$$$$$$  /$$  /$$$$$$$  /$$$$$$ \r\n  | $$  | $$__  $$|  $$  /$$//$$__  $$| $$ /$$_____/ /$$__  $$\r\n  | $$  | $$  \\ $$ \\  $$/$$/| $$  \\ $$| $$| $$      | $$$$$$$$\r\n  | $$  | $$  | $$  \\  $$$/ | $$  | $$| $$| $$      | $$_____/\r\n /$$$$$$| $$  | $$   \\  $/  |  $$$$$$/| $$|  $$$$$$$|  $$$$$$$\r\n|______/|__/  |__/    \\_/    \\______/ |__/ \\_______/ \\_______/\r\n\n";
+    private String headerReceipt = """
+                                    /$$$$$$$  /$$$$$$$$  /$$$$$$  /$$$$$$$$ /$$$$$$ /$$$$$$$  /$$$$$$$$
+                                   | $$__  $$| $$_____/ /$$__  $$| $$_____/|_  $$_/| $$__  $$|__  $$__/
+                                   | $$  \\ $$| $$      | $$  \\__/| $$        | $$  | $$  \\ $$   | $$   
+                                   | $$$$$$$/| $$$$$   | $$      | $$$$$     | $$  | $$$$$$$/   | $$   
+                                   | $$__  $$| $$__/   | $$      | $$__/     | $$  | $$____/    | $$   
+                                   | $$  \\ $$| $$      | $$    $$| $$        | $$  | $$         | $$   
+                                   | $$  | $$| $$$$$$$$|  $$$$$$/| $$$$$$$$ /$$$$$$| $$         | $$   
+                                   |__/  |__/|________/ \\______/ |________/|______/|__/         |__/   
+                                   
+                                   """;
+    
     private String templateHead = """
         ===============================================================================================
 
@@ -35,9 +45,24 @@ public class InvoiceFrame extends JFrame {
         Car Description     |   Rental Period      | Rate Per Day   |   Number of Days  |   Subtotal  |
         -----------------------------------------------------------------------------------------------
             """;
+    
+    private String headReceipt = """
+        ===============================================================================================
+
+        BILLED TO:                                                                  RECEIPT NO: %d
+        %s                                                                 %s
+        +63 912 345 6789
+        Lot. 69 Malakas Road, Ambatusam, GA, Somewhere
+
+        ===============================================================================================
+        RENTAL DETAILS
+        -----------------------------------------------------------------------------------------------
+        Car Description     |   Rental Period      | Rate Per Day   |   Number of Days  |   Subtotal  |
+        -----------------------------------------------------------------------------------------------
+            """;
 
     private String templateBody = """
-        %s         |  1/1/2020 - 1/3/2020 | PHP %.2f    |      2 DAYS       | PHP %.2f |
+        %s         |  1/1/2020 - 1/3/2020 | PHP %.2f    |      %s DAYS       | PHP %.2f |
             """;
         
     private String templateFoot = """
@@ -55,26 +80,26 @@ public class InvoiceFrame extends JFrame {
 
             """;
 
-    private String generateInvoice(String name, String carname) {
+    private String generateInvoice(String name, String carname, float ratePerDay, String days, float cost) {
         LocalDate currentTime = LocalDate.now();
         DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String dateString = currentTime.format(format);
-        int maxCost = 10000;
-        int minCost = 5000;
-        float randomCost = Math.round(rand.nextFloat(maxCost - minCost) + minCost);
-        float ratePerDay = Math.round(randomCost / 2);
-        return 
-            header +
-            String.format(templateHead, rand.nextInt(1000), name, dateString) + 
-            String.format(templateBody, carname, ratePerDay, randomCost) + 
-            String.format(templateFoot, dateString);
+        return
+                headerInvoice +
+                String.format(templateHead, rand.nextInt(1000), name, dateString) + 
+                String.format(templateBody, carname, ratePerDay, days, cost) + 
+                String.format(templateFoot, dateString);
     }
-
-    private String generateSample() {
-        String name = "Juan Dela Cruz";
-        String carname = "Honda Civic";
-        String sample = generateInvoice(name, carname);
-        return sample;
+    
+    private String generateReceipt(String name, String carname, float ratePerDay, String days, float cost){
+        LocalDate currentTime = LocalDate.now();
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String dateString = currentTime.format(format);
+        return
+                headerReceipt +
+                String.format(headReceipt, rand.nextInt(1000), name, dateString) + 
+                String.format(templateBody, carname, ratePerDay, days, cost) + 
+                String.format(templateFoot, dateString);
     }
 
     private void initialize() {
@@ -93,17 +118,30 @@ public class InvoiceFrame extends JFrame {
         this.setVisible(true);
     }
 
-    InvoiceFrame() {
+
+    InvoiceFrame(
+            String name, 
+            String carname, 
+            float ratePerDay, 
+            String days, 
+            float cost,
+            boolean isReceipt) {
+        
         initialize();
-
-        // Generate sample if no arguments specified.
-        txtData.setText( generateSample());
+        if (isReceipt) {
+            txtData.setText(generateReceipt(
+                name, 
+                carname, 
+                ratePerDay, 
+                days, 
+                cost));
+        } else {
+            txtData.setText(generateInvoice(name, 
+                carname, 
+                ratePerDay, 
+                days, 
+                cost));
+        }
+        
     }
-
-    InvoiceFrame(String name, String carname) {
-        initialize();
-        txtData.setText(generateInvoice(name, carname));
-    }
-
-
 }

@@ -122,18 +122,15 @@ public class DataService {
         return available;
     }
     
-    public static String[]getOngoingBooks(){     
+    public static String[]getOngoingBooks(){
+        refreshData();
         ArrayList<String> alFinal = new ArrayList();
         for (Book book : bookings) {
-            for (Car car : cars){
-                if (car.id.equals(book.booked_car_id) && 
-                        !book.status.equals("RETURNED")){
-                    if (car.is_available.equals("No")) {
-                        alFinal.add(book.id);
-                    }
+            if (!book.status.equals("RETURNED") && 
+                    !book.status.equals("LATE RETURNED")){
+                    alFinal.add(book.id);
                 }
             }
-        }
         return alFinal.toArray(String[]::new);
     }
     
@@ -582,7 +579,7 @@ public class DataService {
         try{
             Connection con = DriverManager.getConnection(
                     connectionString, "root", yourDBPassword);
-            String query = "SELECT * FROM tbl_book";
+            String query = "SELECT * FROM tbl_book WHERE id = '" + bookid + "'";
             Statement stat = con.createStatement();
             ResultSet results = stat.executeQuery(query);
             while (results.next()) {
@@ -598,5 +595,25 @@ public class DataService {
             ex.printStackTrace();
         }
         return booking;
+    }
+    
+    public static Customer getCustomer(String cusId) {
+        Customer customer = new Customer();
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = "SELECT * FROM tbl_customer WHERE id='"+ cusId + "'";
+            Statement stat = con.createStatement();
+            ResultSet results = stat.executeQuery(query);
+            while (results.next()) {
+                customer.id = results.getString("id");
+                customer.name = results.getString("name");                
+                customer.drivers_license_id = results.getString("drivers_license_id");
+                customer.credit_card_no = results.getString("credit_card_no");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return customer;
     }
 }

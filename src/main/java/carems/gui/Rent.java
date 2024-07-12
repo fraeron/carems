@@ -37,6 +37,8 @@ public class Rent extends JPanel implements ActionListener{
     private static JLabel lblcarcond ;
     private static JButton btnSelCar;
     
+    int dayDiff;
+    
     JButton btnRent;
     
     static JLabel lblcusid;
@@ -325,7 +327,7 @@ public class Rent extends JPanel implements ActionListener{
                 String[] ds1 = startDate.split("-");
                 String[] ds2 = endDate.split("-");
                 
-                int dayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
+                dayDiff = Integer.parseInt(ds2[0]) - Integer.parseInt(ds1[0]);
                 float calculated = Float.parseFloat(lblcarprice.getText()) * dayDiff;
                 if (dayDiff >= 1) { // Minimum one day rent policy.
                     lblTotalHeader.setText("Net Total for " + dayDiff + " days:");
@@ -381,7 +383,11 @@ public class Rent extends JPanel implements ActionListener{
             doRent();
             new InvoiceFrame(
                     lblcusname.getText(), 
-                    lblcarmodel.getText());
+                    lblcarmodel.getText(),
+                    Float.parseFloat(lblcarprice.getText()),
+                    String.valueOf(dayDiff),
+                    Float.parseFloat(lblTotal.getText().replace("PHP ", "")),
+                    false);
             resetInputs();
             updateTotal();
             btnRent.setEnabled(false);

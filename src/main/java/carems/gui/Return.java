@@ -86,6 +86,7 @@ public class Return extends JPanel{
         if (cbxbookid.getSelectedItem() != null) {
             String bookid = cbxbookid.getSelectedItem().toString();
             book = DataService.getBooking(bookid);
+            cus = DataService.getCustomer(book.customer_id);
             lblcarid.setText(book.booked_car_id);
             lblcustomerid.setText(book.customer_id); 
             car = DataService.getCar(book.booked_car_id);
@@ -93,6 +94,7 @@ public class Return extends JPanel{
     }
     
     private void resetInfo(){
+        changeSelections(cbxbookid, DataService.getOngoingBooks());
         cbxbookid.setSelectedItem(null);
         btnreturn.setEnabled(false);
         lblcarid.setText("N/A");
@@ -182,6 +184,20 @@ public class Return extends JPanel{
                         Utils.toArrayString(car), 
                         Utils.toArrayStringKeys(car), 
                         "tbl_car");
+                
+                // Throw receipt.
+                float price = Float.parseFloat(car.price_per_day);
+                float total = price;
+                try{
+                    total = Float.parseFloat(lblfine.getText()) + price;
+                } catch (NumberFormatException ex) {}
+                new InvoiceFrame(
+                        cus.name, 
+                        car.model, 
+                        price,
+                        lblelapsed.getText(),
+                        total,
+                        true);
                 
                 resetInfo();
                 refreshTable();
@@ -285,20 +301,4 @@ public class Return extends JPanel{
         parent.add(a);
         return a;
     }
-
-    
-//    private void doReturn(){
-//        Book book = new Book();
-//        book.id = String.valueOf(DataService.bookings.size() + 1);
-//        book.booked_car_id = lblcarid.getText();
-//        book.customer_id = lblcusid.getText();
-//        book.booked_datetime = btncusdate.getText();
-//        book.return_datetime = btncusdateDrop.getText();
-//        book.status = "ONGOING";
-//        DataService.addBooking(book);
-//        Car currentCar = DataService.getCar(lblcarid.getText());
-//        currentCar.is_available = "No";
-//        DataService.updateRecord(Utils.toArrayString(currentCar),
-//                Utils.toArrayStringKeys(currentCar), "tbl_car");
-//    }
 }

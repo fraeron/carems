@@ -13,18 +13,24 @@ import javax.swing.JPanel;
 
 class DatePicker {
 
+    // Init. colors
+    private final Color clrAshGrey = new Color(42, 42, 42);    
+    private final Color clrMagmaOrange = new Color(255, 127, 39);
+    
+    // Init. calendar
     int month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
     int year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
     JButton btnMonthYear = new JButton(""); // Selector for year as well.
     String day = "";
     JDialog d;
+    String[] headerDays = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"};
+    
+    // Init. all possible days as buttons
     JButton[] button = new JButton[49];
     
- 
     public DatePicker(String initDate) {
         d = new JDialog();
-        d.setModal(true);
-        String[] header = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat" };
+        d.setModal(true);// Make the app lock until this is closed.
 
         JPanel p2 = new JPanel(new GridLayout(1, 3));
         JButton previous = new JButton("Prev.");
@@ -35,9 +41,7 @@ class DatePicker {
             }
         });
         p2.add(previous);
-
         p2.add(btnMonthYear);
-
         JButton next = new JButton("Next");
         next.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae) {
@@ -50,13 +54,14 @@ class DatePicker {
         JPanel p1 = new JPanel(new GridLayout(7, 7));
         p1.setPreferredSize(new Dimension(430, 120));
 
-        // for (int x = 0; x <button> 6) {
         for (int x = 0; x < button.length; x++) {
             final int selection = x;
             button[x] = new JButton();
             button[x].setFocusPainted(false);
-            button[x].setBackground(Color.white);
+            button[x].setBackground(Color.GRAY);
             if (x > 6) {
+                button[x].setBackground(Color.GRAY);
+//                button[x].setForeground(Color.WHITE);
                 button[x].addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
                         day = button[selection].getActionCommand();
@@ -65,8 +70,9 @@ class DatePicker {
                 });
             }
             if (x < 7) {
-                button[x].setText(header[x]);
-                button[x].setForeground(Color.red);
+                button[x].setText(headerDays[x]);
+                button[x].setBackground(clrAshGrey);
+                button[x].setForeground(clrMagmaOrange);
             }
             p1.add(button[x]);
         }
@@ -90,7 +96,7 @@ class DatePicker {
         d.pack();
         d.setLocationRelativeTo(null);
         
-        // Init.
+        // Set default date if ever constructor has argument.
         if (!initDate.isBlank()) {
             String[] splits = initDate.split("-");
             day = splits[0];
@@ -114,7 +120,7 @@ class DatePicker {
         for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++)
             button[x].setText("" + day);
         btnMonthYear.setText(sdf.format(cal.getTime()));
-        d.setTitle("Date Picker");
+        d.setTitle("Carems - Please pick a date");
     }
  
     public String setPickedDate() {
