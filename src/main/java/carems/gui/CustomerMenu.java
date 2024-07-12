@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 
 
 public class CustomerMenu extends JDialog implements ActionListener {
+    static JPanel pnl = new JPanel(null);
 
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -30,43 +31,39 @@ public class CustomerMenu extends JDialog implements ActionListener {
     // Init. components.
     static JButton btnRegister, btnCancel;
     JLabel lblHeader, lblSubheader;
-    JLabel lblId;
-    static JTextField fldId, fldName, driversLicense, creditCard;
+    static JLabel lblId = createPanelQA("Customer ID:", 150);
+    static JTextField fldName = createPanelQAF("Customer Full Name:", 200);
+    static JTextField fldDrivers = createPanelQAF("Driver's License Number:", 250);
+    static JTextField fldCredit = createPanelQAF("Credit Card Number:", 300);
+    
+    Customer currentData = new Customer();
     
     int intFldHeight = 25;
     
     private JLabel makeLabel(JLabel label, String text) {
         label = new JLabel(text);
         label.setForeground(Color.WHITE);
-        this.add(label);
+        pnl.add(label);
         return label;
-    }
-    
-    private JTextField makeField(JTextField fld) {
-        fld = new JTextField();
-        this.add(fld);
-        return fld;
     }
     
     private JButton makeButton(JButton btn, String text) {
         btn = new JButton(text);
-        this.add(btn);
+        pnl.add(btn);
         btn.addActionListener(this);
         return btn;
     }
       
     CustomerMenu() {
         this.setLayout(null);
-
+        pnl.setBackground(null);
+        pnl.setBounds(0,0,800, 600);
+        this.add(pnl);
+        
         lblHeader = makeLabel(lblHeader, "Add Customer");
         lblSubheader = makeLabel(lblSubheader, "To save, please press REGISTER.");
         lblHeader.setFont(fntSupHeader);
         lblSubheader.setFont(fntSubHeader);
-        
-        lblId = createPanelQA("Customer ID:", 150);
-        fldName = createPanelQAF("Customer Full Name:", 200);
-        driversLicense = createPanelQAF("Driver's License Number:", 250);
-        creditCard = createPanelQAF("Credit Card Number:", 300);
         
         btnRegister = makeButton(btnRegister, "REGISTER");
         btnCancel = makeButton(btnCancel, "CANCEL");
@@ -86,77 +83,109 @@ public class CustomerMenu extends JDialog implements ActionListener {
     }
     
     public static void setToAdd() {
-        fldId.setText("");
+        lblId.setText(DataService.getAnId(3));
         fldName.setText("");
+        fldCredit.setText("");
+        fldDrivers.setText("");
         btnRegister.setText("REGISTER");
     }
     
-    public static void setToEdit(String[] userData) {
-        fldId.setText(userData[0]);
-        fldName.setText(userData[1]);
+    public void setToEdit(Customer customer) {
+        currentData = customer;
+        lblId.setText(customer.id);
+        fldName.setText(customer.name);
+        fldCredit.setText(customer.credit_card_no);
+        fldDrivers.setText(customer.drivers_license_id);
         btnRegister.setText("UPDATE");
     }
     
-    private Customer getData(){
-        Customer customer = new Customer();
-        customer.id = fldId.getText();
-        customer.name = fldName.getText();
-        return customer;
+    private void getData(){
+        currentData.id = lblId.getText();
+        currentData.name = fldName.getText();
+        currentData.credit_card_no = fldCredit.getText();
+        currentData.drivers_license_id = fldDrivers.getText();
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        DataService service = new DataService();
+        DataService.refreshData();
         if (e.getSource() == btnRegister) {
-            if (service.addCustomer(getData())) {
+            getData();
+            if (btnRegister.getText().equals("UPDATE")){
+                if (DataService.updateRecordCar(
+                        Utils.toArrayString(currentData), 
+                        Utils.toArrayStringKeys(currentData), 
+                        "tbl_customer")) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Customer had been successfully updated.",
+                            "Customer Update Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
+                    }
+                else {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Error in customer update. "
+                        +"Please make sure all inputs are valid and try again.",
+                        "Customer Update Failed", 
+                        JOptionPane.WARNING_MESSAGE);
+                    }
+            } 
+            else {
+                if (DataService.addRecord(Utils.toArrayString(currentData), "tbl_customer")) {
                 JOptionPane.showMessageDialog(
                         null, 
                         "Customer had been successfuly registered.",
                         "Customer Registration Success", 
                         JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);;
                 }
-            else {
-                    JOptionPane.showMessageDialog(
-                        null, 
-                        "Error in customer registration. "
-                        +"Please make sure all inputs are valid and try again.",
-                        "Customer Registration Failed", 
-                        JOptionPane.WARNING_MESSAGE);
-                }
+                else {
+                        JOptionPane.showMessageDialog(
+                            null, 
+                            "Error in customer registration. "
+                            +"Please make sure all inputs are valid and try again.",
+                            "Car Registration Failed", 
+                            JOptionPane.WARNING_MESSAGE);
+                    }
+                
+            }
+            CustomerPanel.refreshTable();
         }
         else if (e.getSource() == btnCancel) {
             this.dispose();
         }
     }
     
-    private JLabel createPanelQA( String title, int y) {
+    private static JLabel createPanelQA( String title, int y) {
         JLabel l = new JLabel(title);
         l.setFont(Utils.getFont(12));
         l.setForeground(Color.WHITE);
         l.setBounds(50, y, 150, 20);
-        this.add(l);
+        pnl.add(l);
         
         // Return a label for the answer part.
         JLabel a = new JLabel("N/A");
-        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setHorizontalAlignment(JLabel.LEFT);
         a.setForeground(Color.WHITE);
         a.setBounds(250, y, 450, 20);
-        this.add(a);
+        pnl.add(a);
         return a;
     }
     
-    private JTextField createPanelQAF(String title, int y) {
+    private static JTextField createPanelQAF(String title, int y) {
         JLabel l = new JLabel(title);
         l.setFont(Utils.getFont(12));
         l.setForeground(Color.WHITE);
         l.setBounds(50, y, 150, 20);
-        this.add(l);
+        pnl.add(l);
         
         // Return a field for the answer part.
         JTextField a = new JTextField("N/A");
-        a.setHorizontalAlignment(JLabel.CENTER);
+        a.setHorizontalAlignment(JLabel.LEFT);
         a.setBounds(250, y, 450, 20);
-        this.add(a);
+        pnl.add(a);
         return a;
     }
 }

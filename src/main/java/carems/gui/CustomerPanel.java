@@ -31,7 +31,7 @@ import javax.swing.table.TableRowSorter;
 public class CustomerPanel extends JPanel implements 
         ActionListener, 
         MouseListener {
-    private final JButton btnAdd, btnEdit, btnRemove;
+    private static JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
@@ -66,7 +66,7 @@ public class CustomerPanel extends JPanel implements
     
     // Set value for JTable selections
     private int currentlySelectedRow;
-    DefaultTableModel model;
+    static DefaultTableModel model;
 
     // Get database data.
     private final String[] headers = {"ID", "Name", "Driver's License No.", "Credit Card No."};
@@ -172,7 +172,7 @@ public class CustomerPanel extends JPanel implements
         });
     }
 
-    private void setBtnStatus(boolean active) {
+    private static void setBtnStatus(boolean active) {
         if (active) {
             btnEdit.setEnabled(true);
             btnRemove.setEnabled(true);
@@ -183,23 +183,16 @@ public class CustomerPanel extends JPanel implements
         }
     }
 
-    private void refreshTable(){
+    public static void refreshTable(){
         model.setRowCount(0);
+        DataService.refreshData();
         String[][] data = Utils.unpackCustomer(DataService.customers);
         for(String[] datum : data){
             model.addRow(datum);
         }
         setBtnStatus(false);
     }
-    
-    private String[] getUserData() {
-        String[] userData = {
-            tblContent.getValueAt(currentlySelectedRow, 0).toString(),
-            tblContent.getValueAt(currentlySelectedRow, 1).toString(),            
-            tblContent.getValueAt(currentlySelectedRow, 2).toString(),
-        };
-        return userData;
-    }
+   
     
     // Search bar functionality.
     private void initSearchBar() {
@@ -238,6 +231,8 @@ public class CustomerPanel extends JPanel implements
         });
     }
     
+    
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAdd){
@@ -245,8 +240,8 @@ public class CustomerPanel extends JPanel implements
             menu.setVisible(true);
         }
         else if (e.getSource() == btnEdit) {
-            String[] userData = getUserData();
-            menu.setToEdit(userData);
+            menu.setToEdit(DataService.getCustomer(tblContent.getValueAt(
+                        currentlySelectedRow, 0).toString()));
             menu.setVisible(true);
         }
         else if (e.getSource() == btnRemove) {
@@ -265,14 +260,9 @@ public class CustomerPanel extends JPanel implements
                             "Customer deletion Success", 
                             JOptionPane.INFORMATION_MESSAGE);
             }
+            refreshTable();
         }
-//        else if (e.getSource() == btnInvoice) {
-//            String carname = tblContent.getValueAt(
-//                currentlySelectedRow, 2).toString();
-//            String name = tblContent.getValueAt(
-//                currentlySelectedRow, 1).toString();
-//            new InvoiceFrame(name, carname);
-//        }
+        
     }
 
     // Set the buttons active if a table cell is clicked/selected.

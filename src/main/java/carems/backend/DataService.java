@@ -63,21 +63,21 @@ public class DataService {
                 for (Car book : cars) {
                     arr.add(Integer.valueOf(book.id));
                 }
-                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                int result = Utils.getMissingNumber(cars.size() + 1, arr);
                 return String.valueOf(result);
             }
             case 3 -> {
                 for (Customer book : customers) {
                     arr.add(Integer.valueOf(book.id));
                 }
-                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                int result = Utils.getMissingNumber(customers.size() + 1, arr);
                 return String.valueOf(result);
             }
             case 4 -> {
                 for (Location book : locations) {
                     arr.add(Integer.valueOf(book.id));
                 }
-                int result = Utils.getMissingNumber(bookings.size() + 1, arr);
+                int result = Utils.getMissingNumber(locations.size() + 1, arr);
                 return String.valueOf(result);
             }
             default -> {
@@ -396,10 +396,8 @@ public class DataService {
             }
             pst.close();
             con.close();
-            System.out.println("finished");
         } catch (SQLException ex) {
             ex.printStackTrace();
-            System.out.println("failed");
         }
         return result;
     }
