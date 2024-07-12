@@ -14,12 +14,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import carems.models.Car;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 
 public class CarMenu extends JDialog implements ActionListener {
     
     // Init. optimizations.
     static JPanel pnlInputs = new JPanel(null);
     static Car currentData;
+    static JPanel pnlMaintenance = new JPanel(null);
 
     // Init. colors.
     private final Color clrAshGrey = new Color(42, 42, 42);    
@@ -41,7 +44,7 @@ public class CarMenu extends JDialog implements ActionListener {
     };
     
     static String[] conditions = {
-        "GOOD", "OK", "BAD"
+        "GOOD", "OK", "BAD", "N/A"
     };
     
     static String[] avails = {"Yes", "No"};
@@ -49,20 +52,36 @@ public class CarMenu extends JDialog implements ActionListener {
     // Init. components.
     static JButton btnRegister = makeButton("REGISTER", 100);
     static JButton btnCancel = makeButton("CANCEL", 425);
-    static JLabel lblid= createPanelQA("Car Record ID:", 15, 30);
-    static JTextField fldModel= createPanelQAF("Brand and Model:", 15, 60);
-    static JComboBox cbxColor= createPanelQAC(carColors, "Color:", 15, 90);
-    static JTextField fldLic= createPanelQAF("License Plate:", 15, 120);
-    static JComboBox cbxCar= createPanelQAC(carCategories, "Category:", 15, 150);
-    static JComboBox cbxFuel= createPanelQAC(fuelCategory, "Fuel:", 400, 30);
-    static JComboBox cbxAvail= createPanelQAC(avails, "Is Available:", 400, 60);
-    static JComboBox cbxCondition= createPanelQAC(conditions, "Condition:", 400, 90);
-    static JTextField fldPrice= createPanelQAF("Price/Day (in PHP):", 400, 120);
+    
+    static JLabel lblid= createPanelQA("Car Record ID:", 15, 15);
+    static JTextField fldModel= createPanelQAF("Brand and Model:", 15, 60 -15);
+    static JComboBox cbxColor= createPanelQAC(carColors, "Color:", 15, 90-15);
+    static JTextField fldLic= createPanelQAF("License Plate:", 15, 120- 15);
+    static JComboBox cbxCar = createPanelQAC(carCategories, "Category:", 15, 150-15);
+    static JComboBox cbxFuel= createPanelQAC(fuelCategory, "Fuel:", 400, 30- 15);
+    static JComboBox cbxAvail= createPanelQAC(avails, "Is Available:", 400, 60- 15);
+    static JComboBox cbxCondition= createPanelQAC(conditions, "Condition:", 400, 90- 15);
+    static JTextField fldVIN = createPanelQAF("VIN No.:", 400, 120- 15);    
+    static JTextField fldPrice= createPanelQAF("Price/Day (in PHP):", 400, 150- 15);
+    
+    // Maintenance
+    static JComboBox cbxengine = createPanelQACM(conditions, "Engine Oil:", 15, 180);
+    static JComboBox cbxoil = createPanelQACM(conditions, "Oil Filter:", 15, 210); // Even spacing by 5.
+    static JComboBox cbxair = createPanelQACM(conditions, "Air Filter:", 15, 240);
+    static JComboBox cbxcoolant= createPanelQACM(conditions, "Coolant Condition:", 15, 270);
+    static JComboBox cbxbrake = createPanelQACM(conditions, "Brake Fluid:", 15, 300);
+    static JComboBox cbxtire = createPanelQACM(conditions, "Tire Pressure:", 225, 180);
+    static JComboBox cbxbelt = createPanelQACM(conditions, "Belt Condition:", 225, 210);    
+    static JComboBox cbxsteer = createPanelQACM(conditions, "Steering Fluid:", 225, 240);    
+    static JComboBox cbxchassis = createPanelQACM(conditions, "Chassis Health:", 225, 270);
+
+    static JButton btnPhotoHolder = new JButton("Select to upload an image.");
+
     static JLabel header = new JLabel("Add a Car Record");    
     static JLabel subheader = new JLabel("Please set all the information needed below to register.");
-    
       
     public CarMenu() {
+        this.setLayout(null);
         // Header.
         header.setForeground(clrMagmaOrange);
         header.setFont(getFont(48));
@@ -85,22 +104,42 @@ public class CarMenu extends JDialog implements ActionListener {
         this.add(btnRegister);        
         this.add(btnCancel);
         
+        pnlMaintenance.setBounds(0, 150, 800, 350);
+        pnlMaintenance.setBackground(clrMagmaOrange);
+        
+        JLabel hMaint = createPanelHeader("Maintenance");
+        hMaint.setBounds(150, 305, 100, 20);
+        
+        JLabel hPhoto = createPanelHeader("Photo");
+        hPhoto.setBounds(550, 305, 100, 20);
+       
+        btnPhotoHolder.setBounds(450, 335, 300, 150);
+        this.add(btnPhotoHolder);
+        
         btnRegister.addActionListener(this);
         btnCancel.addActionListener(this);
         
+        this.add(pnlMaintenance);
         this.setModal(true);
         this.setSize(800, 650);
         this.getContentPane().setBackground(clrAshGrey);
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        this.setLayout(null);
         this.setLocationRelativeTo(null);
         this.setVisible(false);
-    }
-    
-    private void addMaintenancePanel(){
+        
         
     }
     
+    private JLabel createPanelHeader(String title) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setHorizontalAlignment(JLabel.CENTER);
+        l.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.WHITE));
+        this.add(l);
+        return l;
+    }
+
     public static void setToAdd() {
         currentData = new Car();
         lblid.setText(String.valueOf(DataService.getAnId(2)));
@@ -111,14 +150,35 @@ public class CarMenu extends JDialog implements ActionListener {
         cbxFuel.setSelectedItem(null);
         cbxAvail.setSelectedItem(null);
         cbxCondition.setSelectedItem(null);
+        cbxengine.setSelectedItem(null);
+        fldVIN.setText(null);
+        cbxoil.setSelectedItem(null);
+        cbxair.setSelectedItem(null);
+        cbxcoolant.setSelectedItem(null);
+        cbxbrake.setSelectedItem(null);
+        cbxtire.setSelectedItem(null);
+        cbxbelt.setSelectedItem(null);
+        cbxsteer.setSelectedItem(null);
+        cbxchassis.setSelectedItem(null);
         fldPrice.setText("0.00");
         btnRegister.setText("REGISTER");
         header.setText("Add a Car Record");
         subheader.setText("Please set all the information needed below to register.");
 
     }
+    
+    private static void setPhoto(){
+        if (!currentData.photo_filepath.isBlank()) {
+            btnPhotoHolder.setText("");
+            btnPhotoHolder.setIcon(new ImageIcon(currentData.photo_filepath));
+        } else {
+            btnPhotoHolder.setText("Select to upload an image.");
+        }
+    }
+    
     public static void setToEdit(Car car) {
         currentData = car;
+        setPhoto();
         lblid.setText(car.id);
         fldModel.setText(car.model);
         cbxColor.setSelectedItem(car.color);
@@ -128,6 +188,16 @@ public class CarMenu extends JDialog implements ActionListener {
         cbxAvail.setSelectedItem(car.is_available);
         cbxCondition.setSelectedItem(car.car_condition);
         fldPrice.setText(car.price_per_day);
+        cbxengine.setSelectedItem(car.engine);
+        fldVIN.setText(car.vin);
+        cbxoil.setSelectedItem(car.oil);
+        cbxair.setSelectedItem(car.air);
+        cbxcoolant.setSelectedItem(car.coolant);
+        cbxbrake.setSelectedItem(car.brake);
+        cbxtire.setSelectedItem(car.tire);
+        cbxbelt.setSelectedItem(car.belt);
+        cbxsteer.setSelectedItem(car.steer);
+        cbxchassis.setSelectedItem(car.chassis);
         btnRegister.setText("UPDATE");
         header.setText("Update Car Record");        
         subheader.setText("Please set all the information needed below to update.");
@@ -144,6 +214,16 @@ public class CarMenu extends JDialog implements ActionListener {
         currentData.is_available = cbxAvail.getSelectedItem().toString();
         currentData.car_condition = cbxCondition.getSelectedItem().toString();
         currentData.price_per_day = fldPrice.getText();
+        currentData.vin = fldVIN.getText();
+        currentData.engine = cbxengine.getSelectedItem().toString();
+        currentData.oil = cbxoil.getSelectedItem().toString();
+        currentData.air = cbxair.getSelectedItem().toString();
+        currentData.coolant = cbxcoolant.getSelectedItem().toString();
+        currentData.brake = cbxbrake.getSelectedItem().toString();
+        currentData.tire = cbxtire.getSelectedItem().toString();
+        currentData.belt = cbxbelt.getSelectedItem().toString();
+        currentData.steer = cbxsteer.getSelectedItem().toString();
+        currentData.chassis = cbxchassis.getSelectedItem().toString();
     }
  
     @Override
@@ -151,7 +231,7 @@ public class CarMenu extends JDialog implements ActionListener {
         if (e.getSource() == btnRegister) {
             if (btnRegister.getText().equals("UPDATE")){
                 getData();
-                if (DataService.updateRecord(
+                if (DataService.updateRecordCar(
                         Utils.toArrayString(currentData), 
                         Utils.toArrayStringKeys(currentData), 
                         "tbl_car")) {
@@ -210,6 +290,20 @@ public class CarMenu extends JDialog implements ActionListener {
         JComboBox a = new JComboBox(contents);
         a.setBounds(130 + x, y + 5, 200, 20);
         pnlInputs.add(a);
+        return a;
+    }
+    
+    private static JComboBox createPanelQACM(String[] contents, String title, int x, int y) {
+        JLabel l = new JLabel(title);
+        l.setFont(getFont(12));
+        l.setForeground(Color.WHITE);
+        l.setBounds(x, y + 5, 175, 20);
+        pnlMaintenance.add(l);
+        
+        // Return a combo for the answer part.
+        JComboBox a = new JComboBox(contents);
+        a.setBounds(110 + x, y + 5, 75, 20);
+        pnlMaintenance.add(a);
         return a;
     }
     

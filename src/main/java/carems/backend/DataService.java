@@ -196,7 +196,6 @@ public class DataService {
                         query += data + "', '";
                     }
                 }
-                System.out.println(query);
                 PreparedStatement pst = con.prepareStatement(query);
                 int rowsAffected = pst.executeUpdate();
                 if (rowsAffected > 0) {
@@ -273,7 +272,6 @@ public class DataService {
                         query += datum + "', '";
                     }
                 }
-                System.out.println(query);
                 PreparedStatement pst = con.prepareStatement(query);
                 int rowsAffected = pst.executeUpdate();
                 if (rowsAffected > 0) {
@@ -294,10 +292,50 @@ public class DataService {
     
     public static boolean updateRecord (ArrayList<String> data, 
             ArrayList<String> dataNames, String tableName) {
+        
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).isEmpty()) {
                 return false;
             }
+        }
+        
+        try{
+            Connection con = DriverManager.getConnection(
+                    connectionString, "root", yourDBPassword);
+            String query = 
+                    "UPDATE " + tableName + " SET ";
+            for (int i=1; i < data.size(); i++) {
+                if (data.get(i).equals(data.get(data.size() - 1))) {
+                    query += dataNames.get(i) + "='"+data.get(i) + "'";
+                }
+                else {
+                    query += dataNames.get(i) + "='" + data.get(i) +"',";
+                }
+            }
+            query += "WHERE id = '" + data.get(0) + "'"; // Id must always be on first index.
+            PreparedStatement pst = con.prepareStatement(query);
+            int rowsAffected = pst.executeUpdate();
+            pst.close();
+            con.close();
+            return rowsAffected == 1;
+        } 
+        catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+    
+    public static boolean updateRecordCar (ArrayList<String> data, 
+            ArrayList<String> dataNames, String tableName) {
+        
+        for (int i = 0; i < data.size(); i++) {
+            // Last index is always a photo for car.
+            if (!data.get(i).equals(data.get(data.size() - 1))) {
+                if (data.get(i).isEmpty()) {
+                return false;
+                }
+            }
+            
         }
         try{
             Connection con = DriverManager.getConnection(
@@ -313,7 +351,6 @@ public class DataService {
                 }
             }
             query += "WHERE id = '" + data.get(0) + "'"; // Id must always be on first index.
-            System.out.println(query);
             PreparedStatement pst = con.prepareStatement(query);
             int rowsAffected = pst.executeUpdate();
             pst.close();
@@ -539,7 +576,18 @@ public class DataService {
                 car.fuel_type = results.getString("fuel_type");
                 car.is_available = results.getString("is_available");
                 car.car_condition = results.getString("car_condition");
+                car.vin = results.getString("vin");
                 car.price_per_day = results.getString("price_per_day");
+                car.engine = results.getString("engine");
+                car.oil = results.getString("oil");
+                car.air = results.getString("air");
+                car.coolant = results.getString("coolant");
+                car.brake = results.getString("brake");
+                car.tire = results.getString("tire");
+                car.belt = results.getString("belt");
+                car.steer = results.getString("steer");
+                car.chassis = results.getString("chassis");
+                car.photo_filepath = results.getString("photo_filepath");
                 cars.add(car);
             }
         } catch (SQLException ex) {

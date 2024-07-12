@@ -25,7 +25,7 @@ public class MainMenu extends JFrame {
        
     public MainMenu(){ 
         // Init.
-        new DataService();
+        DataService.refreshData();
     
         // Add history (panels).
         addPane(new HomePanel(), "HOME");

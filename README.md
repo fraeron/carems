@@ -38,7 +38,18 @@ create table tbl_car (
     fuel_type varchar(50),
     is_available varchar(50),
     car_condition varchar(50),
-    price_per_day varchar(50)
+    vin varchar(50),
+    price_per_day varchar(50),
+    engine varchar(10),
+    oil varchar(10),
+    air varchar(10),
+    coolant varchar(10),
+    brake varchar(10),
+    tire varchar(10),
+    belt varchar(10),
+    steer varchar(10),
+    chassis varchar(10),
+    photo_filepath varchar(50)
 )
 
 create table tbl_location (
@@ -75,15 +86,15 @@ insert into tbl_customer VALUES
     ("9", "Aloe Vera L. Ligaya", "I23-52-806752", "8889 0006 9932 0206")
 
 insert into tbl_car VALUES
-    ("1", "Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good", "1500"),
-    ("2", "Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good", "2000"),
-    ("3", "Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK", "1355"),
-    ("4", "DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad", "3000"),
-    ("5", "Audi A4 allroad", "Yellow", "BBC 2134", "Sports", "Unleaded", "No", "Bad", "3000"),
-    ("6", "GMC Acadia", "Green", "LOL 9999", "Sports", "Unleaded", "No", "OK", "3000"),
-    ("7", "Honda Accord", "Black", "6RR509", "Wagon", "Unleaded", "No", "OK", "1500"),
-    ("8", "Bentley Bentaga EWB", "Red", "U329OI", "Sedan", "Ethanol", "No", "Good", "2000"),
-    ("9", "Toyota Corolla Hybrid", "White", "80O84S", "Sedan", "Unleaded", "No", "Good", "1850")
+    ("1", "Honda Civic", "Orange", "8QRA64", "Sedan", "Unleaded", "Yes", "Good", "2HGFG3B8XEH562177", "1500", "GOOD","GOOD","GOOD","GOOD","GOOD","GOOD","GOOD","GOOD","GOOD", "img/cars/hondacivic.jpg"),
+    ("2", "Ford F-250", "Black", "NBC 1234", "Pickup", "Diesel", "Yes", "Good", "1VWBP7A37DC096586", "2000","OK","GOOD","GOOD","GOOD","OK","GOOD","OK","OK","OK", "img/cars/fordf250.jpg"),
+    ("3", "Volvo 240", "White", "TOM 369", "Wagon", "Unleaded", "Yes", "OK", "2GTEK133181335795", "1355","GOOD","GOOD","OK","GOOD","GOOD","OK","OK","OK","GOOD", "img/cars/volvo240.jpg"),
+    ("4", "DMC DeLorean", "White", "OUTATIME", "Sports", "Unleaded", "No", "Bad", "1GYS3BEF0ER200768", "3000","BAD","GOOD","BAD","BAD","BAD","BAD","BAD","BAD","BAD", "img/cars/dmcdelorean.jpg"),
+    ("5", "Audi A4 allroad", "Yellow", "BBC 2134", "Sports", "Unleaded", "No", "Bad", "5P3BC5ED9YE138122", "3000","BAD","GOOD","BAD","GOOD","OK","GOOD","GOOD","GOOD","BAD", "img/cars/audia4allroad.jpeg"),
+    ("6", "GMC Acadia", "Green", "LOL 9999", "Sports", "Unleaded", "No", "OK", "2C3BZ5ED9LO138122", "3000","GOOD","GOOD","OK","GOOD","GOOD","OK","OK","OK","GOOD", "img/cars/gmcacadia.jpg"),
+    ("7", "Honda Accord", "Black", "6RR509", "Wagon", "Unleaded", "No", "OK", "7O3KE5ED9AN138122", "1500","GOOD","GOOD","OK","GOOD","GOOD","OK","OK","OK","GOOD", "img/cars/hondaaccord.JPG"),
+    ("8", "Bentley Bentaga EWB", "Red", "U329OI", "Sedan", "Ethanol", "No", "Good", "5B3BC5ED9AN148122", "2000","OK","GOOD","GOOD","GOOD","OK","GOOD","OK","OK","OK", "img/cars/bentleybentaga.jpg"),
+    ("9", "Toyota Corolla Hybrid", "White", "80O84S", "Sedan", "Unleaded", "No", "Good", "1C3BC5RR0AN138122", "1850","OK","GOOD","GOOD","GOOD","OK","GOOD","OK","OK","OK", "img/cars/toyotacorolla.jpg")
 
 insert into tbl_location VALUES 
     ("1", "Biñan City", "Timbao Barangay Hall, Brgy. Timbao, Biñan City, Laguna"),

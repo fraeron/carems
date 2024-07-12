@@ -66,7 +66,7 @@ public class Available extends JDialog implements ActionListener,
     
     private final String[] headers = {
         "ID", "Model", "Color", "License Plate", "Category", "Fuel Type", 
-        "Is Available", "Condition", "Price Per Day"};
+        "Is Available", "Condition", "VIN", "Price Per Day"};
     
     private final String[] cusHeaders = {
         "ID", "Name", "Driver's License No.", "Credit Card No."

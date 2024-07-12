@@ -52,7 +52,7 @@ public class CarPanel extends JPanel implements ActionListener, MouseListener {
     // Sample data for demo. Replace by using database's.
     private final String[] headers = {
         "ID", "Model", "Color", "License Plate", "Category", "Fuel Type", 
-        "Is Available", "Condition", "Price Per Day"};
+        "Is Available", "Condition", "VIN", "Price Per Day"};
     private final String[][] data = Utils.unpackCar(DataService.cars);
 
     // Init. fonts.

@@ -69,13 +69,12 @@ public class Utils {
         for (int x = 0; x < objects.size(); x++) {
             String[] tempArray = new String[fields.length];
             for (int i = 0; i < fields.length; i++) {
-                try {
+                    try {
                     tempArray[i] = fields[i].get(objects.get(x)).toString();
-
-                } catch (IllegalArgumentException | IllegalAccessException ex) {
-                    System.out.println(ex);
+                    } catch (IllegalArgumentException | IllegalAccessException ex) {
+                        System.out.println(ex);
+                    }
                 }
-            }
             alObjects.add(tempArray);
         }  
         return alObjects.toArray(String[][]::new);
@@ -86,6 +85,7 @@ public class Utils {
         Field[] fields = Car.class.getFields();
         for (int x = 0; x < objects.size(); x++) {
             String[] tempArray = new String[fields.length];
+            
             for (int i = 0; i < fields.length; i++) {
                 try {
                     tempArray[i] = fields[i].get(objects.get(x)).toString();
