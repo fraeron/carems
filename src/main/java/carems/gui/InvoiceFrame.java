@@ -2,6 +2,8 @@ package carems.gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -11,12 +13,15 @@ import javax.swing.JTextArea;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import javax.swing.JButton;
 
 
 
-public class InvoiceFrame extends JFrame {
+public class InvoiceFrame extends JFrame implements ActionListener {
     Random rand = new Random();
     JTextArea txtData;
+    
+    JButton btnContinue;
 
     private String headerInvoice = "\r\n\r\n /$$$$$$                               /$$                    \r\n|_  $$_/                              |__/                    \r\n  | $$   /$$$$$$$  /$$    /$$ /$$$$$$  /$$  /$$$$$$$  /$$$$$$ \r\n  | $$  | $$__  $$|  $$  /$$//$$__  $$| $$ /$$_____/ /$$__  $$\r\n  | $$  | $$  \\ $$ \\  $$/$$/| $$  \\ $$| $$| $$      | $$$$$$$$\r\n  | $$  | $$  | $$  \\  $$$/ | $$  | $$| $$| $$      | $$_____/\r\n /$$$$$$| $$  | $$   \\  $/  |  $$$$$$/| $$|  $$$$$$$|  $$$$$$$\r\n|______/|__/  |__/    \\_/    \\______/ |__/ \\_______/ \\_______/\r\n\n";
     private String headerReceipt = """
@@ -32,18 +37,18 @@ public class InvoiceFrame extends JFrame {
                                    """;
     
     private String templateHead = """
-        ===============================================================================================
+        =================================================================================================================
 
         BILLED TO:                                                                  INVOICE NO: %d
         %s                                                                 %s
         +63 912 345 6789
         Lot. 69 Malakas Road, Ambatusam, GA, Somewhere
 
-        ===============================================================================================
+        =================================================================================================================
         RENTAL DETAILS
-        -----------------------------------------------------------------------------------------------
-        Car Description     |   Rental Period      | Rate Per Day   |   Number of Days  |   Subtotal  |
-        -----------------------------------------------------------------------------------------------
+        -----------------------------------------------------------------------------------------------------------------
+        Car Model and Name     |     Rental Period        |     Rate Per Day     |   Number of Days   |        Total    |
+        -----------------------------------------------------------------------------------------------------------------
             """;
     
     private String headReceipt = """
@@ -54,22 +59,22 @@ public class InvoiceFrame extends JFrame {
         +63 912 345 6789
         Lot. 69 Malakas Road, Ambatusam, GA, Somewhere
 
-        ===============================================================================================
+        =================================================================================================================
         RENTAL DETAILS
-        -----------------------------------------------------------------------------------------------
-        Car Description     |   Rental Period      | Rate Per Day   |   Number of Days  |   Subtotal  |
-        -----------------------------------------------------------------------------------------------
+        -----------------------------------------------------------------------------------------------------------------
+        Car Model and Name     |     Rental Period        |     Rate Per Day     |   Number of Days   |        Total    |
+        -----------------------------------------------------------------------------------------------------------------
             """;
 
     private String templateBody = """
-        %s         |  %s - %s | PHP %.2f    |      %s DAYS       | PHP %.2f |
+        %s          |  %s - %s | PHP %.2f    |      %s            | PHP %.2f |
             """;
         
     private String templateFoot = """
-        ===============================================================================================
+        =================================================================================================================
         PAYMENT METHOD:
         Cash
-        ===============================================================================================
+        =================================================================================================================
 
         DATE: %s
         <CLIENT SIGNATURE>
@@ -109,15 +114,27 @@ public class InvoiceFrame extends JFrame {
     }
 
     private void initialize() {
-        this.setPreferredSize(new Dimension(750, 650));
-        this.setTitle("Carems - Invoice - Thank you for renting!");
+        this.setPreferredSize(new Dimension(775, 700));
+        this.setLayout(null);
+        
         txtData = new JTextArea(28, 28);
         txtData.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
         txtData.setVisible(true);
         txtData.setEditable(true);
 
+        JScrollPane sp = new JScrollPane(txtData);
+        sp.setBounds(0,0,775, 625);
+        JButton btnPrint = new JButton("Print");
+        btnContinue = new JButton("Close");
+        
+        btnPrint.setBounds(0,625, 400, 35);
+        btnContinue.setBounds(400,625, 425, 35);
+        btnContinue.addActionListener(this);
+        
+        this.getContentPane().add(sp);        
+        this.getContentPane().add(btnPrint);        
+        this.getContentPane().add(btnContinue);
 
-        this.getContentPane().add(new JScrollPane(txtData));
         this.pack();
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -136,7 +153,10 @@ public class InvoiceFrame extends JFrame {
             boolean isReceipt) {
         
         initialize();
+        
+        txtData.setEditable(true);
         if (isReceipt) {
+            this.setTitle("Carems - Receipt - Thank you for renting!");
             txtData.setText(generateReceipt(
                 name, 
                 carname, 
@@ -146,6 +166,7 @@ public class InvoiceFrame extends JFrame {
                 startDate,
                 endDate));
         } else {
+            this.setTitle("Carems - Invoice - Thank you for renting!");
             txtData.setText(generateInvoice(name, 
                 carname, 
                 ratePerDay, 
@@ -154,6 +175,15 @@ public class InvoiceFrame extends JFrame {
                 startDate,
                 endDate));
         }
+        txtData.setEditable(false);
         
+        
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == btnContinue){
+            this.dispose();
+        }
     }
 }

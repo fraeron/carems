@@ -29,10 +29,14 @@ public class Return extends JPanel{
     
     JComboBox cbxbookid;
     JLabel lblcarid;
+    JLabel lblcarmodel;
     JLabel lblcustomerid;
+    JLabel lblcusname;
     JButton btndate, btnreturn;
     JLabel lblelapsed;
+    JLabel lblprice;
     JLabel lblfine;
+    JLabel lbltotal;
     
     String startDate, endDate, actualDate;
 
@@ -87,12 +91,16 @@ public class Return extends JPanel{
     
     private void showInfo(){
         if (cbxbookid.getSelectedItem() != null) {
+            DataService.refreshData();
             String bookid = cbxbookid.getSelectedItem().toString();
             book = DataService.getBooking(bookid);
             cus = DataService.getCustomer(book.customer_id);
+            car = DataService.getCar(book.booked_car_id);
             lblcarid.setText(book.booked_car_id);
             lblcustomerid.setText(book.customer_id); 
-            car = DataService.getCar(book.booked_car_id);
+            lblcusname.setText(cus.name);
+            lblcarmodel.setText(car.model);
+            lblprice.setText(car.price_per_day);
         }
     }
     
@@ -100,11 +108,14 @@ public class Return extends JPanel{
         changeSelections(cbxbookid, DataService.getOngoingBooks());
         cbxbookid.setSelectedItem(null);
         btnreturn.setEnabled(false);
-        lblcarid.setText("N/A");
-        lblcustomerid.setText("N/A"); 
+        lblcarmodel.setText("N/A");
+        lblcustomerid.setText("N/A");
+        lblcusname.setText("N/A");
         lblelapsed.setText("N/A");
-        btndate.setText("Select Date");
+        lblprice.setText("N/A");
         lblfine.setText("N/A");
+        lbltotal.setText("N/A");
+        btndate.setText("Select Date");
     }
     
     private void calculateInfo(){
@@ -126,22 +137,27 @@ public class Return extends JPanel{
             }
             else if (lateDays < 0) {
                 lblelapsed.setText("Less than target day.");
-                lblfine.setText("<html>Ahead of time. No fine.</html>"); 
+                lblfine.setText("<html><center>Ahead of time. No fine.</center></html>"); 
+                lbltotal.setText("PHP " + (Float.valueOf(car.price_per_day) + calculated));
                 btnreturn.setEnabled(true);
             } 
             else if (lateDays == 0){
                 lblfine.setText("Arrived on time. No fine.");
+                lbltotal.setText("PHP " + (Float.valueOf(car.price_per_day) + calculated));
                 btnreturn.setEnabled(true);
             }
             else {
-                lblfine.setText("<html>PHP " + calculated + 
-                        ". Penalty of " + lateDays + " day(s).</html>"); 
+                lblfine.setText("<html><center>PHP " + calculated + 
+                        ". Penalty of " + lateDays + " day(s).</center></html>"); 
+                lbltotal.setText("PHP " + (Float.valueOf(car.price_per_day) + calculated));
                 btnreturn.setEnabled(true);
             }
+            
         } catch (DateTimeParseException ex) {
             lblelapsed.setText("N/A");
             btndate.setText("Select Date");
             lblfine.setText("N/A");
+            lbltotal.setText("N/A");
             btnreturn.setEnabled(false);
         }
     }
@@ -157,12 +173,16 @@ public class Return extends JPanel{
         
         cbxbookid = createPanelQAC(pnlSelCus, new String[]{}, 
                 "Ongoing Book ID:", 50);    
-        lblcarid = createPanelQA(pnlSelCus, "Car ID:", 90);        
-        lblcustomerid = createPanelQA(pnlSelCus, "Customer ID:", 130); 
-        btndate = createPanelQAD(pnlSelCus, "Date Returned:", 170);
-        lblelapsed = createPanelQA(pnlSelCus, "Days Elapsed:", 210);
-        lblfine = createPanelQA(pnlSelCus, "Fine for late (in PHP):", 250);
-        lblfine.setBounds(150, 250, 150, 30);
+        lblcarid = createPanelQA(pnlSelCus, "Car ID:", 80);     
+        lblcarmodel= createPanelQA(pnlSelCus, "Car Model and Name:", 110);
+        lblprice= createPanelQA(pnlSelCus, "Car Price Per Day:", 140);
+        lblcustomerid = createPanelQA(pnlSelCus, "Customer ID:", 170); 
+        lblcusname= createPanelQA(pnlSelCus, "Customer Name:", 200);
+        btndate = createPanelQAD(pnlSelCus, "Date Returned:", 230);
+        lblelapsed = createPanelQA(pnlSelCus, "Days Elapsed:", 260);
+        lblfine = createPanelQA(pnlSelCus, "Fine for late (in PHP):", 290);
+        lblfine.setBounds(150, 290, 150, 30);
+        lbltotal = createPanelQA(pnlSelCus, "Total w/ Penalties:", 330);
         
         btndate.addActionListener(new ActionListener(){
             @Override
@@ -178,8 +198,6 @@ public class Return extends JPanel{
         cbxbookid.addItemListener(new ItemListener(){
             @Override
             public void itemStateChanged(ItemEvent e) {
-                DataService.refreshData();
-                System.out.println("cbxbookid is being used");
                 showInfo();
             }
         });
@@ -234,7 +252,6 @@ public class Return extends JPanel{
     }
     
     public void refreshTable(){
-        DataService.refreshData();
         showInfo();
         changeSelections(cbxbookid, DataService.getOngoingBooks());
         model.setRowCount(0);
