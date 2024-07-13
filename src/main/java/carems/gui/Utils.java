@@ -11,12 +11,16 @@ public class Utils {
     }
     
     public static int getNewId (ArrayList<Integer> arr) {
-        int maximum = arr.get(0);
-        for (int i = 1; i < arr.size(); i++) {
-            if (maximum < arr.get(i))
-                maximum = arr.get(i);
+        try{
+            int maximum = arr.get(0);
+            for (int i = 1; i < arr.size(); i++) {
+                if (maximum < arr.get(i))
+                    maximum = arr.get(i);
+            }
+            return maximum + 1;
+        } catch (IndexOutOfBoundsException ex) {
+            return 1;
         }
-        return maximum + 1;
     }
     
     public static ArrayList<String> toArrayString(Car data){
