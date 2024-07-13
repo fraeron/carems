@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -34,13 +35,18 @@ class DatePicker {
     JButton[] button = new JButton[49];
     
     public static long subtractDates(String date1, String date2) {
-        // Make sure dates are in (DD-MM-YYYY)
-        String europeanDatePattern = "dd-MM-yyyy";
-        DateTimeFormatter euroFormat = DateTimeFormatter.ofPattern(europeanDatePattern);
-        LocalDate d1 = LocalDate.parse(date1, euroFormat);
-        LocalDate d2 = LocalDate.parse(date2, euroFormat);
-        Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
-        return diff.toDays();
+        try {
+            // Make sure dates are in (DD-MM-YYYY)
+            String europeanDatePattern = "dd-MM-yyyy";
+            DateTimeFormatter euroFormat = DateTimeFormatter.ofPattern(europeanDatePattern);
+            LocalDate d1 = LocalDate.parse(date1, euroFormat);
+            LocalDate d2 = LocalDate.parse(date2, euroFormat);
+            Duration diff = Duration.between(d1.atStartOfDay(), d2.atStartOfDay());
+            return diff.toDays();
+        } catch (DateTimeParseException ex) {
+            System.out.println("Null date detected. Skipping.");
+        }
+        return 0;
     }
     
     public DatePicker(String initDate) {
@@ -97,7 +103,6 @@ class DatePicker {
                 String givenYear = JOptionPane.showInputDialog(d, "Please input month/year (MM/YYY): ");
                 try {
                     String[] splits = givenYear.split("/");
-                    System.out.println(splits[0] + " | year: " +splits[1]);
                     month = Integer.parseInt(splits[0]);
                     year = Integer.parseInt(splits[1]);
                     displayDate();

@@ -114,7 +114,7 @@ public class CustomerMenu extends JDialog implements ActionListener {
         if (e.getSource() == btnRegister) {
             getData();
             if (btnRegister.getText().equals("UPDATE")){
-                if (DataService.updateRecordCar(
+                if (DataService.updateRecord(
                         Utils.toArrayString(currentData), 
                         Utils.toArrayStringKeys(currentData), 
                         "tbl_customer")) {
@@ -141,7 +141,7 @@ public class CustomerMenu extends JDialog implements ActionListener {
                         "Customer had been successfuly registered.",
                         "Customer Registration Success", 
                         JOptionPane.INFORMATION_MESSAGE);
-                    this.setVisible(false);;
+                    this.setVisible(false);
                 }
                 else {
                         JOptionPane.showMessageDialog(

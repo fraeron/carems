@@ -30,7 +30,7 @@ import javax.swing.table.TableRowSorter;
 
 public class BookingPanel extends JPanel implements 
         MouseListener, ActionListener{
-    private final JButton btnAdd, btnEdit, btnRemove;
+    private static JButton btnAdd, btnEdit, btnRemove;
     private final JLabel lblFlow, lblHeader;
     private final JTextField txfSearch = new JTextField(16);
     private final JLabel lblSearch;
@@ -40,10 +40,8 @@ public class BookingPanel extends JPanel implements
     
     // Init. tables functions.
     private int currentlySelectedRow;
-    DefaultTableModel model;
-
+    static DefaultTableModel model;
     BookingMenu menu = new BookingMenu();
-    
     Book currentData = new Book();
     
     // Init. data.
@@ -215,7 +213,7 @@ public class BookingPanel extends JPanel implements
     
 
     // Use this function if data needs updating manually.
-    private void refreshTable(){
+    public static void refreshTable(){
         model.setRowCount(0);
         DataService.refreshData();
         String[][] data = Utils.unpackBook(DataService.bookings);
@@ -225,7 +223,7 @@ public class BookingPanel extends JPanel implements
         setBtnStatus(false);
     }
 
-    private void setBtnStatus(boolean active) {
+    private static void setBtnStatus(boolean active) {
         if (active) {
             btnEdit.setEnabled(true);
             btnRemove.setEnabled(true);

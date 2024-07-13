@@ -120,7 +120,7 @@ public class LocationMenu extends JDialog implements ActionListener {
         if (e.getSource() == btnRegister) {
             getData();
             if (btnRegister.getText().equals("UPDATE")){
-                if (DataService.updateRecordCar(
+                if (DataService.updateRecord(
                         Utils.toArrayString(currentData), 
                         Utils.toArrayStringKeys(currentData), 
                         "tbl_location")) {
@@ -148,7 +148,7 @@ public class LocationMenu extends JDialog implements ActionListener {
                         "Location had been successfuly registered.",
                         "Location Registration Success", 
                         JOptionPane.INFORMATION_MESSAGE);
-                    this.setVisible(false);;
+                    this.setVisible(false);
                 }
                 else {
                         JOptionPane.showMessageDialog(

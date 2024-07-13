@@ -155,24 +155,51 @@ public class BookingMenu extends JDialog implements ActionListener {
  
     @Override
     public void actionPerformed(ActionEvent e) {
+        DataService.refreshData();
         if (e.getSource() == btnRegister) {
             getData();
-            if (DataService.addBooking(currentData)) {
-                JOptionPane.showMessageDialog(
-                        null, 
-                        "Booking had been successfully added.",
-                        "Booking Registration Success", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                }
-            else {
+            if (btnRegister.getText().equals("UPDATE")){
+                if (DataService.updateRecord(
+                        Utils.toArrayString(currentData), 
+                        Utils.toArrayStringKeys(currentData), 
+                        "tbl_book")) {
+                    JOptionPane.showMessageDialog(
+                            null, 
+                            "Booking had been successfully updated.",
+                            "Booking Update Success", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
+                    }
+                else {
                     JOptionPane.showMessageDialog(
                         null, 
-                        "Error in customer registration. "
+                        "Error in booking update."
                         +"Please make sure all inputs are valid and try again.",
-                        "Booking Registration Failed", 
+                        "Booking Update Failed", 
                         JOptionPane.WARNING_MESSAGE);
+                    }
+            } 
+            else {
+                if (DataService.addRecord(Utils.toArrayString(currentData), 
+                        "tbl_book")) {
+                JOptionPane.showMessageDialog(
+                        null, 
+                        "Booking had been successfuly registered.",
+                        "Booking Registration Success", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    this.setVisible(false);
                 }
+                else {
+                        JOptionPane.showMessageDialog(
+                            null, 
+                            "Error in booking registration."
+                            +"Please make sure all inputs are valid and try again.",
+                            "Booking Registration Failed", 
+                            JOptionPane.WARNING_MESSAGE);
+                    }
+                
+            }
+            BookingPanel.refreshTable();
         }
         else if (e.getSource() == btnCancel) {
             this.dispose();

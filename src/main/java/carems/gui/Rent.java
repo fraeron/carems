@@ -37,6 +37,8 @@ public class Rent extends JPanel implements ActionListener{
     private static JLabel lblcarcond ;
     private static JButton btnSelCar;
     
+    JButton refresh;
+    
     AvailableCar carMenu = new AvailableCar();
     AvailableCus cusMenu = new AvailableCus();
     
@@ -98,6 +100,11 @@ public class Rent extends JPanel implements ActionListener{
         initDropOff();
         initControls();
         
+        refresh = new JButton("Refresh");
+        refresh.addActionListener(this);
+        refresh.setBounds(600, 70, 150, 25);
+        this.add(refresh);
+        
         // One-time.
         changeAddress(cbxCity, cbxAddress);
         changeAddress(cbxCityDrop, cbxAddressDrop);
@@ -113,7 +120,7 @@ public class Rent extends JPanel implements ActionListener{
         
     }
     
-    private String[] getCityChoices(){
+    private static String[] getCityChoices(){
         ArrayList<String> tempCity = new ArrayList();
         for (Location location : DataService.locations) {
             if (!tempCity.contains(location.city)) {
@@ -123,11 +130,19 @@ public class Rent extends JPanel implements ActionListener{
         return tempCity.toArray(String[]::new);
     }
     
+    public static void refreshCities() {
+        DefaultComboBoxModel<String> model 
+            = new DefaultComboBoxModel<>(getCityChoices());
+        cbxCity.setModel(model);
+        DefaultComboBoxModel<String> model2 
+            = new DefaultComboBoxModel<>(getCityChoices());
+        cbxCityDrop.setModel(model2);
+    }
+    
     private String[] getAddressesByCity(String city){
         ArrayList<String> addressTemp = new ArrayList();
         for (Location location : DataService.locations) {
             if (location.city.equals(city)){
-                System.out.println(location.address);
                 addressTemp.add(location.address);
             }
         }
@@ -410,5 +425,8 @@ public class Rent extends JPanel implements ActionListener{
             resetInputs();
             updateTotal();
             btnRent.setEnabled(false);
+        }
+        else if (e.getSource() == refresh) {
+            Rent.refreshCities();
         }
 }   }
